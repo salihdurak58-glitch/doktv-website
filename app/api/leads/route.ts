@@ -11,8 +11,6 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    console.log("API HIT");
-
     const body = await req.json();
 
     const {
@@ -22,9 +20,17 @@ export async function POST(req: Request) {
       phone,
       customer_type,
       message,
+      website,
     } = body;
 
-    // 🛑 Validierung
+    // Spam-Schutz: Bots füllen oft versteckte Felder aus
+    if (website) {
+      return NextResponse.json({
+        success: true,
+        message: "Anfrage erfolgreich gesendet.",
+      });
+    }
+
     if (!name || !email || !message || !customer_type) {
       return NextResponse.json(
         { error: "Bitte alle Pflichtfelder ausfüllen." },
@@ -32,7 +38,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 💾 1. In Supabase speichern
     const { error: supabaseError } = await supabase.from("leads").insert([
       {
         name,
@@ -52,53 +57,98 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Saved to Supabase");
-
-    // 📧 2. E-Mail an dich
-    const { data, error: resendError } = await resend.emails.send({
+    const adminEmail = await resend.emails.send({
       from: "DokTV <info@doktv.de>",
       to: ["info@doktv.de"],
       replyTo: email,
-      subject: "Neue Anfrage über DokTV Website",
+      subject: `Neue Anfrage von ${name} (${customer_type})`,
       html: `
-        <h2>Neue Kontaktanfrage</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Firma:</strong> ${company || "-"}</p>
-        <p><strong>E-Mail:</strong> ${email}</p>
-        <p><strong>Telefon:</strong> ${phone || "-"}</p>
-        <p><strong>Kundentyp:</strong> ${customer_type}</p>
-        <p><strong>Nachricht:</strong></p>
-        <p>${message}</p>
+        <div style="font-family: Arial, sans-serif; background:#f7fafb; padding:24px;">
+          <div style="max-width:640px; margin:0 auto; background:#ffffff; border-radius:18px; padding:28px; border:1px solid #e6eef1;">
+            <div style="margin-bottom:24px;">
+              <p style="margin:0; color:#6fa8b0; font-size:14px; font-weight:700; letter-spacing:0.04em;">
+                DokTV Kontaktformular
+              </p>
+              <h2 style="margin:8px 0 0; color:#334c59; font-size:26px;">
+                Neue Kontaktanfrage
+              </h2>
+            </div>
+
+            <div style="background:#f7fafb; border-radius:14px; padding:18px; margin-bottom:20px;">
+              <p style="margin:0 0 10px;"><strong>Name:</strong> ${name}</p>
+              <p style="margin:0 0 10px;"><strong>Firma:</strong> ${company || "-"}</p>
+              <p style="margin:0 0 10px;"><strong>E-Mail:</strong> ${email}</p>
+              <p style="margin:0 0 10px;"><strong>Telefon:</strong> ${phone || "-"}</p>
+              <p style="margin:0;"><strong>Kundentyp:</strong> ${customer_type}</p>
+            </div>
+
+            <div>
+              <p style="margin:0 0 8px; color:#334c59;"><strong>Nachricht:</strong></p>
+              <div style="background:#ffffff; border:1px solid #e6eef1; border-radius:14px; padding:18px; color:#334c59; line-height:1.6;">
+                ${message}
+              </div>
+            </div>
+
+            <p style="margin-top:24px; color:#7a8f98; font-size:13px;">
+              Diese Anfrage wurde automatisch über doktv.de gesendet.
+            </p>
+          </div>
+        </div>
       `,
     });
 
-    console.log("Resend result:", data);
+    console.log("Admin email result:", adminEmail);
 
-    if (resendError) {
-      console.error("Resend error:", resendError);
-    }
-
-    // 📩 3. Auto-Reply an Kunden
-    await resend.emails.send({
+    const customerEmail = await resend.emails.send({
       from: "DokTV <info@doktv.de>",
       to: [email],
-      subject: "Danke für deine Anfrage bei DokTV",
+      subject: "Danke für Ihre Anfrage bei DokTV",
       html: `
-        <p>Hallo ${name},</p>
-        <p>vielen Dank für deine Anfrage! Wir melden uns schnellstmöglich bei dir.</p>
-        <br/>
-        <p>Beste Grüße</p>
-        <p><strong>DokTV Team</strong></p>
+        <div style="font-family: Arial, sans-serif; background:#f7fafb; padding:24px;">
+          <div style="max-width:640px; margin:0 auto; background:#ffffff; border-radius:18px; padding:28px; border:1px solid #e6eef1;">
+            <p style="margin:0; color:#6fa8b0; font-size:14px; font-weight:700;">
+              DokTV
+            </p>
+
+            <h2 style="margin:10px 0 16px; color:#334c59; font-size:26px;">
+              Vielen Dank für Ihre Anfrage
+            </h2>
+
+            <p style="color:#334c59; line-height:1.7;">
+              Hallo ${name},
+            </p>
+
+            <p style="color:#334c59; line-height:1.7;">
+              vielen Dank für Ihre Anfrage. Wir haben Ihre Nachricht erhalten und melden uns schnellstmöglich bei Ihnen.
+            </p>
+
+            <div style="background:#f7fafb; border-radius:14px; padding:18px; margin:22px 0;">
+              <p style="margin:0 0 8px;"><strong>Ihre Anfrage:</strong></p>
+              <p style="margin:0; color:#334c59; line-height:1.6;">${message}</p>
+            </div>
+
+            <p style="color:#334c59; line-height:1.7;">
+              Beste Grüße<br/>
+              <strong>Ihr DokTV Team</strong>
+            </p>
+
+            <p style="margin-top:24px; color:#7a8f98; font-size:13px;">
+              DokTV UG (haftungsbeschränkt) · Berlin · info@doktv.de
+            </p>
+          </div>
+        </div>
       `,
     });
+
+    console.log("Customer email result:", customerEmail);
 
     return NextResponse.json({
       success: true,
       message: "Anfrage erfolgreich gesendet.",
     });
-
   } catch (error) {
     console.error("API error:", error);
+
     return NextResponse.json(
       { error: "Serverfehler." },
       { status: 500 }

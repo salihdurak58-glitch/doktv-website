@@ -12,6 +12,7 @@ export default function KontaktPage() {
     phone: "",
     customer_type: "",
     message: "",
+    website: "", // Spam-Schutz Honeypot
   });
 
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,7 @@ export default function KontaktPage() {
         phone: "",
         customer_type: "",
         message: "",
+        website: "",
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unbekannter Fehler.");
@@ -95,6 +97,17 @@ export default function KontaktPage() {
           className="rounded-[2rem] bg-white p-8 shadow-2xl shadow-[#334c59]/10"
         >
           <div className="grid gap-5">
+            {/* Unsichtbares Spam-Feld */}
+            <input
+              type="text"
+              name="website"
+              value={form.website}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+            />
+
             <input
               name="name"
               value={form.name}
