@@ -9,10 +9,15 @@ type ContentItem = {
   value: string;
 };
 
-type MediaFile = {
+type Lead = {
+  id: number;
   name: string;
-  url: string;
-  path: string;
+  company: string | null;
+  email: string;
+  phone: string | null;
+  customer_type: string;
+  message: string;
+  created_at: string;
 };
 
 export default function Dashboard() {
@@ -25,11 +30,9 @@ export default function Dashboard() {
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [heroImage, setHeroImage] = useState("");
 
-  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
-
-  const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -43,7 +46,7 @@ export default function Dashboard() {
       setEmail(data.user.email ?? null);
 
       await loadContent();
-      await loadMedia();
+      await loadLeads();
 
       setLoading(false);
     }
@@ -76,37 +79,18 @@ export default function Dashboard() {
     );
   }
 
-  async function loadMedia() {
-    const { data, error } = await supabase.storage
-      .from("media")
-      .list("homepage", {
-        limit: 100,
-        sortBy: { column: "created_at", order: "desc" },
-      });
+  async function loadLeads() {
+    const { data, error } = await supabase
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
 
     if (error) {
-      setMessage("Bilder konnten nicht geladen werden.");
+      setMessage("Leads konnten nicht geladen werden.");
       return;
     }
 
-    const files =
-      data?.map((file) => {
-        const path = `homepage/${file.name}`;
-        const publicUrl = supabase.storage.from("media").getPublicUrl(path);
-
-        return {
-          name: file.name,
-          path,
-          url: publicUrl.data.publicUrl,
-        };
-      }) ?? [];
-
-    setMediaFiles(files);
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    router.push("/admin/login");
+    setLeads((data ?? []) as Lead[]);
   }
 
   async function saveContent() {
@@ -145,60 +129,16 @@ export default function Dashboard() {
     setMessage("Inhalte gespeichert.");
   }
 
-  async function uploadHeroImage(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-
-    if (!file) return;
-
-    setUploading(true);
-    setMessage("");
-
-    const fileExt = file.name.split(".").pop();
-    const fileName = `hero-${Date.now()}.${fileExt}`;
-    const filePath = `homepage/${fileName}`;
-
-    const { error } = await supabase.storage
-      .from("media")
-      .upload(filePath, file);
-
-    if (error) {
-      setUploading(false);
-      setMessage("Bild konnte nicht hochgeladen werden.");
-      return;
-    }
-
-    const { data } = supabase.storage.from("media").getPublicUrl(filePath);
-
-    setHeroImage(data.publicUrl);
-    setUploading(false);
-    setMessage("Bild hochgeladen. Jetzt speichern klicken.");
-
-    await loadMedia();
+  async function logout() {
+    await supabase.auth.signOut();
+    router.push("/admin/login");
   }
 
-  async function copyUrl(url: string) {
-    await navigator.clipboard.writeText(url);
-    setMessage("Bild-URL kopiert.");
-  }
-
-  async function deleteImage(path: string) {
-    const confirmed = confirm("Bild wirklich löschen?");
-
-    if (!confirmed) return;
-
-    const { error } = await supabase.storage.from("media").remove([path]);
-
-    if (error) {
-      setMessage("Bild konnte nicht gelöscht werden.");
-      return;
-    }
-
-    if (heroImage.includes(path)) {
-      setHeroImage("");
-    }
-
-    setMessage("Bild gelöscht.");
-    await loadMedia();
+  function formatDate(date: string) {
+    return new Date(date).toLocaleString("de-DE", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
   }
 
   if (loading) {
@@ -215,10 +155,11 @@ export default function Dashboard() {
         <h2 className="text-2xl font-black">DokTV Admin</h2>
 
         <nav className="mt-10 space-y-3 text-sm font-semibold">
-          <div className="rounded-xl bg-blue-600 px-4 py-3">Startseite</div>
-          <div className="rounded-xl bg-white/10 px-4 py-3">Bilder</div>
+          <div className="rounded-xl bg-blue-600 px-4 py-3">Dashboard</div>
+          <div className="rounded-xl bg-white/10 px-4 py-3">Startseite</div>
+          <div className="rounded-xl bg-white/10 px-4 py-3">Leads</div>
+          <div className="rounded-xl px-4 py-3 text-slate-400">Bilder</div>
           <div className="rounded-xl px-4 py-3 text-slate-400">Blog</div>
-          <div className="rounded-xl px-4 py-3 text-slate-400">Leads</div>
           <div className="rounded-xl px-4 py-3 text-slate-400">Statistik</div>
           <div className="rounded-xl px-4 py-3 text-slate-400">SEO</div>
         </nav>
@@ -243,6 +184,25 @@ export default function Dashboard() {
             {message}
           </div>
         )}
+
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-bold text-slate-500">Leads gesamt</p>
+            <p className="mt-2 text-4xl font-black">{leads.length}</p>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-bold text-slate-500">Letzte Anfrage</p>
+            <p className="mt-2 text-xl font-black">
+              {leads[0] ? formatDate(leads[0].created_at) : "Keine Leads"}
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-bold text-slate-500">Status</p>
+            <p className="mt-2 text-xl font-black text-green-600">Online</p>
+          </div>
+        </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
           <div className="rounded-3xl bg-white p-8 shadow-sm">
@@ -295,72 +255,79 @@ export default function Dashboard() {
           </div>
 
           <div className="rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-black">Bild hochladen</h2>
-
-            <p className="mt-2 text-slate-600">
-              Lade ein Bild hoch und nutze es direkt als Hero-Bild.
-            </p>
-
-            <input
-              type="file"
-              accept="image/*"
-              onChange={uploadHeroImage}
-              className="mt-6 block w-full rounded-xl border border-slate-300 bg-white p-4"
-            />
-
-            {uploading && (
-              <p className="mt-4 font-semibold text-blue-600">
-                Bild wird hochgeladen...
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-black">Medienbibliothek</h2>
-
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {mediaFiles.map((file) => (
-              <div
-                key={file.path}
-                className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
-              >
-                <img
-                  src={file.url}
-                  alt={file.name}
-                  className="h-44 w-full object-cover"
-                />
-
-                <div className="space-y-3 p-4">
-                  <p className="truncate text-sm font-bold">{file.name}</p>
-
-                  <button
-                    onClick={() => setHeroImage(file.url)}
-                    className="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white"
-                  >
-                    Als Hero nutzen
-                  </button>
-
-                  <button
-                    onClick={() => copyUrl(file.url)}
-                    className="w-full rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white"
-                  >
-                    URL kopieren
-                  </button>
-
-                  <button
-                    onClick={() => deleteImage(file.path)}
-                    className="w-full rounded-xl bg-red-600 px-4 py-2 text-sm font-bold text-white"
-                  >
-                    Löschen
-                  </button>
-                </div>
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black">Neue Leads</h2>
+                <p className="mt-2 text-slate-600">
+                  Kontaktanfragen aus deinem Formular.
+                </p>
               </div>
-            ))}
 
-            {mediaFiles.length === 0 && (
-              <p className="text-slate-500">Noch keine Bilder vorhanden.</p>
-            )}
+              <button
+                onClick={loadLeads}
+                className="rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white"
+              >
+                Neu laden
+              </button>
+            </div>
+
+            <div className="mt-8 space-y-5">
+              {leads.length === 0 && (
+                <p className="text-slate-500">Noch keine Anfragen vorhanden.</p>
+              )}
+
+              {leads.slice(0, 5).map((lead) => (
+                <div
+                  key={lead.id}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-black">{lead.name}</h3>
+                      <p className="text-sm text-slate-500">
+                        {formatDate(lead.created_at)}
+                      </p>
+                    </div>
+
+                    <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">
+                      {lead.customer_type}
+                    </span>
+                  </div>
+
+                  <div className="mt-4 space-y-1 text-sm text-slate-700">
+                    <p>
+                      <strong>Firma:</strong> {lead.company || "-"}
+                    </p>
+                    <p>
+                      <strong>E-Mail:</strong>{" "}
+                      <a
+                        href={`mailto:${lead.email}`}
+                        className="text-blue-600 underline"
+                      >
+                        {lead.email}
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Telefon:</strong>{" "}
+                      {lead.phone ? (
+                        <a
+                          href={`tel:${lead.phone}`}
+                          className="text-blue-600 underline"
+                        >
+                          {lead.phone}
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </p>
+                  </div>
+
+                  <p className="mt-4 rounded-xl bg-white p-4 text-sm leading-6 text-slate-700">
+                    {lead.message}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
