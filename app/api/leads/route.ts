@@ -88,10 +88,7 @@ export async function POST(req: Request) {
     const adminEmail = await resend.emails.send({
       from: "DokTV Kontaktformular <info@doktv.de>",
       to: ["info@doktv.de"],
-
-      // WICHTIG: Resend Send API nutzt reply_to
-      reply_to: [`${name} <${email}>`],
-
+      replyTo: `${name} <${email}>`,
       subject: `Neue Anfrage von ${name} (${customer_type})`,
       html: `
         <div style="font-family: Arial, sans-serif; background:#f7fafb; padding:24px;">

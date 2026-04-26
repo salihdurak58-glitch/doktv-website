@@ -2,101 +2,47 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Apotheken Werbung Berlin – Digital Signage mit DokTV",
+  title: "Apotheke Werbung Berlin | Digitale Werbung für Apotheken | DokTV",
   description:
-    "Moderne Werbung für Apotheken in Berlin. Mit DokTV erreichen Sie Ihre Laufkundschaft über digitale Displays im Schaufenster.",
+    "Digitale Werbung für Apotheken in Berlin. Steigern Sie Ihre Sichtbarkeit mit modernen Displays und gezieltem Apotheken-Marketing.",
 };
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-[#f7fafb] text-[#334c59]">
+    <main className="min-h-screen bg-white text-[#334c59] px-6 py-20">
       <Header />
+      <div className="max-w-4xl mx-auto">
 
-      {/* HERO */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-          Apotheken Werbung in Berlin sichtbar machen.
+        <h1 className="text-4xl font-bold mb-6">
+          Apotheke Werbung Berlin – Mehr Sichtbarkeit für Ihre Apotheke
         </h1>
 
-        <p className="mt-6 max-w-3xl text-lg text-[#5d737d]">
-          Mit DokTV nutzen Apotheken in Berlin digitale Displays im
-          Schaufenster, um Angebote, Aktionen und Notdienste sichtbar zu
-          machen – direkt für Laufkundschaft.
+        <p className="mb-6 text-lg">
+          Mit moderner <strong>Apotheken Werbung in Berlin</strong> erreichen Sie Kunden direkt vor Ort.
+          Digitale Displays sorgen für Aufmerksamkeit und steigern Ihren Umsatz.
         </p>
 
-        <a
-          href="/kontakt"
-          className="mt-10 inline-flex rounded-full bg-[#334c59] px-8 py-4 font-semibold text-white"
-        >
-          Beratung anfragen
-        </a>
-      </section>
-
-      {/* SEO TEXT */}
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <h2 className="text-3xl font-bold">
-          Warum digitale Werbung für Apotheken in Berlin?
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Warum Werbung in Apotheken wichtig ist
         </h2>
 
-        <p className="mt-6 text-lg leading-8 text-[#5d737d]">
-          In Berlin ist die Konkurrenz unter Apotheken hoch. Klassische
-          Schaufensterwerbung wird oft übersehen. Mit Digital Signage erreichen
-          Sie Ihre Kunden direkt – modern, auffällig und jederzeit aktuell.
+        <p>
+          Viele Kunden treffen ihre Kaufentscheidung direkt in der Apotheke.
+          Mit gezielter Werbung können Sie Produkte sichtbar machen und Ihre
+          Kunden besser informieren.
         </p>
 
-        <p className="mt-6 text-lg leading-8 text-[#5d737d]">
-          DokTV installiert Displays im Schaufensterbereich Ihrer Apotheke und
-          spielt gezielt Inhalte aus: Angebote, Aktionen,
-          Gesundheitsinformationen und Notdienste.
-        </p>
-      </section>
-
-      {/* VORTEILE */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h2 className="text-3xl font-bold">
-          Vorteile von DokTV für Apotheken
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Lösungen von DokTV
         </h2>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {[
-            "Mehr Sichtbarkeit für Laufkundschaft",
-            "Digitale statt statische Werbung",
-            "Inhalte jederzeit änderbar",
-            "Moderne Präsentation Ihrer Apotheke",
-            "Integration von Notdienst-Anzeigen",
-            "Kostenlose Erstellung der Werbespots",
-          ].map((item) => (
-            <div
-              key={item}
-              className="rounded-2xl bg-white p-6 shadow-lg shadow-[#334c59]/5"
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-      </section>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Digitale Schaufenster Displays</li>
+          <li>Produktwerbung am POS</li>
+          <li>Moderne Kundenkommunikation</li>
+        </ul>
 
-      {/* CTA */}
-      <section className="bg-[#334c59] py-24 text-white">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold">
-            Jetzt Apotheken Werbung in Berlin starten.
-          </h2>
-
-          <p className="mt-6 text-lg text-white/80">
-            Lassen Sie sich kostenlos beraten und machen Sie Ihre Apotheke
-            sichtbar.
-          </p>
-
-          <a
-            href="/kontakt"
-            className="mt-10 inline-flex rounded-full bg-white px-8 py-4 font-semibold text-[#334c59]"
-          >
-            Jetzt anfragen
-          </a>
-        </div>
-      </section>
-
+      </div>
       <Footer />
     </main>
   );

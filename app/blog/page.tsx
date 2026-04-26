@@ -33,42 +33,131 @@ const posts = [
 
 export default function BlogPage() {
   return (
-    <main className="bg-[#f7fafb] text-[#334c59]">
+    <main className="bg-slate-950 text-white">
       <Header />
 
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <p className="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#6fa8b0] shadow-sm">
-          DokTV Blog
-        </p>
+      {/* HERO */}
+      <section className="relative overflow-hidden px-6 py-28">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 to-indigo-700/30 blur-3xl" />
 
-        <h1 className="max-w-5xl text-5xl font-bold leading-tight md:text-7xl">
-          Digital Signage, Apotheken-Marketing & lokale Sichtbarkeit
-        </h1>
+        <div className="relative mx-auto max-w-6xl text-center">
+          <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-blue-200">
+            DokTV Blog
+          </span>
 
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d737d]">
-          Praxisnahe Beiträge für Apotheken, Arztpraxen und Pharma-Unternehmen,
-          die digital sichtbarer werden und Kunden vor Ort besser erreichen
-          möchten.
-        </p>
+          <h1 className="mt-6 text-4xl font-extrabold leading-tight md:text-6xl">
+            Digital Signage, Apotheken-Marketing & lokale Sichtbarkeit
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            In unserem Blog zeigen wir, wie Apotheken, Arztpraxen und lokale
+            Unternehmen mit Digital Signage mehr Aufmerksamkeit erzeugen,
+            professioneller wirken und gezielt mehr Kunden gewinnen können.
+            Alle Inhalte sind praxisnah, verständlich und direkt umsetzbar.
+          </p>
+        </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 pb-24 md:grid-cols-3">
-        {posts.map((post) => (
-          <a
-            key={post.slug}
-            href={`/blog/${post.slug}`}
-            className="rounded-3xl bg-white p-8 shadow-lg shadow-[#334c59]/5 transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <h2 className="text-2xl font-bold">{post.title}</h2>
-            <p className="mt-4 leading-7 text-[#5d737d]">
-              {post.description}
-            </p>
+      {/* BLOG CARDS */}
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <div className="grid gap-10 md:grid-cols-3">
+          {posts.map((post) => (
+            <a
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur transition hover:-translate-y-2 hover:border-blue-500 hover:bg-white/10"
+            >
+              <div className="mb-4 text-sm text-blue-300">
+                Blog Artikel
+              </div>
 
-            <p className="mt-6 font-semibold text-[#6fa8b0]">
-              Beitrag lesen →
-            </p>
+              <h2 className="text-2xl font-bold leading-tight group-hover:text-blue-400">
+                {post.title}
+              </h2>
+
+              <p className="mt-4 leading-7 text-slate-300">
+                {post.description}
+              </p>
+
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-blue-400 font-semibold">
+                  Beitrag lesen →
+                </span>
+
+                <span className="text-xs text-slate-500">
+                  5 min lesen
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* SEO TEXT */}
+      <section className="bg-white text-slate-900 py-24 px-6">
+        <div className="max-w-5xl mx-auto space-y-6 text-lg leading-8">
+          <h2 className="text-3xl font-bold">
+            Digital Signage & Marketing für Apotheken und Arztpraxen verstehen
+          </h2>
+
+          <p>
+            Die Anforderungen an lokale Unternehmen haben sich in den letzten
+            Jahren stark verändert. Kunden informieren sich online, vergleichen
+            Angebote und erwarten gleichzeitig vor Ort einen modernen und
+            professionellen Eindruck. Genau hier setzt Digital Signage an.
+          </p>
+
+          <p>
+            Digitale Displays im Schaufenster oder im Innenbereich bieten eine
+            Möglichkeit, Inhalte flexibel darzustellen und gezielt auf Kunden
+            einzugehen. Besonders Apotheken profitieren davon, da sie regelmäßig
+            wechselnde Angebote, Gesundheitskampagnen und Serviceleistungen
+            kommunizieren müssen.
+          </p>
+
+          <p>
+            Auch Arztpraxen nutzen zunehmend digitale Lösungen, um Patienten
+            besser zu informieren und gleichzeitig den Empfang zu entlasten.
+            Hinweise zu Sprechzeiten, Leistungen oder organisatorischen Abläufen
+            lassen sich klar und verständlich darstellen.
+          </p>
+
+          <p>
+            Neben der klassischen Nutzung vor Ort spielt auch die digitale
+            Sichtbarkeit eine immer größere Rolle. Eine Kombination aus Website,
+            Google Präsenz und Digital Signage sorgt dafür, dass Unternehmen
+            sowohl online als auch offline sichtbar sind und Vertrauen
+            aufbauen.
+          </p>
+
+          <p>
+            Unser Blog zeigt konkrete Strategien, Beispiele und Ansätze, wie
+            lokale Unternehmen diese Möglichkeiten nutzen können. Dabei geht es
+            nicht um Theorie, sondern um praktische Lösungen, die sich direkt im
+            Alltag umsetzen lassen.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-blue-600 py-20 px-6 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold">
+            Mehr Sichtbarkeit für dein Geschäft
+          </h2>
+
+          <p className="mt-4 text-blue-100">
+            Lass uns gemeinsam schauen, wie Digital Signage bei dir eingesetzt
+            werden kann – kostenlos und unverbindlich.
+          </p>
+
+          <a
+            href="/kontakt"
+            className="mt-8 inline-block bg-white text-blue-600 font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-slate-100 transition"
+          >
+            Jetzt Beratung anfragen
           </a>
-        ))}
+        </div>
       </section>
 
       <Footer />

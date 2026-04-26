@@ -1,37 +1,46 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-      {/* LOGO */}
-      <a href="/" className="flex items-center">
-        <Image
-          src="/logo.png"
-          alt="DokTV Logo"
-          width={220}
-          height={80}
-          priority
-          className="h-auto w-[220px]"
-        />
-      </a>
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-      {/* NAVIGATION */}
-      <nav className="hidden gap-8 text-sm font-medium md:flex">
-        <a href="/apotheken">Apotheken</a>
-        <a href="/arztpraxen">Arztpraxen</a>
-        <a href="/hersteller">Hersteller</a>
-        <a href="/standorte">Standortfinder</a>
-        <a href="/preise">Preise</a>
-        <a href="/kontakt">Kontakt</a>
-      </nav>
+        {/* LOGO */}
+        <Link href="/" className="text-xl font-bold text-blue-600">
+          DokTV
+        </Link>
 
-      {/* BUTTON */}
-      <a
-        href="/kontakt"
-        className="rounded-full bg-[#334c59] px-5 py-3 text-sm font-semibold text-white"
-      >
-        Beratung anfragen
-      </a>
+        {/* NAVIGATION */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+
+          <Link href="/" className="hover:text-blue-600">
+            Start
+          </Link>
+
+          <Link
+            href="/digital-signage-berlin"
+            className="hover:text-blue-600"
+          >
+            Digital Signage Berlin
+          </Link>
+
+          <Link href="/blog" className="hover:text-blue-600">
+            Blog
+          </Link>
+
+          <Link href="/kontakt" className="hover:text-blue-600">
+            Kontakt
+          </Link>
+        </nav>
+
+        {/* CTA */}
+        <Link
+          href="/kontakt"
+          className="hidden md:inline-block bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-500 transition"
+        >
+          Beratung
+        </Link>
+      </div>
     </header>
   );
 }

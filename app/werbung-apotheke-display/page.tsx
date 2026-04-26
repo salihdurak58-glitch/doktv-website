@@ -2,101 +2,36 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Werbung Apotheke Display – Digitale Schaufensterwerbung | DokTV",
+  title: "Werbung Apotheke Display | Digitale Displays Apotheke | DokTV",
   description:
-    "Digitale Display-Werbung für Apotheken. Angebote, Aktionen und Produktwerbung sichtbar im Apotheken-Schaufenster präsentieren.",
+    "Werbung mit Displays in Apotheken. Digitale Schaufensterlösungen für mehr Sichtbarkeit und Umsatz.",
 };
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-[#f7fafb] text-[#334c59]">
+    <main className="min-h-screen bg-white text-[#334c59] px-6 py-20">
       <Header />
+      <div className="max-w-4xl mx-auto">
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-          Werbung auf Displays in Apotheken.
+        <h1 className="text-4xl font-bold mb-6">
+          Werbung in der Apotheke mit Displays
         </h1>
 
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d737d]">
-          Mit DokTV wird Werbung in Apotheken digital sichtbar. Angebote,
-          Aktionen und Herstellerkampagnen erscheinen auf modernen Displays im
-          Schaufenster oder im Innenbereich.
+        <p className="mb-6 text-lg">
+          Digitale Displays sind die moderne Lösung für Werbung in Apotheken.
         </p>
 
-        <a
-          href="/kontakt"
-          className="mt-10 inline-flex rounded-full bg-[#334c59] px-8 py-4 font-semibold text-white"
-        >
-          Beratung anfragen
-        </a>
-      </section>
-
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 className="text-3xl font-bold">
-            Warum Display-Werbung in Apotheken funktioniert.
-          </h2>
-
-          <p className="mt-6 text-lg leading-8 text-[#5d737d]">
-            Apotheken sind Orte mit hoher Aufmerksamkeit und Vertrauen.
-            Menschen beschäftigen sich dort mit Gesundheit, Pflege und
-            Prävention. Digitale Displays machen Werbung sichtbar, modern und
-            flexibel.
-          </p>
-
-          <p className="mt-6 text-lg leading-8 text-[#5d737d]">
-            DokTV verbindet Apotheken, Arztpraxen und Hersteller über ein
-            digitales Werbenetzwerk im Gesundheitsbereich.
-          </p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h2 className="text-3xl font-bold">
-          Geeignet für Apotheken und Hersteller
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Vorteile von Displays
         </h2>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {[
-            "Angebote im Apotheken-Schaufenster",
-            "Produktwerbung von Herstellern",
-            "saisonale Kampagnen",
-            "Kosmetik- und Pflegeprodukte",
-            "Nahrungsergänzungsmittel",
-            "Gesundheitsaktionen",
-            "Notdienstinformationen",
-            "digitale Kundenansprache",
-          ].map((item) => (
-            <div
-              key={item}
-              className="rounded-2xl bg-white p-6 shadow-lg shadow-[#334c59]/5"
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-      </section>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Hohe Aufmerksamkeit</li>
+          <li>Flexible Inhalte</li>
+          <li>Mehr Umsatz</li>
+        </ul>
 
-      <section className="bg-[#334c59] py-24 text-center text-white">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-4xl font-bold">
-            Starten Sie digitale Apothekenwerbung mit DokTV.
-          </h2>
-
-          <p className="mt-6 text-lg text-white/80">
-            Lassen Sie sich beraten und erfahren Sie, welche Display-Lösung zu
-            Ihrer Apotheke oder Kampagne passt.
-          </p>
-
-          <a
-            href="/kontakt"
-            className="mt-10 inline-flex rounded-full bg-white px-8 py-4 font-semibold text-[#334c59]"
-          >
-            Jetzt anfragen
-          </a>
-        </div>
-      </section>
-
+      </div>
       <Footer />
     </main>
   );

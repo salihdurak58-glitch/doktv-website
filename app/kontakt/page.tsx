@@ -1,137 +1,180 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+export default function KontaktPage() {
+  const [form, setForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    customer_type: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Fehler beim Senden.");
+      }
+
+      setSuccess(true);
+      setForm({
+        name: "",
+        company: "",
+        email: "",
+        phone: "",
+        customer_type: "",
+        message: "",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unbekannter Fehler.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <main className="bg-[#f7fafb] text-[#334c59]">
-
+    <main className="min-h-screen bg-[#f7fafb] text-[#334c59]">
       <Header />
 
-      {/* HERO */}
-      <section className="mx-auto max-w-7xl px-6 py-24 text-center">
-        <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-          Digital Signage für Apotheken & Arztpraxen
-        </h1>
-
-        <p className="mx-auto mt-6 max-w-3xl text-lg text-[#5d737d]">
-          Mit DokTV steigern Sie Ihre Sichtbarkeit, informieren Kunden digital
-          und erhöhen Ihren Umsatz direkt am Point of Sale – durch moderne
-          Schaufenster-Displays und gezieltes Pharma Marketing.
-        </p>
-
-        <div className="mt-10">
-          <a
-            href="/kontakt"
-            className="rounded-full bg-[#334c59] px-8 py-4 text-white font-semibold"
-          >
-            Jetzt Beratung anfragen
-          </a>
-        </div>
-      </section>
-
-      {/* BENEFITS */}
-      <section className="mx-auto max-w-7xl px-6 py-20 grid gap-10 md:grid-cols-3">
-        <div className="bg-white p-8 rounded-2xl shadow">
-          <h3 className="text-xl font-bold">Mehr Umsatz</h3>
-          <p className="mt-4 text-[#5d737d]">
-            Digitale Displays steigern nachweislich Kaufentscheidungen direkt im
-            Verkaufsraum und erhöhen die Aufmerksamkeit für Produkte.
+      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2">
+        <div>
+          <p className="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#6fa8b0] shadow-sm">
+            Kontakt
           </p>
-        </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow">
-          <h3 className="text-xl font-bold">Moderne Kundenansprache</h3>
-          <p className="mt-4 text-[#5d737d]">
-            Kunden informieren sich heute digital – auch in der Apotheke. Nutzen
-            Sie moderne Kommunikationswege direkt vor Ort.
+          <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+            Lassen Sie uns über digitale Sichtbarkeit sprechen.
+          </h1>
+
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[#5d737d]">
+            Ob Apotheke, Arztpraxis oder Hersteller – wir beraten Sie zur
+            passenden DokTV-Lösung.
           </p>
-        </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow">
-          <h3 className="text-xl font-bold">Zentrale Steuerung</h3>
-          <p className="mt-4 text-[#5d737d]">
-            Inhalte können zentral verwaltet und jederzeit angepasst werden –
-            ohne zusätzlichen Aufwand im Alltag.
-          </p>
-        </div>
-      </section>
-
-      {/* SEO TEXT BLOCK */}
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-3xl font-bold">
-          Digital Signage Lösungen für Apotheken in Deutschland
-        </h2>
-
-        <p className="mt-6 text-[#5d737d] leading-7">
-          Die Digitalisierung im Gesundheitswesen verändert das Verhalten von
-          Patienten und Kunden. Immer mehr Menschen informieren sich online über
-          Medikamente, Symptome und Angebote, bevor sie eine Apotheke betreten.
-          Eine starke digitale Präsenz ist daher entscheidend, um langfristig
-          wettbewerbsfähig zu bleiben. :contentReference[oaicite:1]{index=1}
-        </p>
-
-        <p className="mt-6 text-[#5d737d] leading-7">
-          Mit Digital Signage für Apotheken schaffen Sie eine direkte Verbindung
-          zwischen Online-Information und dem Point of Sale. Moderne Displays
-          ermöglichen es, Produkte, Angebote und Informationen genau im richtigen
-          Moment zu präsentieren – direkt im Blickfeld Ihrer Kunden. :contentReference[oaicite:2]{index=2}
-        </p>
-
-        <p className="mt-6 text-[#5d737d] leading-7">
-          Gleichzeitig verbessert eine optimierte Website mit den richtigen
-          Keywords wie „Apotheke Werbung“, „Digital Signage Apotheke“ oder
-          „Schaufenster Display Apotheke“ Ihre Auffindbarkeit bei Google und sorgt
-          für mehr Anfragen und Kundenkontakte.
-        </p>
-      </section>
-
-      {/* LEISTUNGEN */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h2 className="text-3xl font-bold text-center">
-          Unsere Leistungen
-        </h2>
-
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
-          <div className="bg-white p-8 rounded-2xl shadow">
-            <h3 className="font-bold">Schaufenster Displays</h3>
-            <p className="mt-4 text-[#5d737d]">
-              Hochauflösende Displays für maximale Sichtbarkeit – auch bei
-              Sonnenlicht.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow">
-            <h3 className="font-bold">Content Management</h3>
-            <p className="mt-4 text-[#5d737d]">
-              Zentrale Steuerung aller Inhalte für maximale Effizienz.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow">
-            <h3 className="font-bold">Pharma Marketing</h3>
-            <p className="mt-4 text-[#5d737d]">
-              Zielgerichtete Kampagnen für Hersteller und Apotheken.
-            </p>
+          <div className="mt-10 rounded-3xl bg-white p-6 shadow-lg shadow-[#334c59]/5">
+            <p className="font-bold">DokTV UG (haftungsbeschränkt)</p>
+            <p className="mt-2 text-[#5d737d]">Berlin, Deutschland</p>
+            <p className="mt-2 text-[#5d737d]">E-Mail: info@doktv.de</p>
           </div>
         </div>
-      </section>
 
-      {/* CTA */}
-      <section className="text-center py-20 bg-white">
-        <h2 className="text-3xl font-bold">
-          Bereit für mehr Sichtbarkeit?
-        </h2>
-
-        <p className="mt-4 text-[#5d737d]">
-          Lassen Sie uns gemeinsam Ihre Apotheke digital nach vorne bringen.
-        </p>
-
-        <a
-          href="/kontakt"
-          className="inline-block mt-8 rounded-full bg-[#334c59] px-8 py-4 text-white font-semibold"
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-[2rem] bg-white p-8 shadow-2xl shadow-[#334c59]/10"
         >
-          Jetzt unverbindlich anfragen
-        </a>
+          <div className="grid gap-5">
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+              placeholder="Name"
+            />
+
+            <input
+              name="company"
+              value={form.company}
+              onChange={handleChange}
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+              placeholder="Firma"
+            />
+
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+              placeholder="E-Mail"
+            />
+
+            <input
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+              placeholder="Telefonnummer"
+            />
+
+            <select
+              name="customer_type"
+              value={form.customer_type}
+              onChange={handleChange}
+              required
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+            >
+              <option value="">Bitte auswählen</option>
+              <option value="Apotheke">Apotheke</option>
+              <option value="Arztpraxis">Arztpraxis</option>
+              <option value="Hersteller">Hersteller</option>
+              <option value="Sonstiges Unternehmen">Sonstiges Unternehmen</option>
+            </select>
+
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              required
+              rows={5}
+              className="rounded-2xl border border-[#334c59]/10 bg-[#f7fafb] px-5 py-4 outline-none"
+              placeholder="Nachricht"
+            />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-full bg-[#334c59] px-8 py-4 font-semibold text-white disabled:opacity-60"
+            >
+              {loading ? "Wird gesendet..." : "Anfrage senden"}
+            </button>
+
+            {success && (
+              <p className="rounded-2xl bg-green-50 p-4 text-sm font-semibold text-green-700">
+                Danke! Ihre Anfrage wurde erfolgreich gesendet.
+              </p>
+            )}
+
+            {error && (
+              <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
+                {error}
+              </p>
+            )}
+          </div>
+        </form>
       </section>
 
       <Footer />

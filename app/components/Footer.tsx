@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-[#243a44] text-white">
@@ -13,18 +15,35 @@ export default function Footer() {
         <div>
           <h3 className="font-bold">Navigation</h3>
           <div className="mt-4 grid gap-2 text-white/70">
-            <a href="/apotheken">Apotheken</a>
-            <a href="/arztpraxen">Arztpraxen</a>
-            <a href="/hersteller">Hersteller</a>
-            <a href="/standorte">Standortfinder</a>
-            <a href="/preise">Preise</a>
-            <a href="/kontakt">Kontakt</a>
+            <Link href="/">Startseite</Link>
+            <Link href="/apotheken">Apotheken</Link>
+            <Link href="/arztpraxen">Arztpraxen</Link>
+            <Link href="/hersteller">Hersteller</Link>
+            <Link href="/standorte">Standorte</Link>
+            <Link href="/preise">Preise</Link>
+            <Link href="/blog">Blog</Link>
+            <Link href="/kontakt">Kontakt</Link>
           </div>
         </div>
 
         <div>
-          <h3 className="font-bold">Kontakt</h3>
+          <h3 className="font-bold">SEO & Leistungen</h3>
           <div className="mt-4 grid gap-2 text-white/70">
+            <Link href="/digital-signage-apotheke-berlin">
+              Digital Signage Apotheke Berlin
+            </Link>
+            <Link href="/blog/digital-signage-apotheke">
+              Digital Signage Apotheke
+            </Link>
+            <Link href="/blog/schaufenster-display-apotheke">
+              Schaufenster Display Apotheke
+            </Link>
+            <Link href="/blog/apotheken-marketing-berlin">
+              Apotheken Marketing Berlin
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-2 text-white/70">
             <p>DokTV UG (haftungsbeschränkt)</p>
             <p>Berlin, Deutschland</p>
             <a href="mailto:info@doktv.de">info@doktv.de</a>
@@ -37,8 +56,8 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} DokTV UG (haftungsbeschränkt)</p>
 
           <div className="flex gap-5">
-            <a href="/impressum">Impressum</a>
-            <a href="/datenschutz">Datenschutz</a>
+            <Link href="/impressum">Impressum</Link>
+            <Link href="/datenschutz">Datenschutz</Link>
           </div>
         </div>
       </div>

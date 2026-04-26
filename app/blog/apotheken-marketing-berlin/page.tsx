@@ -1,105 +1,176 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Link from "next/link";
 
 export const metadata = {
-  title: "Apotheken-Marketing Berlin: Lokal sichtbar werden | DokTV",
+  title:
+    "Apotheken Marketing Berlin: Mehr Kunden durch Digital Signage & lokale Sichtbarkeit",
   description:
-    "Apotheken-Marketing in Berlin: Wie Website, Google Unternehmensprofil und Digital Signage lokale Sichtbarkeit verbessern.",
-  alternates: {
-    canonical: "https://doktv.de/blog/apotheken-marketing-berlin",
-  },
+    "Strategien für Apotheken in Berlin: Mehr Kunden durch Digital Signage, Google Optimierung und lokale Sichtbarkeit.",
 };
 
-export default function BlogApothekenMarketingBerlin() {
+export default function Page() {
   return (
-    <main className="bg-[#f7fafb] text-[#334c59]">
+    <main className="bg-white text-slate-900">
       <Header />
 
-      <article className="mx-auto max-w-4xl px-6 py-24">
-        <p className="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#6fa8b0] shadow-sm">
-          Lokales SEO Berlin
+      {/* HERO */}
+      <section className="bg-slate-950 text-white px-6 py-24">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-blue-400 font-semibold mb-4">
+            Apotheken Marketing Berlin
+          </p>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
+            Apotheken Marketing in Berlin: So gewinnen Sie mehr Kunden vor Ort
+          </h1>
+
+          <p className="mt-6 text-lg text-slate-300 leading-8">
+            Der Wettbewerb unter Apotheken in Berlin ist hoch. Wer sichtbar ist,
+            gewinnt. In diesem Artikel zeigen wir, wie Sie mit Digital Signage,
+            Google Optimierung und modernen Marketingstrategien mehr Kunden
+            erreichen.
+          </p>
+        </div>
+      </section>
+
+      {/* INTRO */}
+      <section className="max-w-4xl mx-auto px-6 py-20 space-y-6 text-lg leading-8">
+        <p>
+          Berlin gehört zu den wettbewerbsstärksten Märkten für Apotheken in
+          Deutschland. In nahezu jedem Bezirk gibt es mehrere Anbieter, die um
+          die Aufmerksamkeit der Kunden konkurrieren.
         </p>
 
-        <h1 className="text-5xl font-bold leading-tight">
-          Apotheken-Marketing in Berlin: Lokal sichtbar werden
-        </h1>
-
-        <p className="mt-6 text-lg leading-8 text-[#5d737d]">
-          Berliner Apotheken stehen in starkem Wettbewerb. Wer lokal gefunden
-          werden möchte, braucht eine klare Kombination aus Website, Google
-          Unternehmensprofil und sichtbarer Kommunikation am Standort.
+        <p>
+          Gleichzeitig hat sich das Verhalten der Kunden verändert. Viele
+          informieren sich online, suchen nach Angeboten oder entscheiden
+          spontan vor Ort, welche Apotheke sie betreten.
         </p>
 
-        <h2 className="mt-14 text-3xl font-bold">
-          1. Website als digitale Basis
+        <p>
+          Genau deshalb ist modernes Apotheken Marketing heute entscheidend.
+          Eine Kombination aus Online-Sichtbarkeit und starker Präsenz vor Ort
+          sorgt dafür, dass Sie mehr Kunden erreichen und langfristig wachsen.
+        </p>
+      </section>
+
+      {/* STRATEGIE */}
+      <section className="bg-slate-100 py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-10">
+            Die 3 wichtigsten Marketing Hebel für Apotheken in Berlin
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "1. Digital Signage",
+                text: "Displays im Schaufenster sorgen für Aufmerksamkeit und mehr Laufkundschaft.",
+              },
+              {
+                title: "2. Google Sichtbarkeit",
+                text: "Ein optimiertes Google Profil bringt gezielt lokale Kunden.",
+              },
+              {
+                title: "3. Website & SEO",
+                text: "Eine starke Website sorgt für Vertrauen und langfristigen Traffic.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="bg-white p-8 rounded-2xl shadow">
+                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-slate-600">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTENT */}
+      <section className="max-w-4xl mx-auto px-6 py-20 space-y-10 text-lg leading-8">
+        <h2 className="text-3xl font-bold">
+          Digital Signage für Apotheken in Berlin
         </h2>
 
-        <p className="mt-5 leading-8 text-[#5d737d]">
-          Eine moderne Website hilft potenziellen Kunden, Leistungen,
-          Kontaktmöglichkeiten und Spezialisierungen schnell zu verstehen. Für
-          Google ist eine klare Struktur mit passenden Überschriften,
-          verständlichen Texten und interner Verlinkung besonders wichtig.
+        <p>
+          Digitale Displays gehören zu den effektivsten Maßnahmen für lokale
+          Sichtbarkeit. Besonders in stark frequentierten Straßen sorgt ein
+          Display dafür, dass Ihre Apotheke auffällt.
         </p>
 
-        <h2 className="mt-14 text-3xl font-bold">
-          2. Google Unternehmensprofil pflegen
+        <p>
+          Bewegte Inhalte ziehen Blicke an und erhöhen die Wahrscheinlichkeit,
+          dass Kunden stehen bleiben und Ihre Apotheke betreten.
+        </p>
+
+        <Link
+          href="/blog/digital-signage-apotheke"
+          className="text-blue-600 font-semibold"
+        >
+          → Mehr zu Digital Signage für Apotheken
+        </Link>
+
+        <h2 className="text-3xl font-bold">
+          Google Unternehmensprofil optimieren
         </h2>
 
-        <p className="mt-5 leading-8 text-[#5d737d]">
-          Ein gepflegtes Google Unternehmensprofil unterstützt die lokale
-          Auffindbarkeit in Google Suche und Google Maps. Öffnungszeiten,
-          Kontaktdaten, Fotos und Leistungen sollten aktuell sein.
+        <p>
+          Viele Kunden suchen nach „Apotheke in der Nähe“. Wenn Ihr Google
+          Profil optimiert ist, werden Sie genau in diesen Momenten gefunden.
+        </p>
+
+        <ul className="list-disc pl-6 space-y-3">
+          <li>Aktuelle Öffnungszeiten</li>
+          <li>Gute Bewertungen</li>
+          <li>Regelmäßige Beiträge</li>
+        </ul>
+
+        <h2 className="text-3xl font-bold">
+          Website & SEO für Apotheken
+        </h2>
+
+        <p>
+          Eine moderne Website ist die Basis für Vertrauen. Kunden informieren
+          sich online und entscheiden oft innerhalb weniger Sekunden.
+        </p>
+
+        <p>
+          SEO sorgt dafür, dass Ihre Apotheke bei Google gefunden wird – z. B.
+          bei Suchanfragen wie „Apotheke Berlin“ oder „Apotheke in der Nähe“.
+        </p>
+
+        <h2 className="text-3xl font-bold">
+          Lokale Vorteile in Berlin nutzen
+        </h2>
+
+        <p>
+          Berlin bietet viele Chancen: hohe Laufkundschaft, viele Touristen und
+          eine große Nachfrage nach Gesundheitsleistungen.
+        </p>
+
+        <p>
+          Wer diese Faktoren richtig nutzt, kann sich klar von der Konkurrenz
+          abheben.
+        </p>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-blue-600 text-white text-center py-20 px-6">
+        <h2 className="text-3xl font-bold">
+          Mehr Kunden für Ihre Apotheke in Berlin
+        </h2>
+
+        <p className="mt-4 text-blue-100">
+          Lassen Sie uns gemeinsam Ihre Marketingstrategie optimieren.
         </p>
 
         <a
-          href="https://business.google.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#334c59] shadow"
+          href="/kontakt"
+          className="mt-8 inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold"
         >
-          Google Unternehmensprofil öffnen
+          Beratung anfragen
         </a>
-
-        <h2 className="mt-14 text-3xl font-bold">
-          3. Digital Signage vor Ort nutzen
-        </h2>
-
-        <p className="mt-5 leading-8 text-[#5d737d]">
-          Während Website und Google Profil digital gefunden werden, sorgt
-          Digital Signage direkt am Standort für Aufmerksamkeit. Gerade in
-          Berlin kann ein digitales Schaufenster-Display helfen, sich optisch
-          stärker von anderen Apotheken abzuheben.
-        </p>
-
-        <h2 className="mt-14 text-3xl font-bold">
-          Fazit
-        </h2>
-
-        <p className="mt-5 leading-8 text-[#5d737d]">
-          Erfolgreiches Apotheken-Marketing in Berlin entsteht nicht durch eine
-          einzelne Maßnahme. Stark wird es durch die Verbindung aus lokaler SEO,
-          gepflegtem Google Profil, hochwertiger Website und sichtbarer
-          Kommunikation vor Ort.
-        </p>
-
-        <div className="mt-12 rounded-3xl bg-white p-8 shadow-lg shadow-[#334c59]/5">
-          <h2 className="text-2xl font-bold">
-            DokTV für Apotheken in Berlin
-          </h2>
-
-          <p className="mt-4 leading-7 text-[#5d737d]">
-            Wir unterstützen Apotheken mit Digital Signage, Schaufenster-Displays
-            und digitaler Sichtbarkeit.
-          </p>
-
-          <a
-            href="/kontakt"
-            className="mt-6 inline-block rounded-full bg-[#334c59] px-8 py-4 font-semibold text-white"
-          >
-            Beratung anfragen
-          </a>
-        </div>
-      </article>
+      </section>
 
       <Footer />
     </main>
