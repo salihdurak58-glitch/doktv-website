@@ -1,166 +1,67 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { generatePageMetadata } from "@/lib/seo/get-page-seo";
+import Link from "next/link";
 
-export const metadata = {
-  title: "DokTV Blog | Digital Signage, Apotheken-Marketing & Sichtbarkeit",
-  description:
-    "Wissen rund um Digital Signage, Apotheken-Marketing, Schaufenster-Displays und lokale Sichtbarkeit für Apotheken und Arztpraxen.",
-  alternates: {
-    canonical: "https://doktv.de/blog",
-  },
-};
+export async function generateMetadata() {
+  return generatePageMetadata("/blog");
+}
 
 const posts = [
   {
-    title: "Digital Signage für Apotheken: Warum digitale Displays wirken",
-    slug: "digital-signage-apotheke",
+    title: "Warum Digital Signage im Schaufenster funktioniert",
     description:
-      "Wie Apotheken mit digitalen Displays mehr Aufmerksamkeit, bessere Kundeninformation und stärkere Sichtbarkeit erreichen.",
+      "Digitale Displays ziehen Aufmerksamkeit auf sich und machen Angebote sichtbarer.",
+    href: "/blog/digital-signage-schaufenster",
   },
   {
-    title: "Schaufenster-Display Apotheke: Mehr Sichtbarkeit am Standort",
-    slug: "schaufenster-display-apotheke",
+    title: "Digital Signage für Apotheken",
     description:
-      "Warum das Apothekenschaufenster eine der wichtigsten Werbeflächen für lokale Kunden ist.",
+      "So können Apotheken Angebote, Services und Gesundheitsinformationen modern präsentieren.",
+    href: "/blog/digital-signage-apotheken",
   },
   {
-    title: "Apotheken-Marketing in Berlin: Lokal sichtbar werden",
-    slug: "apotheken-marketing-berlin",
+    title: "Mehr Sichtbarkeit für lokale Unternehmen",
     description:
-      "Wie Berliner Apotheken mit Website, Google Unternehmensprofil und Digital Signage mehr Anfragen gewinnen.",
+      "Wie lokale Geschäfte mit digitalen Bildschirmen besser wahrgenommen werden.",
+    href: "/blog/lokale-unternehmen-sichtbarkeit",
   },
 ];
 
 export default function BlogPage() {
   return (
-    <main className="bg-slate-950 text-white">
-      <Header />
-
-      {/* HERO */}
-      <section className="relative overflow-hidden px-6 py-28">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 to-indigo-700/30 blur-3xl" />
-
-        <div className="relative mx-auto max-w-6xl text-center">
-          <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-blue-200">
+    <main className="min-h-screen bg-white">
+      <section className="mx-auto max-w-7xl px-4 py-20">
+        <div className="mb-12 max-w-3xl">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
             DokTV Blog
-          </span>
-
-          <h1 className="mt-6 text-4xl font-extrabold leading-tight md:text-6xl">
-            Digital Signage, Apotheken-Marketing & lokale Sichtbarkeit
           </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            In unserem Blog zeigen wir, wie Apotheken, Arztpraxen und lokale
-            Unternehmen mit Digital Signage mehr Aufmerksamkeit erzeugen,
-            professioneller wirken und gezielt mehr Kunden gewinnen können.
-            Alle Inhalte sind praxisnah, verständlich und direkt umsetzbar.
+          <p className="mt-4 text-lg text-gray-600">
+            Wissen, Tipps und Ideen rund um Digital Signage,
+            Schaufenster-Displays und digitale Kundenkommunikation.
           </p>
         </div>
-      </section>
 
-      {/* BLOG CARDS */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {posts.map((post) => (
-            <a
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur transition hover:-translate-y-2 hover:border-blue-500 hover:bg-white/10"
+            <article
+              key={post.href}
+              className="rounded-3xl border bg-gray-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
-              <div className="mb-4 text-sm text-blue-300">
-                Blog Artikel
-              </div>
-
-              <h2 className="text-2xl font-bold leading-tight group-hover:text-blue-400">
+              <h2 className="text-xl font-semibold text-gray-900">
                 {post.title}
               </h2>
 
-              <p className="mt-4 leading-7 text-slate-300">
-                {post.description}
-              </p>
+              <p className="mt-3 text-gray-600">{post.description}</p>
 
-              <div className="mt-6 flex items-center justify-between">
-                <span className="text-blue-400 font-semibold">
-                  Beitrag lesen →
-                </span>
-
-                <span className="text-xs text-slate-500">
-                  5 min lesen
-                </span>
-              </div>
-            </a>
+              <Link
+                href={post.href}
+                className="mt-6 inline-block text-sm font-semibold text-black underline"
+              >
+                Artikel lesen
+              </Link>
+            </article>
           ))}
         </div>
       </section>
-
-      {/* SEO TEXT */}
-      <section className="bg-white text-slate-900 py-24 px-6">
-        <div className="max-w-5xl mx-auto space-y-6 text-lg leading-8">
-          <h2 className="text-3xl font-bold">
-            Digital Signage & Marketing für Apotheken und Arztpraxen verstehen
-          </h2>
-
-          <p>
-            Die Anforderungen an lokale Unternehmen haben sich in den letzten
-            Jahren stark verändert. Kunden informieren sich online, vergleichen
-            Angebote und erwarten gleichzeitig vor Ort einen modernen und
-            professionellen Eindruck. Genau hier setzt Digital Signage an.
-          </p>
-
-          <p>
-            Digitale Displays im Schaufenster oder im Innenbereich bieten eine
-            Möglichkeit, Inhalte flexibel darzustellen und gezielt auf Kunden
-            einzugehen. Besonders Apotheken profitieren davon, da sie regelmäßig
-            wechselnde Angebote, Gesundheitskampagnen und Serviceleistungen
-            kommunizieren müssen.
-          </p>
-
-          <p>
-            Auch Arztpraxen nutzen zunehmend digitale Lösungen, um Patienten
-            besser zu informieren und gleichzeitig den Empfang zu entlasten.
-            Hinweise zu Sprechzeiten, Leistungen oder organisatorischen Abläufen
-            lassen sich klar und verständlich darstellen.
-          </p>
-
-          <p>
-            Neben der klassischen Nutzung vor Ort spielt auch die digitale
-            Sichtbarkeit eine immer größere Rolle. Eine Kombination aus Website,
-            Google Präsenz und Digital Signage sorgt dafür, dass Unternehmen
-            sowohl online als auch offline sichtbar sind und Vertrauen
-            aufbauen.
-          </p>
-
-          <p>
-            Unser Blog zeigt konkrete Strategien, Beispiele und Ansätze, wie
-            lokale Unternehmen diese Möglichkeiten nutzen können. Dabei geht es
-            nicht um Theorie, sondern um praktische Lösungen, die sich direkt im
-            Alltag umsetzen lassen.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-blue-600 py-20 px-6 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold">
-            Mehr Sichtbarkeit für dein Geschäft
-          </h2>
-
-          <p className="mt-4 text-blue-100">
-            Lass uns gemeinsam schauen, wie Digital Signage bei dir eingesetzt
-            werden kann – kostenlos und unverbindlich.
-          </p>
-
-          <a
-            href="/kontakt"
-            className="mt-8 inline-block bg-white text-blue-600 font-semibold px-8 py-4 rounded-xl shadow-lg hover:bg-slate-100 transition"
-          >
-            Jetzt Beratung anfragen
-          </a>
-        </div>
-      </section>
-
-      <Footer />
     </main>
   );
 }
