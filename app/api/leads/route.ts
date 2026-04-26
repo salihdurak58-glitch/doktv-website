@@ -9,6 +9,15 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -23,12 +32,8 @@ export async function POST(req: Request) {
       website,
     } = body;
 
-    // Spam-Schutz: Bots füllen oft versteckte Felder aus
     if (website) {
-      return NextResponse.json({
-        success: true,
-        message: "Anfrage erfolgreich gesendet.",
-      });
+      return NextResponse.json({ success: true });
     }
 
     if (!name || !email || !message || !customer_type) {
@@ -37,6 +42,13 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    const safeName = escapeHtml(name);
+    const safeCompany = escapeHtml(company || "-");
+    const safeEmail = escapeHtml(email);
+    const safePhone = escapeHtml(phone || "-");
+    const safeCustomerType = escapeHtml(customer_type);
+    const safeMessage = escapeHtml(message).replaceAll("\n", "<br />");
 
     const { error: supabaseError } = await supabase.from("leads").insert([
       {
@@ -58,35 +70,41 @@ export async function POST(req: Request) {
     }
 
     const adminEmail = await resend.emails.send({
-      from: "DokTV <info@doktv.de>",
+      from: "DokTV Anfrage <info@doktv.de>",
       to: ["info@doktv.de"],
+
+      // WICHTIG: Dadurch geht Antworten an den Kunden
       replyTo: email,
+
       subject: `Neue Anfrage von ${name} (${customer_type})`,
       html: `
         <div style="font-family: Arial, sans-serif; background:#f7fafb; padding:24px;">
           <div style="max-width:640px; margin:0 auto; background:#ffffff; border-radius:18px; padding:28px; border:1px solid #e6eef1;">
-            <div style="margin-bottom:24px;">
-              <p style="margin:0; color:#6fa8b0; font-size:14px; font-weight:700; letter-spacing:0.04em;">
-                DokTV Kontaktformular
-              </p>
-              <h2 style="margin:8px 0 0; color:#334c59; font-size:26px;">
-                Neue Kontaktanfrage
-              </h2>
-            </div>
+            <p style="margin:0; color:#6fa8b0; font-size:14px; font-weight:700;">
+              DokTV Kontaktformular
+            </p>
+
+            <h2 style="margin:10px 0 22px; color:#334c59; font-size:26px;">
+              Neue Anfrage über DokTV.de
+            </h2>
 
             <div style="background:#f7fafb; border-radius:14px; padding:18px; margin-bottom:20px;">
-              <p style="margin:0 0 10px;"><strong>Name:</strong> ${name}</p>
-              <p style="margin:0 0 10px;"><strong>Firma:</strong> ${company || "-"}</p>
-              <p style="margin:0 0 10px;"><strong>E-Mail:</strong> ${email}</p>
-              <p style="margin:0 0 10px;"><strong>Telefon:</strong> ${phone || "-"}</p>
-              <p style="margin:0;"><strong>Kundentyp:</strong> ${customer_type}</p>
+              <p><strong>Name:</strong> ${safeName}</p>
+              <p><strong>Firma:</strong> ${safeCompany}</p>
+              <p><strong>E-Mail:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+              <p><strong>Telefon:</strong> ${safePhone}</p>
+              <p><strong>Typ:</strong> ${safeCustomerType}</p>
             </div>
 
-            <div>
-              <p style="margin:0 0 8px; color:#334c59;"><strong>Nachricht:</strong></p>
-              <div style="background:#ffffff; border:1px solid #e6eef1; border-radius:14px; padding:18px; color:#334c59; line-height:1.6;">
-                ${message}
-              </div>
+            <p><strong>Nachricht:</strong></p>
+            <div style="background:#ffffff; border:1px solid #e6eef1; border-radius:14px; padding:18px; color:#334c59; line-height:1.6;">
+              ${safeMessage}
+            </div>
+
+            <div style="margin-top:24px;">
+              <a href="mailto:${safeEmail}" style="display:inline-block; background:#334c59; color:white; padding:12px 18px; border-radius:999px; text-decoration:none; font-weight:bold;">
+                Direkt an Kunden antworten
+              </a>
             </div>
 
             <p style="margin-top:24px; color:#7a8f98; font-size:13px;">
@@ -115,17 +133,12 @@ export async function POST(req: Request) {
             </h2>
 
             <p style="color:#334c59; line-height:1.7;">
-              Hallo ${name},
+              Hallo ${safeName},
             </p>
 
             <p style="color:#334c59; line-height:1.7;">
               vielen Dank für Ihre Anfrage. Wir haben Ihre Nachricht erhalten und melden uns schnellstmöglich bei Ihnen.
             </p>
-
-            <div style="background:#f7fafb; border-radius:14px; padding:18px; margin:22px 0;">
-              <p style="margin:0 0 8px;"><strong>Ihre Anfrage:</strong></p>
-              <p style="margin:0; color:#334c59; line-height:1.6;">${message}</p>
-            </div>
 
             <p style="color:#334c59; line-height:1.7;">
               Beste Grüße<br/>
