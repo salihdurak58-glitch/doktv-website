@@ -1,11 +1,10 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Link from "next/link";
-import type { Route } from "next";
+import { supabase } from "./lib/supabaseClient";
 
 export const metadata = {
-  title:
-    "DokTV | Digital Signage Berlin für Apotheken, Arztpraxen & Geschäfte",
+  title: "DokTV | Digital Signage Berlin für Apotheken, Arztpraxen & Geschäfte",
   description:
     "DokTV bietet Digital Signage in Berlin: Schaufenster-Displays, digitale Werbung und moderne Display-Lösungen.",
   alternates: {
@@ -13,173 +12,146 @@ export const metadata = {
   },
 };
 
-const benefits = [
-  {
-    title: "Mehr Aufmerksamkeit",
-    text: "Bewegte Inhalte fallen sofort auf und ziehen Blicke an.",
-  },
-  {
-    title: "Mehr Vertrauen",
-    text: "Ein modernes Display wirkt professionell und hochwertig.",
-  },
-  {
-    title: "Mehr Kunden",
-    text: "Klare Angebote bringen mehr Besucher in dein Geschäft.",
-  },
-  {
-    title: "Mehr Flexibilität",
-    text: "Inhalte jederzeit ändern ohne Druckkosten.",
-  },
-];
+async function getContent() {
+  const { data } = await supabase
+    .from("site_content")
+    .select("key, value")
+    .in("key", [
+      "homepage_hero_title",
+      "homepage_hero_subtitle",
+      "homepage_hero_image",
+    ]);
 
-const industries = [
-  {
-    title: "Apotheken",
-    text: "Angebote, Aktionen und Gesundheitskampagnen sichtbar machen.",
-  },
-  {
-    title: "Arztpraxen",
-    text: "Patienten informieren und Abläufe erklären.",
-  },
-  {
-    title: "Geschäfte",
-    text: "Mehr Kunden durch starke Schaufenster-Werbung.",
-  },
-];
+  return {
+    heroTitle:
+      data?.find((item) => item.key === "homepage_hero_title")?.value ||
+      "Mehr Sichtbarkeit. Mehr Kunden. Mehr Umsatz.",
+    heroSubtitle:
+      data?.find((item) => item.key === "homepage_hero_subtitle")?.value ||
+      "Digital Signage für Apotheken, Arztpraxen und lokale Geschäfte in Berlin. Moderne Displays, die auffallen und verkaufen.",
+    heroImage:
+      data?.find((item) => item.key === "homepage_hero_image")?.value || "",
+  };
+}
 
-const internalLinks: {
-  title: string;
-  href: Route;
-  text: string;
-}[] = [
-  {
-    title: "Digital Signage Berlin",
-    href: "/digital-signage-berlin",
-    text: "Unsere Service-Seite für Berlin.",
-  },
-  {
-    title: "Digital Signage Apotheke",
-    href: "/blog/digital-signage-apotheke",
-    text: "Warum Displays für Apotheken wirken.",
-  },
-  {
-    title: "Schaufenster Display Apotheke",
-    href: "/blog/schaufenster-display-apotheke",
-    text: "Schaufenster richtig nutzen.",
-  },
-];
+export default async function Home() {
+  const { heroTitle, heroSubtitle, heroImage } = await getContent();
 
-export default function Home() {
   return (
     <main className="bg-white text-slate-900">
       <Header />
 
-      {/* HERO */}
-      <section className="bg-slate-950 text-white px-6 py-28">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-black leading-tight">
-            Mehr Sichtbarkeit. Mehr Kunden. Mehr Umsatz.
-          </h1>
+      <section className="bg-slate-950 px-6 py-28 text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
+          <div>
+            <h1 className="max-w-5xl text-4xl font-black leading-tight md:text-6xl">
+              {heroTitle}
+            </h1>
 
-          <p className="mt-6 text-lg text-slate-300 max-w-2xl">
-            Digital Signage für Apotheken, Arztpraxen und lokale Geschäfte in
-            Berlin. Moderne Displays, die auffallen und verkaufen.
-          </p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+              {heroSubtitle}
+            </p>
 
-          <div className="mt-10 flex gap-4">
-            <Link
-              href="/kontakt"
-              className="bg-blue-600 px-8 py-4 rounded-xl font-bold"
-            >
-              Beratung starten
-            </Link>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/kontakt"
+                className="rounded-xl bg-blue-600 px-8 py-4 text-center font-bold text-white"
+              >
+                Beratung starten
+              </Link>
 
-            <Link
-              href="/digital-signage-berlin"
-              className="border border-white px-8 py-4 rounded-xl"
-            >
-              Mehr erfahren
-            </Link>
+              <Link
+                href="/digital-signage-berlin"
+                className="rounded-xl border border-white px-8 py-4 text-center font-bold text-white"
+              >
+                Mehr erfahren
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-white/10 bg-white/10 p-4 shadow-2xl">
+            {heroImage ? (
+              <img
+                src={heroImage}
+                alt="Digital Signage DokTV"
+                className="h-[420px] w-full rounded-[1.5rem] object-cover"
+              />
+            ) : (
+              <div className="flex h-[420px] items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-blue-600 to-indigo-700 p-10 text-center">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-widest text-blue-100">
+                    DokTV Display
+                  </p>
+                  <h2 className="mt-4 text-4xl font-black">
+                    Dein digitales Schaufenster
+                  </h2>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* BENEFITS */}
-      <section className="py-24 px-6 bg-slate-100">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-6">
-          {benefits.map((b) => (
-            <div key={b.title} className="bg-white p-6 rounded-xl shadow">
-              <h3 className="font-bold text-lg">{b.title}</h3>
-              <p className="mt-3 text-slate-600">{b.text}</p>
+      <section className="bg-slate-100 px-6 py-24">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-4">
+          {[
+            ["Mehr Aufmerksamkeit", "Bewegte Inhalte fallen sofort auf."],
+            ["Mehr Vertrauen", "Ein modernes Display wirkt hochwertig."],
+            ["Mehr Kunden", "Angebote werden besser sichtbar."],
+            ["Mehr Flexibilität", "Inhalte jederzeit ändern."],
+          ].map(([title, text]) => (
+            <div key={title} className="rounded-xl bg-white p-6 shadow">
+              <h3 className="text-lg font-bold">{title}</h3>
+              <p className="mt-3 text-slate-600">{text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* INDUSTRIES */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          {industries.map((i) => (
-            <div key={i.title} className="border p-6 rounded-xl">
-              <h3 className="font-bold text-xl">{i.title}</h3>
-              <p className="mt-4 text-slate-600">{i.text}</p>
-            </div>
-          ))}
+      <section className="px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-black md:text-5xl">
+            Digital Signage für lokale Unternehmen
+          </h2>
+
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">
+            DokTV hilft Unternehmen in Berlin, mit modernen Displays mehr
+            Aufmerksamkeit, Vertrauen und Kundenkontakte zu erzeugen.
+          </p>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {[
+              ["Apotheken", "Angebote und Gesundheitskampagnen sichtbar machen."],
+              ["Arztpraxen", "Patienten informieren und Abläufe erklären."],
+              ["Geschäfte", "Mehr Kunden durch starke Schaufenster-Werbung."],
+            ].map(([title, text]) => (
+              <div
+                key={title}
+                className="rounded-2xl border border-slate-200 p-8"
+              >
+                <h3 className="text-2xl font-black">{title}</h3>
+                <p className="mt-4 leading-7 text-slate-600">{text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* SEO TEXT */}
-      <section className="py-24 px-6 max-w-4xl mx-auto text-lg leading-8 text-slate-700">
-        <h2 className="text-3xl font-bold mb-6">
-          Digital Signage Berlin – moderne Werbung für lokale Unternehmen
+      <section className="bg-blue-600 px-6 py-20 text-center text-white">
+        <h2 className="text-3xl font-black md:text-5xl">
+          Bereit für mehr Sichtbarkeit?
         </h2>
 
-        <p>
-          In Berlin reicht es nicht mehr, einfach nur ein Schaufenster zu haben.
-          Kunden laufen schnell vorbei und entscheiden in Sekunden. Ein digitales
-          Display sorgt dafür, dass Ihre Apotheke oder Ihr Geschäft sichtbar wird.
-        </p>
-
-        <p>
-          Bewegte Inhalte erzeugen Aufmerksamkeit, vermitteln Professionalität und
-          helfen dabei, Angebote besser zu präsentieren.
-        </p>
-      </section>
-
-      {/* INTERNAL LINKS */}
-      <section className="py-24 px-6 bg-slate-100">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-          {internalLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="bg-white p-6 rounded-xl shadow"
-            >
-              <h3 className="font-bold text-xl">{item.title}</h3>
-              <p className="mt-3 text-slate-600">{item.text}</p>
-              <p className="mt-4 text-blue-600 font-semibold">
-                Mehr lesen →
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-blue-600 text-white text-center py-20 px-6">
-        <h2 className="text-3xl font-bold">
-          Bereit für mehr Kunden?
-        </h2>
-
-        <p className="mt-4 text-blue-100">
-          Lass dich kostenlos beraten.
+        <p className="mx-auto mt-4 max-w-2xl text-blue-100">
+          Lass uns kostenlos prüfen, welche Digital-Signage-Lösung zu deinem
+          Standort passt.
         </p>
 
         <Link
           href="/kontakt"
-          className="mt-6 inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold"
+          className="mt-8 inline-block rounded-xl bg-white px-8 py-4 font-bold text-blue-600"
         >
-          Jetzt starten
+          Jetzt Beratung anfragen
         </Link>
       </section>
 
