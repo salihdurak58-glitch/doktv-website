@@ -6,6 +6,7 @@ const navItems = [
   { label: "Apotheken", href: "/apotheken" },
   { label: "Arztpraxen", href: "/arztpraxen" },
   { label: "Preise", href: "/preise" },
+  { label: "Standorte", href: "/standorte" },
   { label: "Blog", href: "/blog" },
   { label: "Kontakt", href: "/kontakt" },
 ];
@@ -18,7 +19,7 @@ export default function Header() {
           DokTV
         </Link>
 
-        <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-900 lg:flex">
+        <nav className="hidden items-center gap-6 text-sm font-semibold text-slate-900 lg:flex">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="hover:text-blue-600">
               {item.label}
