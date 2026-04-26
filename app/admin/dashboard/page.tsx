@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
+type Tab = "overview" | "homepage" | "media" | "leads" | "seo" | "settings";
+
+type ContentItem = {
+  key: string;
+  value: string;
+};
+
 type Lead = {
   id: number;
   name: string;
@@ -17,14 +24,16 @@ type Lead = {
   admin_note: string | null;
 };
 
-type ContentItem = {
-  key: string;
-  value: string;
+type MediaFile = {
+  name: string;
+  url: string;
+  path: string;
 };
 
 export default function Dashboard() {
   const router = useRouter();
 
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [email, setEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,8 +42,11 @@ export default function Dashboard() {
   const [heroImage, setHeroImage] = useState("");
 
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -49,6 +61,7 @@ export default function Dashboard() {
 
       await loadContent();
       await loadLeads();
+      await loadMedia();
 
       setLoading(false);
     }
@@ -95,6 +108,34 @@ export default function Dashboard() {
     setLeads((data ?? []) as Lead[]);
   }
 
+  async function loadMedia() {
+    const { data, error } = await supabase.storage
+      .from("media")
+      .list("homepage", {
+        limit: 100,
+        sortBy: { column: "created_at", order: "desc" },
+      });
+
+    if (error) {
+      setMessage("Bilder konnten nicht geladen werden.");
+      return;
+    }
+
+    const files =
+      data?.map((file) => {
+        const path = `homepage/${file.name}`;
+        const publicUrl = supabase.storage.from("media").getPublicUrl(path);
+
+        return {
+          name: file.name,
+          path,
+          url: publicUrl.data.publicUrl,
+        };
+      }) ?? [];
+
+    setMediaFiles(files);
+  }
+
   async function saveContent() {
     setSaving(true);
     setMessage("");
@@ -129,6 +170,58 @@ export default function Dashboard() {
     }
 
     setMessage("Inhalte gespeichert.");
+  }
+
+  async function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setUploading(true);
+    setMessage("");
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `hero-${Date.now()}.${fileExt}`;
+    const filePath = `homepage/${fileName}`;
+
+    const { error } = await supabase.storage
+      .from("media")
+      .upload(filePath, file);
+
+    if (error) {
+      setUploading(false);
+      setMessage("Bild konnte nicht hochgeladen werden.");
+      return;
+    }
+
+    const { data } = supabase.storage.from("media").getPublicUrl(filePath);
+
+    setHeroImage(data.publicUrl);
+    setUploading(false);
+    setMessage("Bild hochgeladen. Du kannst es jetzt speichern.");
+
+    await loadMedia();
+  }
+
+  async function deleteImage(path: string) {
+    const confirmed = confirm("Bild wirklich löschen?");
+
+    if (!confirmed) return;
+
+    const { error } = await supabase.storage.from("media").remove([path]);
+
+    if (error) {
+      setMessage("Bild konnte nicht gelöscht werden.");
+      return;
+    }
+
+    setMediaFiles((current) => current.filter((file) => file.path !== path));
+    setMessage("Bild gelöscht.");
+  }
+
+  async function copyUrl(url: string) {
+    await navigator.clipboard.writeText(url);
+    setMessage("Bild-URL kopiert.");
   }
 
   async function updateLeadStatus(id: number, status: string) {
@@ -207,6 +300,27 @@ export default function Dashboard() {
     return "bg-blue-100 text-blue-800";
   }
 
+  const newLeadsCount = leads.filter(
+    (lead) => !lead.status || lead.status === "neu"
+  ).length;
+
+  const contactedLeadsCount = leads.filter(
+    (lead) => lead.status === "kontaktiert"
+  ).length;
+
+  const doneLeadsCount = leads.filter(
+    (lead) => lead.status === "erledigt"
+  ).length;
+
+  const navItems: { label: string; value: Tab }[] = [
+    { label: "Übersicht", value: "overview" },
+    { label: "Startseite", value: "homepage" },
+    { label: "Bilder", value: "media" },
+    { label: "Leads", value: "leads" },
+    { label: "SEO", value: "seo" },
+    { label: "Einstellungen", value: "settings" },
+  ];
+
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
@@ -221,13 +335,19 @@ export default function Dashboard() {
         <h2 className="text-2xl font-black">DokTV Admin</h2>
 
         <nav className="mt-10 space-y-3 text-sm font-semibold">
-          <div className="rounded-xl bg-blue-600 px-4 py-3">Dashboard</div>
-          <div className="rounded-xl bg-white/10 px-4 py-3">Startseite</div>
-          <div className="rounded-xl bg-white/10 px-4 py-3">Leads</div>
-          <div className="rounded-xl px-4 py-3 text-slate-400">Bilder</div>
-          <div className="rounded-xl px-4 py-3 text-slate-400">Blog</div>
-          <div className="rounded-xl px-4 py-3 text-slate-400">Statistik</div>
-          <div className="rounded-xl px-4 py-3 text-slate-400">SEO</div>
+          {navItems.map((item) => (
+            <button
+              key={item.value}
+              onClick={() => setActiveTab(item.value)}
+              className={`w-full rounded-xl px-4 py-3 text-left transition ${
+                activeTab === item.value
+                  ? "bg-blue-600 text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </nav>
 
         <button
@@ -251,36 +371,78 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="mt-10 grid gap-6 md:grid-cols-4">
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <p className="text-sm font-bold text-slate-500">Leads gesamt</p>
-            <p className="mt-2 text-4xl font-black">{leads.length}</p>
-          </div>
+        {activeTab === "overview" && (
+          <div className="mt-10">
+            <div className="grid gap-6 md:grid-cols-4">
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
+                <p className="text-sm font-bold text-slate-500">
+                  Leads gesamt
+                </p>
+                <p className="mt-2 text-4xl font-black">{leads.length}</p>
+              </div>
 
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <p className="text-sm font-bold text-slate-500">Neu</p>
-            <p className="mt-2 text-4xl font-black">
-              {leads.filter((lead) => !lead.status || lead.status === "neu").length}
-            </p>
-          </div>
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
+                <p className="text-sm font-bold text-slate-500">Neu</p>
+                <p className="mt-2 text-4xl font-black text-blue-600">
+                  {newLeadsCount}
+                </p>
+              </div>
 
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <p className="text-sm font-bold text-slate-500">Kontaktiert</p>
-            <p className="mt-2 text-4xl font-black">
-              {leads.filter((lead) => lead.status === "kontaktiert").length}
-            </p>
-          </div>
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
+                <p className="text-sm font-bold text-slate-500">
+                  Kontaktiert
+                </p>
+                <p className="mt-2 text-4xl font-black text-yellow-600">
+                  {contactedLeadsCount}
+                </p>
+              </div>
 
-          <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <p className="text-sm font-bold text-slate-500">Erledigt</p>
-            <p className="mt-2 text-4xl font-black text-green-600">
-              {leads.filter((lead) => lead.status === "erledigt").length}
-            </p>
-          </div>
-        </div>
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
+                <p className="text-sm font-bold text-slate-500">Erledigt</p>
+                <p className="mt-2 text-4xl font-black text-green-600">
+                  {doneLeadsCount}
+                </p>
+              </div>
+            </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          <div className="rounded-3xl bg-white p-8 shadow-sm">
+            <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
+              <h2 className="text-2xl font-black">Letzte Anfragen</h2>
+
+              <div className="mt-6 space-y-4">
+                {leads.slice(0, 3).map((lead) => (
+                  <div
+                    key={lead.id}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <h3 className="font-black">{lead.name}</h3>
+                        <p className="text-sm text-slate-500">
+                          {formatDate(lead.created_at)}
+                        </p>
+                      </div>
+
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-bold ${statusClass(
+                          lead.status
+                        )}`}
+                      >
+                        {lead.status || "neu"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+                {leads.length === 0 && (
+                  <p className="text-slate-500">Noch keine Leads vorhanden.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "homepage" && (
+          <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
             <h2 className="text-2xl font-black">Startseite bearbeiten</h2>
 
             <div className="mt-8 space-y-6">
@@ -315,7 +477,7 @@ export default function Dashboard() {
                 <img
                   src={heroImage}
                   alt="Hero Vorschau"
-                  className="max-h-72 w-full rounded-2xl border object-cover"
+                  className="max-h-96 w-full rounded-2xl border object-cover"
                 />
               )}
 
@@ -328,8 +490,86 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
+        )}
 
-          <div className="rounded-3xl bg-white p-8 shadow-sm">
+        {activeTab === "media" && (
+          <div className="mt-10">
+            <div className="rounded-3xl bg-white p-8 shadow-sm">
+              <h2 className="text-2xl font-black">Bild hochladen</h2>
+              <p className="mt-2 text-slate-600">
+                Bilder werden im Supabase Bucket „media“ gespeichert.
+              </p>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadImage}
+                className="mt-6 block w-full rounded-xl border border-slate-300 bg-white p-4"
+              />
+
+              {uploading && (
+                <p className="mt-4 font-semibold text-blue-600">
+                  Bild wird hochgeladen...
+                </p>
+              )}
+            </div>
+
+            <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
+              <h2 className="text-2xl font-black">Medienbibliothek</h2>
+
+              <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                {mediaFiles.map((file) => (
+                  <div
+                    key={file.path}
+                    className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
+                  >
+                    <img
+                      src={file.url}
+                      alt={file.name}
+                      className="h-44 w-full object-cover"
+                    />
+
+                    <div className="space-y-3 p-4">
+                      <p className="truncate text-sm font-bold">{file.name}</p>
+
+                      <button
+                        onClick={() => {
+                          setHeroImage(file.url);
+                          setActiveTab("homepage");
+                          setMessage("Bild als Hero-Bild ausgewählt.");
+                        }}
+                        className="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white"
+                      >
+                        Als Hero nutzen
+                      </button>
+
+                      <button
+                        onClick={() => copyUrl(file.url)}
+                        className="w-full rounded-xl bg-slate-950 px-4 py-2 text-sm font-bold text-white"
+                      >
+                        URL kopieren
+                      </button>
+
+                      <button
+                        onClick={() => deleteImage(file.path)}
+                        className="w-full rounded-xl bg-red-600 px-4 py-2 text-sm font-bold text-white"
+                      >
+                        Löschen
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                {mediaFiles.length === 0 && (
+                  <p className="text-slate-500">Noch keine Bilder vorhanden.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "leads" && (
+          <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-black">Leads verwalten</h2>
@@ -346,7 +586,7 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="mt-8 max-h-[900px] space-y-5 overflow-y-auto pr-2">
+            <div className="mt-8 space-y-5">
               {leads.length === 0 && (
                 <p className="text-slate-500">Noch keine Anfragen vorhanden.</p>
               )}
@@ -422,6 +662,7 @@ export default function Dashboard() {
                       <a
                         href={digits ? `https://wa.me/${digits}` : "#"}
                         target="_blank"
+                        rel="noreferrer"
                         className="rounded-xl bg-green-600 px-4 py-3 text-center text-sm font-bold text-white"
                       >
                         WhatsApp
@@ -459,9 +700,7 @@ export default function Dashboard() {
                             )
                           )
                         }
-                        onBlur={(e) =>
-                          updateLeadNote(lead.id, e.target.value)
-                        }
+                        onBlur={(e) => updateLeadNote(lead.id, e.target.value)}
                         placeholder="Interne Notiz..."
                         className="min-h-24 rounded-xl border border-slate-300 px-4 py-3 text-sm"
                       />
@@ -471,7 +710,41 @@ export default function Dashboard() {
               })}
             </div>
           </div>
-        </div>
+        )}
+
+        {activeTab === "seo" && (
+          <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
+            <h2 className="text-2xl font-black">SEO Bereich</h2>
+            <p className="mt-3 max-w-3xl leading-8 text-slate-600">
+              Hier bauen wir als Nächstes SEO-Titel, Meta-Beschreibungen und
+              Seitentexte für einzelne Seiten ein.
+            </p>
+
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              {["Startseite SEO", "Preise SEO", "Berlin SEO"].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-6"
+                >
+                  <h3 className="font-black">{item}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    Kommt im nächsten Schritt.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "settings" && (
+          <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
+            <h2 className="text-2xl font-black">Einstellungen</h2>
+            <p className="mt-3 leading-8 text-slate-600">
+              Admin-Einstellungen, erlaubte Admin-E-Mail und Sicherheit bauen
+              wir als nächsten Schritt ein.
+            </p>
+          </div>
+        )}
       </section>
     </main>
   );
