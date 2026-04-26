@@ -1,50 +1,56 @@
-export default function sitemap() {
-  const baseUrl = "https://www.doktv.de";
+import type { MetadataRoute } from "next";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://doktv.de";
 
   return [
     {
       url: baseUrl,
       lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/apotheken`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/arztpraxen`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/hersteller`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/standorte`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/preise`,
-      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
     },
     {
       url: `${baseUrl}/kontakt`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/apotheke-werbung-berlin`,
+      url: `${baseUrl}/leistungen`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/arztpraxis-werbung-berlin`,
+      url: `${baseUrl}/digital-signage-apotheke-berlin`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.95,
     },
     {
-      url: `${baseUrl}/digital-signage-apotheke`,
+      url: `${baseUrl}/blog`,
       lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/werbung-apotheke-display`,
+      url: `${baseUrl}/blog/digital-signage-apotheke`,
       lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/schaufenster-display-apotheke`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/apotheken-marketing-berlin`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
   ];
 }
