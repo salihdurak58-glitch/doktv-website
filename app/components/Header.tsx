@@ -1,42 +1,34 @@
 import Link from "next/link";
 
+const navItems = [
+  { label: "Start", href: "/" },
+  { label: "Digital Signage Berlin", href: "/digital-signage-berlin" },
+  { label: "Apotheken", href: "/apotheken" },
+  { label: "Arztpraxen", href: "/arztpraxen" },
+  { label: "Preise", href: "/preise" },
+  { label: "Blog", href: "/blog" },
+  { label: "Kontakt", href: "/kontakt" },
+];
+
 export default function Header() {
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
-        {/* LOGO */}
-        <Link href="/" className="text-xl font-bold text-blue-600">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <Link href="/" className="text-2xl font-black text-blue-600">
           DokTV
         </Link>
 
-        {/* NAVIGATION */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-
-          <Link href="/" className="hover:text-blue-600">
-            Start
-          </Link>
-
-          <Link
-            href="/digital-signage-berlin"
-            className="hover:text-blue-600"
-          >
-            Digital Signage Berlin
-          </Link>
-
-          <Link href="/blog" className="hover:text-blue-600">
-            Blog
-          </Link>
-
-          <Link href="/kontakt" className="hover:text-blue-600">
-            Kontakt
-          </Link>
+        <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-900 lg:flex">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="hover:text-blue-600">
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* CTA */}
         <Link
           href="/kontakt"
-          className="hidden md:inline-block bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-500 transition"
+          className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
         >
           Beratung
         </Link>
