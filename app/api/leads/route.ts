@@ -85,12 +85,12 @@ export async function POST(req: Request) {
       );
     }
 
-    await resend.emails.send({
+    const adminEmail = await resend.emails.send({
       from: "DokTV Kontaktformular <info@doktv.de>",
       to: ["info@doktv.de"],
 
-      // Wichtig: Beim Antworten soll der Kunde als Empfänger gesetzt werden
-      replyTo: `${name} <${email}>`,
+      // WICHTIG: Resend Send API nutzt reply_to
+      reply_to: [`${name} <${email}>`],
 
       subject: `Neue Anfrage von ${name} (${customer_type})`,
       html: `
@@ -158,7 +158,9 @@ export async function POST(req: Request) {
       `,
     });
 
-    await resend.emails.send({
+    console.log("Admin email result:", adminEmail);
+
+    const customerEmail = await resend.emails.send({
       from: "DokTV <info@doktv.de>",
       to: [email],
       subject: "Danke für Ihre Anfrage bei DokTV",
@@ -185,6 +187,8 @@ export async function POST(req: Request) {
         </div>
       `,
     });
+
+    console.log("Customer email result:", customerEmail);
 
     return NextResponse.json({
       success: true,
