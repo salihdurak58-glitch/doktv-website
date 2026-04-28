@@ -1,52 +1,60 @@
 import Link from "next/link";
-
-const navigation = [
-  {
-    name: "Startseite",
-    href: "/",
-  },
-  {
-    name: "Schaufenster Display",
-    href: "/schaufenster-display-apotheken",
-  },
-  {
-    name: "Wartezimmer TV",
-    href: "/wartezimmer-tv-praxen",
-  },
-  {
-    name: "Hersteller Werbung",
-    href: "/hersteller-werbung",
-  },
-  {
-    name: "Über uns",
-    href: "/ueber-uns",
-  },
-  {
-    name: "Kontakt",
-    href: "/kontakt",
-  },
-];
+import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <Link href="/" className="text-2xl font-black text-slate-950">
-          DokTV
+    <header className="w-full border-b bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        
+        {/* LOGO */}
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png" // ← dein Logo hier
+            alt="DokTV Logo"
+            width={140}
+            height={40}
+            priority
+          />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-semibold text-slate-700 hover:text-slate-950"
-            >
-              {item.name}
-            </Link>
-          ))}
+        {/* NAVIGATION */}
+        <nav className="hidden gap-8 md:flex">
+          <Link href="/" className="font-medium text-slate-700 hover:text-black">
+            Startseite
+          </Link>
+          <Link
+            href="/schaufenster-display-apotheken"
+            className="font-medium text-slate-700 hover:text-black"
+          >
+            Schaufenster Display
+          </Link>
+          <Link
+            href="/wartezimmer-tv-praxen"
+            className="font-medium text-slate-700 hover:text-black"
+          >
+            Wartezimmer TV
+          </Link>
+          <Link
+            href="/hersteller-werbung"
+            className="font-medium text-slate-700 hover:text-black"
+          >
+            Hersteller Werbung
+          </Link>
+          <Link
+            href="/ueber-uns"
+            className="font-medium text-slate-700 hover:text-black"
+          >
+            Über uns
+          </Link>
+          <Link
+            href="/kontakt"
+            className="font-medium text-slate-700 hover:text-black"
+          >
+            Kontakt
+          </Link>
         </nav>
 
+        {/* CTA BUTTON */}
         <Link
           href="/kontakt"
           className="rounded-xl bg-black px-5 py-3 text-sm font-bold text-white hover:bg-slate-800"

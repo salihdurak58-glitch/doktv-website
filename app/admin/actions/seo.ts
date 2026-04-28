@@ -52,6 +52,7 @@ export async function saveSeoPage(
     const meta_description = String(
       formData.get("meta_description") || ""
     ).trim();
+
     const og_title = String(formData.get("og_title") || "").trim() || null;
     const og_description =
       String(formData.get("og_description") || "").trim() || null;
@@ -80,11 +81,9 @@ export async function saveSeoPage(
       noindex,
     };
 
-    const query = id
-      ? supabase.from("page_seo").update(payload).eq("id", id)
-      : supabase.from("page_seo").insert(payload);
-
-    const { error } = await query;
+    const { error } = id
+      ? await supabase.from("page_seo").update(payload).eq("id", id)
+      : await supabase.from("page_seo").insert([payload]);
 
     if (error) {
       return {
