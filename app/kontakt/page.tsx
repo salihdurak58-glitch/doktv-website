@@ -2,6 +2,7 @@ import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
 import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import KontaktForm from "./KontaktForm";
 
 export async function generateMetadata() {
   return generatePageMetadata("/kontakt");
@@ -92,108 +93,69 @@ export default function KontaktPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[1fr_420px]">
-        <div>
-          <p className="font-semibold text-blue-600">Anfrage senden</p>
+      <section className="bg-white px-6 py-24">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_520px]">
+          <div>
+            <p className="font-semibold text-blue-600">Anfrage senden</p>
 
-          <h2 className="mt-3 text-3xl font-black md:text-5xl">
-            Anfrage stellen und passende Lösung finden
-          </h2>
+            <h2 className="mt-3 text-3xl font-black md:text-5xl">
+              Anfrage stellen und passende Lösung finden
+            </h2>
 
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            Ob digitales Schaufenster Display für eine Apotheke, Wartezimmer TV
-            für eine Arztpraxis oder Herstellerwerbung im Gesundheitsumfeld:
-            Über das Kontaktformular können Sie uns Ihr Anliegen kurz schildern.
-          </p>
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              Ob digitales Schaufenster Display für eine Apotheke, Wartezimmer
+              TV für eine Arztpraxis oder Herstellerwerbung im
+              Gesundheitsumfeld: Über das Kontaktformular können Sie uns Ihr
+              Anliegen kurz schildern.
+            </p>
 
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            Je genauer Ihre Nachricht ist, desto besser können wir einschätzen,
-            welche Lösung sinnvoll ist. Hilfreich sind Angaben zum Standort,
-            Einsatzbereich, gewünschtem Display-Typ und ob es um eine einzelne
-            Fläche oder mehrere Standorte geht.
-          </p>
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              Je genauer Ihre Nachricht ist, desto besser können wir
+              einschätzen, welche Lösung sinnvoll ist. Hilfreich sind Angaben
+              zum Standort, Einsatzbereich, gewünschtem Display-Typ und ob es
+              um eine einzelne Fläche oder mehrere Standorte geht.
+            </p>
 
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            Für Apotheken ist oft die Seite{" "}
-            <Link
-              href="/schaufenster-display-apotheken"
-              className="font-bold text-blue-600 underline underline-offset-4"
-            >
-              Schaufenster Displays für Apotheken
-            </Link>{" "}
-            relevant. Für Praxen empfehlen wir{" "}
-            <Link
-              href="/wartezimmer-tv-praxen"
-              className="font-bold text-blue-600 underline underline-offset-4"
-            >
-              Wartezimmer TV
-            </Link>
-            . Hersteller und Marken finden weitere Informationen unter{" "}
-            <Link
-              href="/hersteller-werbung"
-              className="font-bold text-blue-600 underline underline-offset-4"
-            >
-              Hersteller Werbung
-            </Link>
-            .
-          </p>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {reasons.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 font-semibold text-slate-700"
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              Für Apotheken ist oft die Seite{" "}
+              <Link
+                href="/schaufenster-display-apotheken"
+                className="font-bold text-blue-600 underline underline-offset-4"
               >
-                {item}
-              </div>
-            ))}
+                Schaufenster Displays für Apotheken
+              </Link>{" "}
+              relevant. Für Praxen empfehlen wir{" "}
+              <Link
+                href="/wartezimmer-tv-praxen"
+                className="font-bold text-blue-600 underline underline-offset-4"
+              >
+                Wartezimmer TV
+              </Link>
+              . Hersteller und Marken finden weitere Informationen unter{" "}
+              <Link
+                href="/hersteller-werbung"
+                className="font-bold text-blue-600 underline underline-offset-4"
+              >
+                Hersteller Werbung
+              </Link>
+              .
+            </p>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {reasons.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-5 font-semibold text-slate-700"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div>
-          <form className="mt-10 space-y-5 rounded-3xl border bg-slate-50 p-8">
-            <div>
-              <label className="mb-2 block text-sm font-bold text-slate-700">
-                Name
-              </label>
-              <input
-                name="name"
-                type="text"
-                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-black"
-                placeholder="Dein Name"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-bold text-slate-700">
-                E-Mail
-              </label>
-              <input
-                name="email"
-                type="email"
-                className="w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-black"
-                placeholder="deine@email.de"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-bold text-slate-700">
-                Nachricht
-              </label>
-              <textarea
-                name="message"
-                className="min-h-36 w-full rounded-xl border bg-white px-4 py-3 outline-none focus:border-black"
-                placeholder="Worum geht es?"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="rounded-xl bg-black px-6 py-3 text-sm font-bold text-white hover:bg-slate-800"
-            >
-              Anfrage senden
-            </button>
-          </form>
+          <div className="lg:pt-2">
+            <KontaktForm />
+          </div>
         </div>
       </section>
 
@@ -207,9 +169,9 @@ export default function KontaktPage() {
 
           <p className="mt-6 max-w-4xl text-lg leading-8 text-slate-600">
             DokTV kann für unterschiedliche Ziele eingesetzt werden: mehr
-            Sichtbarkeit im Apotheken-Schaufenster, bessere Patienteninformation
-            im Wartezimmer oder gezielte Werbung für Hersteller im
-            Gesundheitsumfeld.
+            Sichtbarkeit im Apotheken-Schaufenster, bessere
+            Patienteninformation im Wartezimmer oder gezielte Werbung für
+            Hersteller im Gesundheitsumfeld.
           </p>
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -266,10 +228,10 @@ export default function KontaktPage() {
           </p>
 
           <p>
-            Wenn Sie Hersteller, Marke oder Dienstleister sind, kann DokTV dabei
-            helfen, Ihre Kampagne im Gesundheitsumfeld sichtbar zu platzieren.
-            Dafür können Apotheken, Praxen oder ausgewählte Standorte relevant
-            sein.
+            Wenn Sie Hersteller, Marke oder Dienstleister sind, kann DokTV
+            dabei helfen, Ihre Kampagne im Gesundheitsumfeld sichtbar zu
+            platzieren. Dafür können Apotheken, Praxen oder ausgewählte
+            Standorte relevant sein.
           </p>
 
           <p>
