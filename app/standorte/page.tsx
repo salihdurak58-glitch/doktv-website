@@ -4,53 +4,45 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  useLoadScript,
+} from "@react-google-maps/api";
+import { locations, type Location } from "./locations";
 
-const locations = [
-  {
-    id: 1,
-    name: "Apotheke Mitte",
-    type: "Apotheke",
-    district: "Berlin-Mitte",
-    monthlyPrice: 199,
-    yearlyPrice: 1990,
-    image: "/logo.png",
-    description:
-      "Schaufenster-Display mit hoher Sichtbarkeit für Laufkundschaft.",
-  },
-  {
-    id: 2,
-    name: "Arztpraxis Charlottenburg",
-    type: "Arztpraxis",
-    district: "Charlottenburg",
-    monthlyPrice: 249,
-    yearlyPrice: 2490,
-    image: "/logo.png",
-    description:
-      "Wartezimmer-Display für Patienteninformation und Gesundheitswerbung.",
-  },
-  {
-    id: 3,
-    name: "Apotheke Neukölln",
-    type: "Apotheke",
-    district: "Neukölln",
-    monthlyPrice: 179,
-    yearlyPrice: 1790,
-    image: "/logo.png",
-    description: "Digitales Schaufenster in gut erreichbarer Lage.",
-  },
-];
+const mapContainerStyle = {
+  width: "100%",
+  height: "360px",
+  borderRadius: "1.5rem",
+};
+
+const mapCenter = {
+  lat: 52.52,
+  lng: 13.405,
+};
 
 export default function StandortePage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [filter, setFilter] = useState("Alle");
+  const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
 
-  const filteredLocations =
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+  });
+
+  const filteredLocations: Location[] =
     filter === "Alle"
       ? locations
       : locations.filter((location) => location.type === filter);
 
-  const selectedLocations = locations.filter((location) =>
+  const selectedLocations: Location[] = locations.filter((location) =>
     selectedIds.includes(location.id)
+  );
+
+  const activeLocation = locations.find(
+    (location) => location.id === activeLocationId
   );
 
   const monthlyTotal = useMemo(
@@ -79,33 +71,41 @@ export default function StandortePage() {
     );
   }
 
+  function selectLocationFromMap(id: number) {
+    setActiveLocationId(id);
+    setSelectedIds((current) =>
+      current.includes(id) ? current : [...current, id]
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[#f7fafb] text-[#334c59]">
       <Header />
 
-      {/* HEADER TEXT */}
+      {/* HEADER */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <p className="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#6fa8b0] shadow-sm">
           Standortfinder
         </p>
 
-        <h1 className="max-w-4xl text-5xl font-bold leading-tight tracking-tight md:text-7xl">
+        <h1 className="max-w-4xl text-5xl font-bold md:text-7xl">
           Wählen Sie Ihre Werbestandorte in Berlin.
         </h1>
 
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d737d]">
+        <p className="mt-6 max-w-3xl text-lg text-[#5d737d]">
           Sehen Sie verfügbare Apotheken und Arztpraxen, vergleichen Sie Preise
-          und senden Sie direkt eine Anfrage für Ihre ausgewählten Standorte.
+          und senden Sie direkt eine Anfrage.
         </p>
       </section>
 
       {/* MAIN */}
       <section className="mx-auto grid max-w-7xl gap-8 px-6 pb-24 lg:grid-cols-[1fr_380px]">
         
-        {/* LEFT SIDE */}
+        {/* LEFT */}
         <div>
+
           {/* FILTER */}
-          <div className="mb-6 flex flex-wrap gap-3">
+          <div className="mb-6 flex gap-3">
             {["Alle", "Apotheke", "Arztpraxis"].map((item) => (
               <button
                 key={item}
@@ -121,19 +121,50 @@ export default function StandortePage() {
             ))}
           </div>
 
-          {/* MAP PLACEHOLDER */}
+          {/* MAP */}
           <div className="mb-8 rounded-[2rem] bg-[#334c59] p-6 text-white">
-            <div className="flex h-[360px] items-center justify-center rounded-[1.5rem] bg-[#6fa8b0]/40 text-center">
-              <div>
-                <p className="text-3xl font-bold">Karte kommt hier rein</p>
-                <p className="mt-3 text-white/80">
-                  Später verbinden wir Google Maps.
-                </p>
-              </div>
+            <div className="overflow-hidden rounded-[1.5rem] bg-[#6fa8b0]/40">
+              {isLoaded ? (
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  zoom={11}
+                  center={mapCenter}
+                >
+                  {filteredLocations.map((location) => (
+                    <Marker
+                      key={location.id}
+                      position={{
+                        lat: location.lat,
+                        lng: location.lng,
+                      }}
+                      onClick={() => selectLocationFromMap(location.id)}
+                    />
+                  ))}
+
+                  {activeLocation && (
+                    <InfoWindow
+                      position={{
+                        lat: activeLocation.lat,
+                        lng: activeLocation.lng,
+                      }}
+                      onCloseClick={() => setActiveLocationId(null)}
+                    >
+                      <div className="text-[#334c59]">
+                        <p className="font-bold">{activeLocation.name}</p>
+                        <p className="text-sm">{activeLocation.address}</p>
+                      </div>
+                    </InfoWindow>
+                  )}
+                </GoogleMap>
+              ) : (
+                <div className="flex h-[360px] items-center justify-center">
+                  Karte lädt...
+                </div>
+              )}
             </div>
           </div>
 
-          {/* LOCATIONS */}
+          {/* CARDS */}
           <div className="grid gap-6 md:grid-cols-2">
             {filteredLocations.map((location) => {
               const isSelected = selectedIds.includes(location.id);
@@ -141,11 +172,11 @@ export default function StandortePage() {
               return (
                 <div
                   key={location.id}
-                  className={`rounded-3xl bg-white p-5 shadow-lg shadow-[#334c59]/5 ${
+                  className={`rounded-3xl bg-white p-5 shadow ${
                     isSelected ? "ring-2 ring-[#6fa8b0]" : ""
                   }`}
                 >
-                  <div className="mb-5 flex h-40 items-center justify-center rounded-2xl bg-[#f7fafb]">
+                  <div className="mb-5 flex h-40 items-center justify-center bg-[#f7fafb] rounded-2xl">
                     <Image
                       src={location.image}
                       alt={location.name}
@@ -154,20 +185,16 @@ export default function StandortePage() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-[#e8f4f5] px-3 py-1 text-xs font-bold text-[#6fa8b0]">
-                      {location.type}
-                    </span>
-                    <span className="text-sm text-[#5d737d]">
-                      {location.district}
-                    </span>
+                  <div className="flex justify-between">
+                    <span>{location.type}</span>
+                    <span>{location.district}</span>
                   </div>
 
-                  <h2 className="mt-4 text-xl font-bold">{location.name}</h2>
+                  <h2 className="mt-4 text-xl font-bold">
+                    {location.name}
+                  </h2>
 
-                  <p className="mt-2 text-[#5d737d]">
-                    {location.description}
-                  </p>
+                  <p className="mt-2">{location.description}</p>
 
                   <div className="mt-4 flex justify-between text-sm">
                     <span>{location.monthlyPrice} €/Monat</span>
@@ -176,11 +203,7 @@ export default function StandortePage() {
 
                   <button
                     onClick={() => toggleLocation(location.id)}
-                    className={`mt-4 w-full rounded-full px-6 py-3 font-semibold ${
-                      isSelected
-                        ? "bg-[#6fa8b0] text-white"
-                        : "bg-[#334c59] text-white"
-                    }`}
+                    className="mt-4 w-full rounded-full bg-[#334c59] text-white py-3"
                   >
                     {isSelected
                       ? "Auswahl entfernen"
@@ -192,32 +215,28 @@ export default function StandortePage() {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
-        <aside className="h-fit rounded-3xl bg-white p-6 shadow-xl">
+        {/* RIGHT */}
+        <aside className="rounded-3xl bg-white p-6 shadow-xl">
           <h2 className="text-xl font-bold">Ihre Auswahl</h2>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-2">
             {selectedLocations.length === 0 && (
-              <p className="text-sm text-[#5d737d]">
-                Keine Standorte ausgewählt.
-              </p>
+              <p>Keine Standorte ausgewählt.</p>
             )}
 
             {selectedLocations.map((location) => (
-              <div key={location.id} className="text-sm">
-                {location.name}
-              </div>
+              <div key={location.id}>{location.name}</div>
             ))}
           </div>
 
-          <div className="mt-6 text-sm">
+          <div className="mt-6">
             <p>Monatlich: {monthlyTotal} €</p>
             <p>Jährlich: {yearlyTotal} €</p>
           </div>
 
           <a
             href="/kontakt"
-            className="mt-6 block w-full rounded-full bg-[#334c59] px-6 py-3 text-center font-semibold text-white"
+            className="mt-6 block w-full rounded-full bg-[#334c59] text-white text-center py-3"
           >
             Jetzt anfragen
           </a>
