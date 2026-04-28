@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
 type PageSeo = {
   route: string;
@@ -19,11 +19,16 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
 export async function getPageSeo(route: string): Promise<PageSeo | null> {
   const supabase = await createSupabaseServerClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("page_seo")
     .select("*")
     .eq("route", route)
     .maybeSingle();
+
+  if (error) {
+    console.error("SEO konnte nicht geladen werden:", error.message);
+    return null;
+  }
 
   return data;
 }
@@ -33,13 +38,14 @@ export async function generatePageMetadata(route: string): Promise<Metadata> {
 
   if (!seo) {
     return {
-      title: siteName,
+      title: "DokTV – Digital Signage",
       description:
         "DokTV bietet moderne Digital Signage Lösungen für Apotheken, Praxen und lokale Unternehmen.",
     };
   }
 
   const canonicalPath = seo.canonical_url || route;
+
   const canonicalUrl = canonicalPath.startsWith("http")
     ? canonicalPath
     : `${siteUrl}${canonicalPath}`;

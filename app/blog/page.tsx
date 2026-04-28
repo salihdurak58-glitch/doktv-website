@@ -1,4 +1,4 @@
-import { generatePageMetadata } from "@/lib/seo/get-page-seo";
+import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
 import Link from "next/link";
 
 export async function generateMetadata() {
@@ -7,21 +7,21 @@ export async function generateMetadata() {
 
 const posts = [
   {
-    title: "Warum Digital Signage im Schaufenster funktioniert",
-    description:
-      "Digitale Displays ziehen Aufmerksamkeit auf sich und machen Angebote sichtbarer.",
-    href: "/blog/digital-signage-schaufenster",
-  },
-  {
     title: "Digital Signage für Apotheken",
     description:
-      "So können Apotheken Angebote, Services und Gesundheitsinformationen modern präsentieren.",
+      "Wie Apotheken mit digitalen Displays Angebote, Services und Gesundheitsinformationen sichtbar machen.",
     href: "/blog/digital-signage-apotheken",
+  },
+  {
+    title: "Digital Signage im Schaufenster",
+    description:
+      "Warum digitale Schaufensterwerbung mehr Aufmerksamkeit erzeugt als klassische Plakate.",
+    href: "/blog/digital-signage-schaufenster",
   },
   {
     title: "Mehr Sichtbarkeit für lokale Unternehmen",
     description:
-      "Wie lokale Geschäfte mit digitalen Bildschirmen besser wahrgenommen werden.",
+      "Wie lokale Unternehmen mit DokTV professioneller und moderner auftreten.",
     href: "/blog/lokale-unternehmen-sichtbarkeit",
   },
 ];
@@ -29,32 +29,31 @@ const posts = [
 export default function BlogPage() {
   return (
     <main className="min-h-screen bg-white">
-      <section className="mx-auto max-w-7xl px-4 py-20">
-        <div className="mb-12 max-w-3xl">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
-            DokTV Blog
-          </h1>
-          <p className="mt-4 text-lg text-gray-600">
-            Wissen, Tipps und Ideen rund um Digital Signage,
-            Schaufenster-Displays und digitale Kundenkommunikation.
-          </p>
-        </div>
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <h1 className="text-5xl font-extrabold tracking-tight text-slate-950">
+          DokTV Blog
+        </h1>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          Tipps, Wissen und Ideen rund um Digital Signage, Schaufenster-Displays
+          und digitale Kundenkommunikation.
+        </p>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {posts.map((post) => (
             <article
               key={post.href}
-              className="rounded-3xl border bg-gray-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="rounded-3xl border bg-slate-50 p-6 shadow-sm"
             >
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-extrabold text-slate-950">
                 {post.title}
               </h2>
 
-              <p className="mt-3 text-gray-600">{post.description}</p>
+              <p className="mt-4 text-slate-600">{post.description}</p>
 
               <Link
                 href={post.href}
-                className="mt-6 inline-block text-sm font-semibold text-black underline"
+                className="mt-6 inline-block text-sm font-bold text-blue-600 hover:underline"
               >
                 Artikel lesen
               </Link>

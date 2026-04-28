@@ -1,116 +1,26 @@
-import type { MetadataRoute } from "next";
+import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://doktv.de";
+export default async function sitemap() {
+  const supabase = await createSupabaseServerClient();
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/apotheken`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/arztpraxen`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/hersteller`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/standorte`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/preise`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/kontakt`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
+  const { data, error } = await supabase
+    .from("page_seo")
+    .select("route, updated_at, noindex");
 
-    // SEO Landingpages
-    {
-      url: `${baseUrl}/digital-signage-apotheke-berlin`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/apotheke-werbung-berlin`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/arztpraxis-werbung-berlin`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/werbung-apotheke-display`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
+  if (error) {
+    console.error("Sitemap Fehler:", error.message);
+    return [];
+  }
 
-    // Blog
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/blog/digital-signage-apotheke`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/blog/schaufenster-display-apotheke`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/blog/apotheken-marketing-berlin`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
 
-    // Rechtliches
-    {
-      url: `${baseUrl}/impressum`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/datenschutz`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-  ];
+  return (
+    data
+      ?.filter((page) => !page.noindex)
+      .map((page) => ({
+        url: `${baseUrl}${page.route}`,
+        lastModified: page.updated_at || new Date().toISOString(),
+      })) || []
+  );
 }

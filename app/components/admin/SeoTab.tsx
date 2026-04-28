@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState, useActionState } from "react";
-import { deleteSeoPage, getSeoPages, saveSeoPage } from "@/app/admin/actions/seo";
+import {
+  deleteSeoPage,
+  getSeoPages,
+  saveSeoPage,
+} from "@/app/admin/actions/seo";
 
 type SeoPage = {
   id: string;
@@ -79,6 +83,7 @@ export default function SeoTab() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+      {/* LEFT */}
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">SEO Seiten</h2>
@@ -92,7 +97,7 @@ export default function SeoTab() {
         </div>
 
         {loading ? (
-          <p className="text-sm text-gray-500">Lade SEO-Daten...</p>
+          <p className="text-sm text-gray-500">Lade...</p>
         ) : (
           <div className="space-y-2">
             {pages.map((page) => (
@@ -100,183 +105,115 @@ export default function SeoTab() {
                 key={page.id}
                 type="button"
                 onClick={() => setSelected(page)}
-                className={`w-full rounded-xl border p-3 text-left transition ${
+                className={`w-full rounded-xl border p-3 text-left ${
                   selected.id === page.id
                     ? "border-black bg-gray-50"
                     : "border-gray-200 hover:bg-gray-50"
                 }`}
               >
-                <p className="font-medium text-gray-900">{page.page_name}</p>
+                <p className="font-medium">{page.page_name}</p>
                 <p className="text-sm text-gray-500">{page.route}</p>
-                {page.noindex && (
-                  <span className="mt-2 inline-block rounded-full bg-red-100 px-2 py-1 text-xs text-red-700">
-                    noindex
-                  </span>
-                )}
               </button>
             ))}
           </div>
         )}
       </div>
 
+      {/* RIGHT */}
       <div className="rounded-2xl border bg-white p-5 shadow-sm">
-        <h2 className="mb-5 text-lg font-semibold text-gray-900">
-          SEO bearbeiten
-        </h2>
+        <h2 className="mb-5 text-lg font-semibold">SEO bearbeiten</h2>
 
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="id" value={selected.id || ""} />
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                Seitenname
-              </label>
-              <input
-                name="page_name"
-                value={selected.page_name || ""}
-                onChange={(e) =>
-                  setSelected({ ...selected, page_name: e.target.value })
-                }
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-                placeholder="Startseite"
-                required
-              />
-            </div>
+          <input
+            name="route"
+            value={selected.route || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, route: e.target.value })
+            }
+            placeholder="/kontakt"
+            className="w-full rounded-xl border px-3 py-2"
+            required
+          />
 
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                Route
-              </label>
-              <input
-                name="route"
-                value={selected.route || ""}
-                onChange={(e) =>
-                  setSelected({ ...selected, route: e.target.value })
-                }
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-                placeholder="/kontakt"
-                required
-              />
-            </div>
-          </div>
+          <input
+            name="page_name"
+            value={selected.page_name || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, page_name: e.target.value })
+            }
+            placeholder="Seitenname"
+            className="w-full rounded-xl border px-3 py-2"
+            required
+          />
 
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-700">
-                Meta Title
-              </label>
-              <span
-                className={`text-xs ${
-                  titleLength > 65 ? "text-red-600" : "text-gray-500"
-                }`}
-              >
-                {titleLength}/65
-              </span>
-            </div>
-            <input
-              name="meta_title"
-              value={selected.meta_title || ""}
-              onChange={(e) =>
-                setSelected({ ...selected, meta_title: e.target.value })
-              }
-              className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-              placeholder="DokTV – Digital Signage für Apotheken"
-              required
-            />
-          </div>
+          <input
+            name="meta_title"
+            value={selected.meta_title || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, meta_title: e.target.value })
+            }
+            placeholder="Meta Title"
+            className="w-full rounded-xl border px-3 py-2"
+            required
+          />
 
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-700">
-                Meta Description
-              </label>
-              <span
-                className={`text-xs ${
-                  descriptionLength > 160 ? "text-red-600" : "text-gray-500"
-                }`}
-              >
-                {descriptionLength}/160
-              </span>
-            </div>
-            <textarea
-              name="meta_description"
-              value={selected.meta_description || ""}
-              onChange={(e) =>
-                setSelected({
-                  ...selected,
-                  meta_description: e.target.value,
-                })
-              }
-              className="min-h-28 w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-              placeholder="Kurze Beschreibung für Google..."
-              required
-            />
-          </div>
+          <textarea
+            name="meta_description"
+            value={selected.meta_description || ""}
+            onChange={(e) =>
+              setSelected({
+                ...selected,
+                meta_description: e.target.value,
+              })
+            }
+            placeholder="Meta Description"
+            className="w-full rounded-xl border px-3 py-2"
+            required
+          />
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                OG Title
-              </label>
-              <input
-                name="og_title"
-                value={selected.og_title || ""}
-                onChange={(e) =>
-                  setSelected({ ...selected, og_title: e.target.value })
-                }
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-                placeholder="Optional"
-              />
-            </div>
+          <input
+            name="og_title"
+            value={selected.og_title || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, og_title: e.target.value })
+            }
+            placeholder="OG Title"
+            className="w-full rounded-xl border px-3 py-2"
+          />
 
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                OG Bild URL
-              </label>
-              <input
-                name="og_image_url"
-                value={selected.og_image_url || ""}
-                onChange={(e) =>
-                  setSelected({ ...selected, og_image_url: e.target.value })
-                }
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-                placeholder="https://..."
-              />
-            </div>
-          </div>
+          <input
+            name="og_image_url"
+            value={selected.og_image_url || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, og_image_url: e.target.value })
+            }
+            placeholder="OG Image URL"
+            className="w-full rounded-xl border px-3 py-2"
+          />
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              OG Description
-            </label>
-            <textarea
-              name="og_description"
-              value={selected.og_description || ""}
-              onChange={(e) =>
-                setSelected({ ...selected, og_description: e.target.value })
-              }
-              className="min-h-24 w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-              placeholder="Optional für Social Media Vorschau"
-            />
-          </div>
+          <textarea
+            name="og_description"
+            value={selected.og_description || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, og_description: e.target.value })
+            }
+            placeholder="OG Description"
+            className="w-full rounded-xl border px-3 py-2"
+          />
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Canonical URL
-            </label>
-            <input
-              name="canonical_url"
-              value={selected.canonical_url || ""}
-              onChange={(e) =>
-                setSelected({ ...selected, canonical_url: e.target.value })
-              }
-              className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black"
-              placeholder="/kontakt oder https://doktv.de/kontakt"
-            />
-          </div>
+          <input
+            name="canonical_url"
+            value={selected.canonical_url || ""}
+            onChange={(e) =>
+              setSelected({ ...selected, canonical_url: e.target.value })
+            }
+            placeholder="Canonical URL"
+            className="w-full rounded-xl border px-3 py-2"
+          />
 
-          <label className="flex items-center gap-2 rounded-xl border p-3 text-sm text-gray-700">
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               name="noindex"
@@ -285,48 +222,44 @@ export default function SeoTab() {
                 setSelected({ ...selected, noindex: e.target.checked })
               }
             />
-            Diese Seite auf noindex setzen
+            noindex
           </label>
 
-          <div className="rounded-2xl border bg-gray-50 p-4">
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              Google Vorschau
-            </p>
-            <p className="text-lg text-blue-700">
+          {/* PREVIEW */}
+          <div className="rounded-xl border p-4 bg-gray-50">
+            <p className="text-blue-700 text-lg">
               {selected.meta_title || "Meta Title"}
             </p>
-            <p className="text-sm text-green-700">{previewUrl}</p>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="text-green-700 text-sm">{previewUrl}</p>
+            <p className="text-gray-600 text-sm">
               {selected.meta_description || "Meta Description"}
             </p>
           </div>
 
           {state.message && (
             <p
-              className={`rounded-xl p-3 text-sm ${
-                state.success
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              }`}
+              className={
+                state.success ? "text-green-600" : "text-red-600"
+              }
             >
               {state.message}
             </p>
           )}
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex gap-3">
             <button
               type="submit"
               disabled={pending}
-              className="rounded-xl bg-black px-5 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-60"
+              className="bg-black text-white px-4 py-2 rounded-xl"
             >
-              {pending ? "Speichert..." : "Speichern"}
+              Speichern
             </button>
 
             {selected.id && (
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded-xl border border-red-300 px-5 py-3 text-sm font-medium text-red-700 hover:bg-red-50"
+                className="border border-red-500 text-red-600 px-4 py-2 rounded-xl"
               >
                 Löschen
               </button>

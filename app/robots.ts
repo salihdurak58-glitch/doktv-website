@@ -1,11 +1,14 @@
-import type { MetadataRoute } from "next";
+export default function robots() {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
 
-export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: "https://doktv.de/sitemap.xml",
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
