@@ -1,12 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { supabase } from "@/app/lib/supabase/supabaseClient";
 import {
-  deleteLocation,
-  getAdminLocations,
-  saveLocation,
-} from "@/app/admin/actions/locations";
-import type { Location } from "@/app/standorte/locations";
+  locations as fallbackLocations,
+  type Location,
+} from "@/app/standorte/locations";
+
+type LocationRow = {
+  id: string | number;
+  name: string;
+  type: Location["type"];
+  district: string;
+  address: string;
+  monthly_price: number;
+  yearly_price: number;
+  image: string | null;
+  description: string;
+  lat: number;
+  lng: number;
+  is_active: boolean | null;
+  sort_order: number | null;
+};
 
 const emptyLocation: Partial<Location> = {
   id: "",
@@ -28,6 +43,33 @@ type LocationsTabProps = {
   onPickImage?: (callback: (url: string) => void) => void;
 };
 
+function toLocation(row: LocationRow): Location {
+  return {
+    id: String(row.id),
+    name: row.name,
+    type: row.type,
+    district: row.district,
+    address: row.address,
+    monthlyPrice: Number(row.monthly_price || 0),
+    yearlyPrice: Number(row.yearly_price || 0),
+    image: row.image || "/logo.png",
+    description: row.description,
+    lat: Number(row.lat || 52.52),
+    lng: Number(row.lng || 13.405),
+    isActive: row.is_active ?? true,
+    sortOrder: row.sort_order ?? 100,
+  };
+}
+
+function parseNumber(value: FormDataEntryValue | null, fallback = 0) {
+  const normalized = String(value ?? "")
+    .trim()
+    .replace(",", ".");
+  const parsed = Number(normalized);
+
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 export default function LocationsTab({ onPickImage }: LocationsTabProps) {
   const [locations, setLocations] = useState<Location[]>([]);
   const [selected, setSelected] = useState<Partial<Location>>(emptyLocation);
@@ -35,27 +77,82 @@ export default function LocationsTab({ onPickImage }: LocationsTabProps) {
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
 
-  async function loadLocations() {
+  const getHiddenFallbackIds = useCallback(async () => {
+    const { data } = await supabase
+      .from("site_content")
+      .select("value")
+      .eq("key", "hidden_fallback_locations")
+      .maybeSingle();
+
+    if (!data?.value) return [];
+
+    try {
+      const parsed = JSON.parse(String(data.value));
+      return Array.isArray(parsed) ? parsed.filter(Boolean).map(String) : [];
+    } catch {
+      return [];
+    }
+  }, []);
+
+  const loadLocations = useCallback(async () => {
     setLoading(true);
     setMessage("");
 
-    try {
-      const data = await getAdminLocations();
-      setLocations(data as Location[]);
-    } catch (error) {
-      setMessage(
-        error instanceof Error
-          ? `Standorte konnten nicht geladen werden: ${error.message}`
-          : "Standorte konnten nicht geladen werden."
-      );
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setMessage("Nicht eingeloggt.");
+      setLoading(false);
+      return;
     }
 
+    const { data, error } = await supabase
+      .from("locations")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true });
+
+    if (error) {
+      setMessage(`Standorte konnten nicht geladen werden: ${error.message}`);
+      setLocations([]);
+      setLoading(false);
+      return;
+    }
+
+    const hiddenFallbackIds = await getHiddenFallbackIds();
+    const visibleFallbackLocations = fallbackLocations.filter(
+      (location) => !hiddenFallbackIds.includes(location.id)
+    );
+    const dbLocations = ((data || []) as LocationRow[]).map(toLocation);
+
+    setLocations([...dbLocations, ...visibleFallbackLocations]);
     setLoading(false);
+  }, [getHiddenFallbackIds]);
+
+  async function hideFallbackLocation(id: string) {
+    const hiddenIds = await getHiddenFallbackIds();
+    const nextHiddenIds = Array.from(new Set([...hiddenIds, id]));
+    const { error } = await supabase.from("site_content").upsert(
+      [
+        {
+          key: "hidden_fallback_locations",
+          value: JSON.stringify(nextHiddenIds),
+          updated_at: new Date().toISOString(),
+        },
+      ],
+      { onConflict: "key" }
+    );
+
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 
   useEffect(() => {
     void Promise.resolve().then(loadLocations);
-  }, []);
+  }, [loadLocations]);
 
   const filteredLocations = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -76,7 +173,40 @@ export default function LocationsTab({ onPickImage }: LocationsTabProps) {
 
     try {
       const formData = new FormData(event.currentTarget);
-      await saveLocation(formData);
+      const id = String(formData.get("id") || "");
+      const isFallbackLocation = id.startsWith("fallback-");
+      const payload = {
+        name: String(formData.get("name") || "").trim(),
+        type: String(formData.get("type") || "Apotheke") as Location["type"],
+        district: String(formData.get("district") || "").trim(),
+        address: String(formData.get("address") || "").trim(),
+        monthly_price: parseNumber(formData.get("monthlyPrice"), 0),
+        yearly_price: parseNumber(formData.get("yearlyPrice"), 0),
+        image: String(formData.get("image") || "").trim() || "/logo.png",
+        description: String(formData.get("description") || "").trim(),
+        lat: parseNumber(formData.get("lat"), 52.52),
+        lng: parseNumber(formData.get("lng"), 13.405),
+        is_active: formData.get("isActive") === "on",
+        sort_order: parseNumber(formData.get("sortOrder"), 100),
+      };
+
+      if (!payload.name || !payload.district || !payload.address) {
+        throw new Error("Name, Bezirk und Adresse sind Pflichtfelder.");
+      }
+
+      const { error } =
+        id && !isFallbackLocation
+          ? await supabase.from("locations").update(payload).eq("id", id)
+          : await supabase.from("locations").insert([payload]);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (isFallbackLocation) {
+        await hideFallbackLocation(id);
+      }
+
       setMessage("Standort gespeichert und öffentliche Standortseite aktualisiert.");
       setSelected(emptyLocation);
       await loadLocations();
@@ -94,7 +224,18 @@ export default function LocationsTab({ onPickImage }: LocationsTabProps) {
     if (!ok) return;
 
     try {
-      await deleteLocation(String(selected.id));
+      const id = String(selected.id);
+
+      if (id.startsWith("fallback-")) {
+        await hideFallbackLocation(id);
+      } else {
+        const { error } = await supabase.from("locations").delete().eq("id", id);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+      }
+
       setMessage("Standort gelöscht.");
       setSelected(emptyLocation);
       await loadLocations();
