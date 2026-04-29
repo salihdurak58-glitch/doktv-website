@@ -3,8 +3,19 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase/supabaseClient";
 import { useRouter } from "next/navigation";
+import BlogTab from "@/app/components/admin/BlogTab";
+import LocationsTab from "@/app/components/admin/LocationsTab";
+import SeoTab from "@/app/components/admin/SeoTab";
 
-type Tab = "overview" | "homepage" | "media" | "leads" | "seo" | "settings";
+type Tab =
+  | "overview"
+  | "homepage"
+  | "media"
+  | "locations"
+  | "leads"
+  | "blog"
+  | "seo"
+  | "settings";
 
 type ContentItem = {
   key: string;
@@ -40,6 +51,9 @@ export default function Dashboard() {
   const [heroTitle, setHeroTitle] = useState("");
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [heroImage, setHeroImage] = useState("");
+  const [heroEyebrow, setHeroEyebrow] = useState("");
+  const [primaryCta, setPrimaryCta] = useState("");
+  const [secondaryCta, setSecondaryCta] = useState("");
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
@@ -47,6 +61,9 @@ export default function Dashboard() {
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [imagePicker, setImagePicker] = useState<((url: string) => void) | null>(
+    null
+  );
 
   useEffect(() => {
     async function init() {
@@ -77,6 +94,9 @@ export default function Dashboard() {
         "homepage_hero_title",
         "homepage_hero_subtitle",
         "homepage_hero_image",
+        "homepage_hero_eyebrow",
+        "homepage_primary_cta",
+        "homepage_secondary_cta",
       ]);
 
     const items = (data ?? []) as ContentItem[];
@@ -91,6 +111,15 @@ export default function Dashboard() {
 
     setHeroImage(
       items.find((item) => item.key === "homepage_hero_image")?.value ?? ""
+    );
+    setHeroEyebrow(
+      items.find((item) => item.key === "homepage_hero_eyebrow")?.value ?? ""
+    );
+    setPrimaryCta(
+      items.find((item) => item.key === "homepage_primary_cta")?.value ?? ""
+    );
+    setSecondaryCta(
+      items.find((item) => item.key === "homepage_secondary_cta")?.value ?? ""
     );
   }
 
@@ -156,6 +185,21 @@ export default function Dashboard() {
         value: heroImage,
         updated_at: new Date().toISOString(),
       },
+      {
+        key: "homepage_hero_eyebrow",
+        value: heroEyebrow,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        key: "homepage_primary_cta",
+        value: primaryCta,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        key: "homepage_secondary_cta",
+        value: secondaryCta,
+        updated_at: new Date().toISOString(),
+      },
     ];
 
     const { error } = await supabase
@@ -196,9 +240,15 @@ export default function Dashboard() {
 
     const { data } = supabase.storage.from("media").getPublicUrl(filePath);
 
-    setHeroImage(data.publicUrl);
+    if (imagePicker) {
+      imagePicker(data.publicUrl);
+      setImagePicker(null);
+    } else {
+      setHeroImage(data.publicUrl);
+    }
+
     setUploading(false);
-    setMessage("Bild hochgeladen. Du kannst es jetzt speichern.");
+    setMessage("Bild hochgeladen. Du kannst es jetzt speichern oder nutzen.");
 
     await loadMedia();
   }
@@ -222,6 +272,19 @@ export default function Dashboard() {
   async function copyUrl(url: string) {
     await navigator.clipboard.writeText(url);
     setMessage("Bild-URL kopiert.");
+  }
+
+  function pickImage(url: string) {
+    if (imagePicker) {
+      imagePicker(url);
+      setImagePicker(null);
+      setMessage("Bild wurde eingefügt.");
+      return;
+    }
+
+    setHeroImage(url);
+    setActiveTab("homepage");
+    setMessage("Bild als Hero-Bild ausgewählt.");
   }
 
   async function updateLeadStatus(id: number, status: string) {
@@ -316,7 +379,9 @@ export default function Dashboard() {
     { label: "Übersicht", value: "overview" },
     { label: "Startseite", value: "homepage" },
     { label: "Bilder", value: "media" },
+    { label: "Standorte", value: "locations" },
     { label: "Leads", value: "leads" },
+    { label: "Blog", value: "blog" },
     { label: "SEO", value: "seo" },
     { label: "Einstellungen", value: "settings" },
   ];
@@ -447,6 +512,16 @@ export default function Dashboard() {
 
             <div className="mt-8 space-y-6">
               <div>
+                <label className="mb-2 block font-bold">Eyebrow / Badge</label>
+                <input
+                  value={heroEyebrow}
+                  onChange={(e) => setHeroEyebrow(e.target.value)}
+                  placeholder="Digital Signage für Apotheken, Praxen & Hersteller"
+                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
                 <label className="mb-2 block font-bold">Überschrift</label>
                 <input
                   value={heroTitle}
@@ -466,11 +541,51 @@ export default function Dashboard() {
 
               <div>
                 <label className="mb-2 block font-bold">Hero Bild URL</label>
-                <input
-                  value={heroImage}
-                  onChange={(e) => setHeroImage(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600"
-                />
+                <div className="flex gap-3">
+                  <input
+                    value={heroImage}
+                    onChange={(e) => setHeroImage(e.target.value)}
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePicker(() => (url: string) => {
+                        setHeroImage(url);
+                        setActiveTab("homepage");
+                      });
+                      setActiveTab("media");
+                      setMessage("Wähle ein Hero-Bild aus.");
+                    }}
+                    className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold"
+                  >
+                    Bild
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-2 block font-bold">Primärer CTA</label>
+                  <input
+                    value={primaryCta}
+                    onChange={(e) => setPrimaryCta(e.target.value)}
+                    placeholder="Kostenlose Beratung anfragen"
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block font-bold">
+                    Sekundärer CTA
+                  </label>
+                  <input
+                    value={secondaryCta}
+                    onChange={(e) => setSecondaryCta(e.target.value)}
+                    placeholder="Lösungen ansehen"
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
               </div>
 
               {heroImage && (
@@ -498,6 +613,9 @@ export default function Dashboard() {
               <h2 className="text-2xl font-black">Bild hochladen</h2>
               <p className="mt-2 text-slate-600">
                 Bilder werden im Supabase Bucket „media“ gespeichert.
+                {imagePicker
+                  ? " Wähle danach ein Bild aus, um es in den Standort einzufügen."
+                  : ""}
               </p>
 
               <input
@@ -533,14 +651,10 @@ export default function Dashboard() {
                       <p className="truncate text-sm font-bold">{file.name}</p>
 
                       <button
-                        onClick={() => {
-                          setHeroImage(file.url);
-                          setActiveTab("homepage");
-                          setMessage("Bild als Hero-Bild ausgewählt.");
-                        }}
+                        onClick={() => pickImage(file.url)}
                         className="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white"
                       >
-                        Als Hero nutzen
+                        {imagePicker ? "Bild einsetzen" : "Als Hero nutzen"}
                       </button>
 
                       <button
@@ -565,6 +679,21 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === "locations" && (
+          <div className="mt-10">
+            <LocationsTab
+              onPickImage={(callback) => {
+                setImagePicker(() => (url: string) => {
+                  callback(url);
+                  setActiveTab("locations");
+                });
+                setActiveTab("media");
+                setMessage("Wähle ein Bild aus der Medienbibliothek aus.");
+              }}
+            />
           </div>
         )}
 
@@ -713,26 +842,14 @@ export default function Dashboard() {
         )}
 
         {activeTab === "seo" && (
-          <div className="mt-10 rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-black">SEO Bereich</h2>
-            <p className="mt-3 max-w-3xl leading-8 text-slate-600">
-              Hier bauen wir als Nächstes SEO-Titel, Meta-Beschreibungen und
-              Seitentexte für einzelne Seiten ein.
-            </p>
+          <div className="mt-10">
+            <SeoTab />
+          </div>
+        )}
 
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {["Startseite SEO", "Preise SEO", "Berlin SEO"].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-6"
-                >
-                  <h3 className="font-black">{item}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    Kommt im nächsten Schritt.
-                  </p>
-                </div>
-              ))}
-            </div>
+        {activeTab === "blog" && (
+          <div className="mt-10">
+            <BlogTab />
           </div>
         )}
 

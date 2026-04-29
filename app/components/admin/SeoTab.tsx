@@ -52,17 +52,14 @@ export default function SeoTab() {
   }
 
   useEffect(() => {
-    loadPages();
+    void Promise.resolve().then(loadPages);
   }, []);
 
   useEffect(() => {
     if (state.success) {
-      loadPages();
+      void Promise.resolve().then(loadPages);
     }
   }, [state.success]);
-
-  const titleLength = selected.meta_title?.length || 0;
-  const descriptionLength = selected.meta_description?.length || 0;
 
   const previewUrl = useMemo(() => {
     const base = process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";

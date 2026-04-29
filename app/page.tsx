@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Link from "next/link";
 import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
+import { getSiteContent } from "@/app/lib/content/get-site-content";
 
 export async function generateMetadata() {
   return generatePageMetadata("/");
@@ -66,28 +67,51 @@ const faqs = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const content = await getSiteContent([
+    "homepage_hero_eyebrow",
+    "homepage_hero_title",
+    "homepage_hero_subtitle",
+    "homepage_hero_image",
+    "homepage_primary_cta",
+    "homepage_secondary_cta",
+  ]);
+  const heroTitle =
+    content.homepage_hero_title ||
+    "Digitale Schaufenster Displays und Wartezimmer TV für moderne Gesundheitskommunikation";
+  const heroSubtitle =
+    content.homepage_hero_subtitle ||
+    "DokTV unterstützt Apotheken, Arztpraxen und Hersteller dabei, Informationen, Angebote und Werbung über digitale Displays sichtbar zu machen. Ob im Schaufenster, im Wartezimmer, am Empfang oder direkt am Point of Sale: Mit professioneller Digital Signage werden Inhalte aufmerksamkeitsstark, flexibel und modern präsentiert.";
+  const heroImage = content.homepage_hero_image;
+
   return (
     <main className="bg-white text-slate-900">
       <Header />
 
-      <section className="bg-slate-950 px-6 py-28 text-white">
+      <section
+        className="bg-slate-950 px-6 py-28 text-white"
+        style={
+          heroImage
+            ? {
+                backgroundImage: `linear-gradient(90deg, rgba(2, 6, 23, 0.94), rgba(2, 6, 23, 0.72)), url(${heroImage})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }
+            : undefined
+        }
+      >
         <div className="mx-auto max-w-7xl">
           <p className="mb-5 inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-300">
-            Digital Signage für Apotheken, Praxen & Hersteller
+            {content.homepage_hero_eyebrow ||
+              "Digital Signage für Apotheken, Praxen & Hersteller"}
           </p>
 
           <h1 className="max-w-6xl text-4xl font-black leading-tight tracking-tight md:text-7xl">
-            Digitale Schaufenster Displays und Wartezimmer TV für moderne
-            Gesundheitskommunikation
+            {heroTitle}
           </h1>
 
           <p className="mt-8 max-w-4xl text-lg leading-9 text-slate-300 md:text-xl">
-            DokTV unterstützt Apotheken, Arztpraxen und Hersteller dabei,
-            Informationen, Angebote und Werbung über digitale Displays sichtbar
-            zu machen. Ob im Schaufenster, im Wartezimmer, am Empfang oder
-            direkt am Point of Sale: Mit professioneller Digital Signage werden
-            Inhalte aufmerksamkeitsstark, flexibel und modern präsentiert.
+            {heroSubtitle}
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -95,14 +119,14 @@ export default function HomePage() {
               href="/kontakt"
               className="rounded-2xl bg-blue-600 px-8 py-4 text-center font-bold text-white shadow-xl shadow-blue-600/30 transition hover:bg-blue-500"
             >
-              Kostenlose Beratung anfragen
+              {content.homepage_primary_cta || "Kostenlose Beratung anfragen"}
             </Link>
 
             <Link
               href="/schaufenster-display-apotheken"
               className="rounded-2xl border border-white/20 px-8 py-4 text-center font-bold text-white transition hover:bg-white/10"
             >
-              Lösungen ansehen
+              {content.homepage_secondary_cta || "Lösungen ansehen"}
             </Link>
           </div>
         </div>

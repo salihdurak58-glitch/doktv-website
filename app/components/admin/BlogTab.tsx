@@ -45,7 +45,7 @@ export default function BlogTab() {
   }
 
   useEffect(() => {
-    loadPosts();
+    void Promise.resolve().then(loadPosts);
   }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

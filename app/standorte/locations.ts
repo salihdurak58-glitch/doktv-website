@@ -1,7 +1,7 @@
 export type LocationType = "Apotheke" | "Arztpraxis";
 
 export type Location = {
-  id: number;
+  id: string;
   name: string;
   type: LocationType;
   district: string;
@@ -12,11 +12,13 @@ export type Location = {
   description: string;
   lat: number;
   lng: number;
+  isActive?: boolean;
+  sortOrder?: number;
 };
 
 export const locations: Location[] = [
   {
-    id: 1,
+    id: "fallback-1",
     name: "Apotheke Mitte",
     type: "Apotheke",
     district: "Berlin-Mitte",
@@ -30,7 +32,7 @@ export const locations: Location[] = [
     lng: 13.413215,
   },
   {
-    id: 2,
+    id: "fallback-2",
     name: "Arztpraxis Charlottenburg",
     type: "Arztpraxis",
     district: "Charlottenburg",
@@ -44,7 +46,7 @@ export const locations: Location[] = [
     lng: 13.312419,
   },
   {
-    id: 3,
+    id: "fallback-3",
     name: "Apotheke Neukölln",
     type: "Apotheke",
     district: "Neukölln",
