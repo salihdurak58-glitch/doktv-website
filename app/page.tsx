@@ -438,7 +438,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-blue-600 px-6 py-24 text-center text-white">
+      <section className="bg-slate-950 px-6 py-24 text-center text-white">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-3xl font-black md:text-5xl">
             Bereit für mehr Sichtbarkeit mit DokTV?
