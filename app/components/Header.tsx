@@ -46,6 +46,9 @@ export default function Header() {
           >
             Über uns
           </Link>
+          <Link href="/referenzen" className="hover:text-black">
+            Referenzen
+          </Link>
           <Link href="/kontakt" className="hover:text-black">
             Kontakt
           </Link>
