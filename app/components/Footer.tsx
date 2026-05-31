@@ -20,6 +20,7 @@ export default function Footer() {
             <Link href="/arztpraxen">Arztpraxen</Link>
             <Link href="/hersteller">Hersteller</Link>
             <Link href="/standorte">Standorte</Link>
+            <Link href="/referenzen">Referenzen</Link>
             <Link href="/preise">Preise</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/kontakt">Kontakt</Link>

@@ -1,8 +1,10 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Image from "next/image";
 import Link from "next/link";
 import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
 import { getSiteContent } from "@/app/lib/content/get-site-content";
+import { doktvReferences } from "@/app/lib/references";
 
 export async function generateMetadata() {
   return generatePageMetadata("/");
@@ -35,6 +37,29 @@ const benefits = [
   "Stärkere Sichtbarkeit für Herstellerkampagnen",
   "Professionelle Kommunikation direkt am Standort",
   "Persönliche Beratung für die passende Lösung",
+];
+
+const processSteps = [
+  {
+    title: "Beratung & Standortanalyse",
+    text: "Wir prüfen gemeinsam, wo ein Display sinnvoll ist, welche Zielgruppe erreicht werden soll und welche Inhalte für Ihren Standort relevant sind.",
+  },
+  {
+    title: "Display, Installation & Einrichtung",
+    text: "DokTV begleitet die technische Umsetzung vom passenden Display bis zur Einrichtung vor Ort, damit die Lösung im Alltag zuverlässig funktioniert.",
+  },
+  {
+    title: "Inhalte verwalten und Kampagnen ausspielen",
+    text: "Angebote, Hinweise und Kampagnen können flexibel aktualisiert und gezielt für Apotheke, Praxis oder Herstellerwerbung ausgespielt werden.",
+  },
+];
+
+const packageItems = [
+  "Professionelles Display",
+  "Einrichtung vor Ort",
+  "Content-Planung",
+  "Fernverwaltung",
+  "Support",
 ];
 
 const targetGroups = [
@@ -240,6 +265,43 @@ export default async function HomePage() {
       </section>
 
       <section className="px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-4xl">
+            <p className="font-semibold text-blue-600">So funktioniert DokTV</p>
+
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Von der ersten Einschätzung bis zur laufenden Ausspielung.
+            </h2>
+
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              DokTV ist so aufgebaut, dass Apotheken, Praxen und Hersteller
+              schnell starten können. Entscheidend sind ein passender Standort,
+              klare Inhalte und eine einfache Verwaltung.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-8 lg:grid-cols-3">
+            {processSteps.map((step, index) => (
+              <div
+                key={step.title}
+                className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-lg font-black text-white">
+                  {index + 1}
+                </div>
+
+                <h3 className="mt-7 text-2xl font-black text-slate-950">
+                  {step.title}
+                </h3>
+
+                <p className="mt-5 leading-8 text-slate-600">{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2">
           <div>
             <p className="font-semibold text-blue-600">Vorteile</p>
@@ -271,6 +333,106 @@ export default async function HomePage() {
               >
                 {item}
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-100 px-6 py-24">
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1fr_520px]">
+          <div>
+            <p className="font-semibold text-blue-600">
+              Was ist im Paket enthalten?
+            </p>
+
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Alles, was Sie für eine sichtbare Display-Lösung brauchen.
+            </h2>
+
+            <p className="mt-6 text-lg leading-9 text-slate-600">
+              DokTV verbindet Technik, Einrichtung und Content-Struktur. So
+              entsteht nicht nur ein Bildschirm am Standort, sondern eine
+              nutzbare Kommunikationsfläche für Angebote, Hinweise und
+              Kampagnen.
+            </p>
+
+            <Link
+              href="/kontakt"
+              className="mt-8 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-bold text-white transition hover:bg-blue-500"
+            >
+              Paket besprechen
+            </Link>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {packageItems.map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl bg-white p-6 font-semibold text-slate-700 shadow-sm"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-4xl">
+            <p className="font-semibold text-blue-600">Referenzen</p>
+
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Erfolgreich im Einsatz in Berliner Apotheken
+            </h2>
+
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              Unsere Referenzen zeigen echte DokTV-Installationen in Berlin –
+              sichtbar im Schaufenster und zentral steuerbar.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-8 lg:grid-cols-3">
+            {doktvReferences.map((reference) => (
+              <article
+                key={reference.title}
+                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+              >
+                <div className="relative aspect-[4/3] bg-slate-100">
+                  <Image
+                    src={reference.images[0].src}
+                    alt={reference.images[0].alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="p-7">
+                  <p className="font-semibold text-blue-600">
+                    {reference.location}
+                  </p>
+
+                  <h3 className="mt-3 text-2xl font-black text-slate-950">
+                    {reference.title}
+                  </h3>
+
+                  <p className="mt-2 font-semibold text-slate-700">
+                    {reference.address}
+                  </p>
+
+                  <p className="mt-5 leading-8 text-slate-600">
+                    {reference.summary}
+                  </p>
+
+                  <Link
+                    href="/referenzen"
+                    className="mt-7 inline-flex rounded-2xl bg-slate-950 px-6 py-3 font-bold text-white transition hover:bg-blue-600"
+                  >
+                    Referenz ansehen
+                  </Link>
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -441,19 +603,19 @@ export default async function HomePage() {
       <section className="bg-slate-950 px-6 py-24 text-center text-white">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-3xl font-black md:text-5xl">
-            Bereit für mehr Sichtbarkeit mit DokTV?
+            Machen Sie Ihr Schaufenster oder Wartezimmer sichtbar
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100">
-            Lassen Sie uns gemeinsam prüfen, welche Display-Lösung zu Ihrem
-            Standort passt. Kostenlos, unverbindlich und klar verständlich.
+            Wir prüfen gemeinsam, welche DokTV-Lösung zu Ihrer Apotheke, Praxis
+            oder Kampagne passt.
           </p>
 
           <Link
             href="/kontakt"
             className="mt-10 inline-flex rounded-2xl bg-white px-10 py-5 font-black text-blue-700 shadow-2xl transition hover:bg-slate-100"
           >
-            Beratung anfragen
+            Kostenlose Beratung anfragen
           </Link>
         </div>
       </section>

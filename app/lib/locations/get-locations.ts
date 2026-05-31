@@ -38,6 +38,19 @@ function toLocation(row: LocationRow): Location {
   };
 }
 
+function isPublicTestLocation(location: Location): boolean {
+  const searchableValues = [
+    location.name,
+    location.district,
+    location.address,
+    location.description,
+  ]
+    .filter(Boolean)
+    .map((value) => value.toLowerCase());
+
+  return searchableValues.some((value) => /\btest\b/.test(value));
+}
+
 async function getHiddenFallbackIds(): Promise<string[]> {
   try {
     const supabase = await createSupabaseServerClient();
@@ -60,7 +73,10 @@ async function getHiddenFallbackIds(): Promise<string[]> {
 async function getVisibleFallbackLocations() {
   const hiddenIds = await getHiddenFallbackIds();
 
-  return fallbackLocations.filter((location) => !hiddenIds.includes(location.id));
+  return fallbackLocations.filter(
+    (location) =>
+      !hiddenIds.includes(location.id) && !isPublicTestLocation(location)
+  );
 }
 
 export async function getPublicLocations(): Promise<Location[]> {
@@ -78,7 +94,9 @@ export async function getPublicLocations(): Promise<Location[]> {
       return getVisibleFallbackLocations();
     }
 
-    const dbLocations = ((data || []) as LocationRow[]).map(toLocation);
+    const dbLocations = ((data || []) as LocationRow[])
+      .map(toLocation)
+      .filter((location) => !isPublicTestLocation(location));
     const visibleFallbackLocations = await getVisibleFallbackLocations();
 
     return [...dbLocations, ...visibleFallbackLocations].sort(
