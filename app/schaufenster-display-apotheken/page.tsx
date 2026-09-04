@@ -1,197 +1,82 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Link from "next/link";
+import { CheckList, Container, CTASection, Eyebrow, FeatureCard, ImagePanel, PrimaryButton, PricingTeaser, SecondaryButton, SectionHeading } from "../components/PublicUI";
 
 export const metadata = {
-  title:
-    "Schaufenster Display Apotheke | Digital Signage Apotheke – DokTV",
-  description:
-    "Digitale Schaufenster Displays für Apotheken. Mehr Sichtbarkeit, mehr Kunden und moderne Werbung im Gesundheitsbereich.",
+  title: "Schaufenster Display Apotheke | Digital Signage Apotheke – DokTV",
+  description: "Digitale Schaufenster Displays für Apotheken. Hardware, Werbeinhalte und laufende Betreuung aus einer Hand.",
 };
 
 const benefits = [
-  "Mehr Aufmerksamkeit im Schaufenster",
-  "Angebote und Aktionen besser sichtbar",
-  "Moderne Außenwirkung für Apotheken",
-  "Flexible Inhalte ohne Druckkosten",
-  "Gezielte Kundenansprache bei Laufkundschaft",
-  "Perfekt für stark frequentierte Standorte",
+  { title: "Sichtbar im Vorbeigehen", text: "Bewegte Inhalte geben Angeboten, Aktionen und Gesundheitsinformationen mehr Präsenz im Straßenbild." },
+  { title: "Schnell aktualisiert", text: "Inhalte wechseln ohne Druck, Versand oder manuelles Austauschen im Schaufenster." },
+  { title: "Professionell betreut", text: "DokTV erstellt die Werbeinhalte und übernimmt die technische Ausspielung für Ihren Standort." },
 ];
 
-const useCases = [
-  "Angebote und Aktionen",
-  "Kosmetikprodukte",
-  "OTC-Produkte",
-  "Saisonale Kampagnen",
-  "Notdienst-Hinweise",
-  "Gesundheitsinformationen",
-];
+const content = ["Angebote und Aktionen", "OTC- und Kosmetikprodukte", "Saisonale Gesundheitskampagnen", "Notdienst-Hinweise", "Service- und Öffnungszeiten", "Gesundheitsinformationen"];
 
 export default function SchaufensterDisplayPage() {
   return (
-    <main className="bg-white text-slate-900">
+    <main className="bg-[#f7faf9] text-slate-900">
       <Header />
-
-      {/* HERO */}
-      <section className="bg-slate-950 px-6 py-28 text-white">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-5 inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-300">
-            Digital Signage für Apotheken
-          </p>
-
-          <h1 className="text-4xl font-black leading-tight md:text-6xl">
-            Schaufenster Displays für Apotheken – mehr Sichtbarkeit im Alltag
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            Digitale Schaufenster Displays helfen Apotheken dabei, Angebote,
-            Aktionen und Gesundheitsinformationen sichtbar zu machen. Bewegte
-            Inhalte ziehen die Aufmerksamkeit von Passanten auf sich und sorgen
-            dafür, dass Ihre Apotheke nicht übersehen wird.
-          </p>
-
-          <div className="mt-10 flex gap-4">
-            <Link
-              href="/kontakt"
-              className="rounded-xl bg-blue-600 px-8 py-4 font-bold text-white"
-            >
-              Beratung anfragen
-            </Link>
-
-            <Link
-              href="/preise"
-              className="rounded-xl border border-white px-8 py-4 font-bold"
-            >
-              Preise ansehen
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* INTRO */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-5xl space-y-8 text-lg leading-8 text-slate-700">
-          <h2 className="text-3xl font-bold">
-            Warum Schaufenster Displays für Apotheken entscheidend sind
-          </h2>
-
-          <p>
-            In vielen Städten entscheiden Sekunden darüber, ob ein Kunde stehen
-            bleibt oder weitergeht. Klassische Plakate oder statische Werbung
-            werden häufig übersehen. Digitale Displays hingegen bewegen sich,
-            wechseln Inhalte und erzeugen automatisch mehr Aufmerksamkeit.
-          </p>
-
-          <p>
-            Für Apotheken bedeutet das: Angebote, Aktionen und wichtige
-            Informationen werden deutlich besser wahrgenommen. Gerade im
-            Schaufenster entsteht eine direkte Verbindung zu Passanten, noch
-            bevor diese die Apotheke betreten.
-          </p>
-
-          <p>
-            Mehr dazu finden Sie auf unserer SEO-Seite{" "}
-            <Link
-              href="/werbung-apotheke-display"
-              className="font-bold text-blue-600 underline"
-            >
-              Werbung Apotheke Display
-            </Link>
-            .
-          </p>
-        </div>
-      </section>
-
-      {/* BENEFITS */}
-      <section className="bg-slate-100 px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold mb-10">
-            Vorteile von Schaufenster Displays
-          </h2>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {benefits.map((item) => (
-              <div key={item} className="rounded-2xl bg-white p-6 shadow">
-                {item}
+      <section className="page-hero overflow-hidden py-16 sm:py-20 lg:py-24">
+        <Container>
+          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <div>
+              <Eyebrow>Digital Signage für Apotheken</Eyebrow>
+              <h1 className="mt-6 text-balance text-4xl font-black leading-[1.03] tracking-[-0.045em] text-slate-950 sm:text-6xl">Ihr digitales Schaufenster arbeitet auch nach Ladenschluss.</h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">Helle Schaufenster-Displays bringen Angebote, Gesundheitsthemen und Services in Bewegung. DokTV liefert Display, Inhalte und laufende Betreuung aus einer Hand.</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <PrimaryButton href="/kontakt">Kostenlose Beratung</PrimaryButton>
+                <SecondaryButton href="/referenzen">Echte Installationen</SecondaryButton>
               </div>
+            </div>
+            <ImagePanel src="/referenzen/sky-apotheke-kudamm-2.jpg" alt="Digitales Schaufenster-Display der Sky Apotheke am Kurfürstendamm" priority className="min-h-[420px] lg:min-h-[580px]" />
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white py-20 sm:py-24">
+        <Container>
+          <SectionHeading eyebrow="Mehr als ein Bildschirm" title="Vom Schaufenster zur digitalen Fläche" text="Die Technik bleibt im Hintergrund. Im Vordergrund stehen Inhalte, die zu Ihrer Apotheke und zum Moment passen." />
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {benefits.map((benefit) => <FeatureCard key={benefit.title} title={benefit.title}>{benefit.text}</FeatureCard>)}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20 sm:py-28">
+        <Container>
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <ImagePanel src="/referenzen/sky-apotheke-kreuzberg-2.jpg" alt="Schaufenster-Display der Sky Apotheke Kreuzberg bei Nacht" className="min-h-[420px] lg:min-h-[540px]" />
+            <div>
+              <SectionHeading eyebrow="Ihre Inhalte" title="Relevant für Alltag, Saison und Standort" text="Sie entscheiden, welche Werbung gezeigt wird. DokTV gestaltet und steuert die Inhalte passend zu Ihrer Apotheke." />
+              <div className="mt-8"><CheckList items={content} /></div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-slate-950 py-20 text-white sm:py-28">
+        <Container>
+          <SectionHeading eyebrow="Alles aus einer Hand" title="Ein Ansprechpartner für Technik und Inhalte" text="Von der Größenwahl bis zur laufenden Ausspielung bleibt der Prozess einfach und nachvollziehbar." light />
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {["Standort & Display planen", "Montage & Einrichtung", "Inhalte laufend betreuen"].map((item, index) => (
+              <div key={item} className="rounded-3xl border border-white/10 bg-white/5 p-7"><span className="text-sm font-black text-teal-300">0{index + 1}</span><h3 className="mt-5 text-xl font-black">{item}</h3></div>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* USE CASES */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold mb-10">
-            Typische Inhalte für Apotheken Displays
-          </h2>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {useCases.map((item) => (
-              <div key={item} className="rounded-2xl border p-6">
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
+      <section className="py-20 sm:py-28">
+        <Container>
+          <SectionHeading eyebrow="Klare Kosten" title="Die passende Größe für Ihr Schaufenster" text="Einmalige Hardware, transparenter monatlicher Service und eine optionale Notdienstanzeige." align="center" />
+          <div className="mt-12"><PricingTeaser /></div>
+          <div className="mt-8 text-center"><SecondaryButton href="/preise">Alle Preisdetails</SecondaryButton></div>
+        </Container>
       </section>
 
-      {/* SEO BLOCK */}
-      <section className="bg-slate-950 px-6 py-24 text-white">
-        <div className="mx-auto max-w-5xl space-y-7 text-lg leading-9 text-slate-300">
-          <h2 className="text-3xl font-bold text-white">
-            Schaufenster Display Apotheke in Berlin und Deutschland
-          </h2>
-
-          <p>
-            Besonders in Berlin ist der Wettbewerb zwischen Apotheken hoch.
-            Viele Standorte befinden sich in stark frequentierten Lagen mit
-            viel Laufkundschaft. Ein digitales Schaufenster Display kann hier
-            den entscheidenden Unterschied machen.
-          </p>
-
-          <p>
-            Ergänzend dazu finden Sie unsere lokale Seite zu{" "}
-            <Link
-              href="/digital-signage-berlin"
-              className="font-bold underline"
-            >
-              Digital Signage Berlin
-            </Link>
-            .
-          </p>
-
-          <p>
-            Einen Überblick über Preise erhalten Sie auf unserer Seite{" "}
-            <Link
-              href="/preise"
-              className="font-bold underline"
-            >
-              Preise
-            </Link>
-            .
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-blue-600 px-6 py-20 text-center text-white">
-        <h2 className="text-3xl font-bold">
-          Mehr Kunden durch bessere Sichtbarkeit
-        </h2>
-
-        <p className="mt-4">
-          Lassen Sie sich kostenlos beraten und finden Sie die passende Lösung.
-        </p>
-
-        <Link
-          href="/kontakt"
-          className="mt-6 inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold"
-        >
-          Jetzt anfragen
-        </Link>
-      </section>
-
+      <CTASection title="Machen wir Ihr Schaufenster sichtbar." text="Wir schauen gemeinsam auf Standort, Blickwinkel und die passende Displaygröße." />
       <Footer />
     </main>
   );

@@ -3,147 +3,72 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { CheckList, Container, CTASection, Eyebrow } from "../components/PublicUI";
 import { doktvReferences } from "../lib/references";
 
 export const metadata: Metadata = {
-  title: "Referenzen | DokTV",
-  description:
-    "Echte Digital-Signage-Installationen von DokTV in Berliner Apotheken.",
+  title: "Referenzen | Echte DokTV Installationen in Berlin",
+  description: "Echte Digital-Signage-Installationen von DokTV in Berliner Apotheken – Wedding, Kudamm und Kreuzberg.",
+  alternates: { canonical: "https://doktv.de/referenzen" },
 };
 
 export default function ReferenzenPage() {
   return (
-    <main className="min-h-screen bg-white text-slate-900">
+    <main className="overflow-hidden bg-white text-slate-900">
       <Header />
 
-      <section className="bg-slate-950 px-6 py-24 text-white">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-5 inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-300">
-            Referenzen
-          </p>
-
-          <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight md:text-6xl">
-            DokTV im Einsatz
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-            Echte Schaufenster-Displays in Berliner Apotheken – sichtbar,
-            professionell und zentral steuerbar.
-          </p>
-
-          <Link
-            href="/kontakt"
-            className="mt-10 inline-flex rounded-2xl bg-blue-600 px-8 py-4 text-center font-bold text-white shadow-xl shadow-blue-600/30 transition hover:bg-blue-500"
-          >
-            Ähnliche Lösung anfragen
-          </Link>
-        </div>
+      <section className="page-hero py-18 sm:py-24 lg:py-28">
+        <Container className="grid items-end gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <Eyebrow>Echte Installationen</Eyebrow>
+            <h1 className="mt-6 text-balance text-5xl font-black leading-[0.98] tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-7xl">DokTV im echten Einsatz.</h1>
+            <p className="mt-7 max-w-2xl text-xl leading-8 text-slate-600">Drei Berliner Apotheken. Große Bilder. Echte Schaufenster-Displays – keine Renderings und keine Stockfotos.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {doktvReferences.map((reference, index) => (
+              <div key={reference.title} className={`relative overflow-hidden rounded-2xl ${index === 1 ? "mt-8 aspect-[3/4]" : "aspect-[3/4]"}`}>
+                <Image src={reference.images[1].src} alt={reference.images[1].alt} fill priority={index === 0} sizes="(max-width: 1024px) 33vw, 18vw" className="object-cover" />
+              </div>
+            ))}
+          </div>
+        </Container>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="space-y-12">
-          {doktvReferences.map((reference, index) => {
-            const imageFirst = index % 2 === 0;
-
-            return (
-              <article
-                key={reference.title}
-                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/70"
-              >
-                <div className="grid gap-0 lg:grid-cols-2">
-                  <div
-                    className={`bg-slate-100 p-4 sm:p-6 ${
-                      imageFirst ? "lg:order-1" : "lg:order-2"
-                    }`}
-                  >
-                    <div className="grid gap-4">
-                      {reference.images.map((image, imageIndex) => (
-                        <div
-                          key={image.src}
-                          className={
-                            imageIndex === 0
-                              ? "relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-200"
-                              : "relative aspect-[16/10] overflow-hidden rounded-2xl bg-slate-200"
-                          }
-                        >
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                            className="object-cover"
-                            priority={index === 0 && imageIndex === 0}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div
-                    className={`p-7 sm:p-10 ${
-                      imageFirst ? "lg:order-2" : "lg:order-1"
-                    }`}
-                  >
-                    <p className="font-semibold text-blue-600">
-                      {reference.location}
-                    </p>
-
-                    <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
-                      {reference.title}
-                    </h2>
-
-                    <p className="mt-3 font-semibold text-slate-700">
-                      {reference.address}
-                    </p>
-
-                    <p className="mt-6 text-lg leading-8 text-slate-600">
-                      {reference.description}
-                    </p>
-
-                    <ul className="mt-7 grid gap-3 text-slate-700">
-                      {reference.details.map((detail) => (
-                        <li
-                          key={detail}
-                          className="rounded-2xl bg-slate-100 px-5 py-3 font-semibold"
-                        >
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      href="/kontakt"
-                      className="mt-8 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-bold text-white transition hover:bg-blue-500"
-                    >
-                      Ähnliche Lösung anfragen
-                    </Link>
-                  </div>
+      <section className="pb-20 lg:pb-28">
+        <Container className="space-y-16 lg:space-y-24">
+          {doktvReferences.map((reference, index) => (
+            <article key={reference.title} id={reference.location.toLowerCase()} className="grid items-center gap-7 lg:grid-cols-12 lg:gap-10">
+              <div className={`grid gap-4 sm:grid-cols-5 lg:col-span-7 ${index % 2 ? "lg:order-2" : ""}`}>
+                <div className="relative min-h-[27rem] overflow-hidden rounded-[2rem] sm:col-span-3 lg:min-h-[37rem]">
+                  <Image src={reference.images[0].src} alt={reference.images[0].alt} fill sizes="(max-width: 1024px) 60vw, 40vw" className="object-cover" priority={index === 0} />
                 </div>
-              </article>
-            );
-          })}
-        </div>
+                <div className="relative min-h-[20rem] overflow-hidden rounded-[2rem] sm:col-span-2 sm:mt-12 lg:min-h-[31rem]">
+                  <Image src={reference.images[1].src} alt={reference.images[1].alt} fill sizes="(max-width: 1024px) 40vw, 25vw" className="object-cover" />
+                </div>
+              </div>
+
+              <div className={`lg:col-span-5 ${index % 2 ? "lg:order-1" : ""}`}>
+                <p className="text-sm font-black uppercase tracking-[0.16em] text-teal-700">{reference.location}</p>
+                <h2 className="mt-4 text-4xl font-black tracking-[-0.04em] text-slate-950 lg:text-5xl">{reference.title}</h2>
+                <p className="mt-4 font-bold text-slate-700">{reference.address}</p>
+                <p className="mt-6 text-lg leading-8 text-slate-600">{reference.description}</p>
+                <div className="mt-7"><CheckList items={reference.details} /></div>
+                <Link href="/kontakt" className="button-primary mt-8">Ähnliche Lösung anfragen <span aria-hidden="true">→</span></Link>
+              </div>
+            </article>
+          ))}
+        </Container>
       </section>
 
-      <section className="bg-slate-950 px-6 py-24 text-center text-white">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl font-black md:text-5xl">
-            Möchten Sie ähnliche Displays für Ihre Apotheke oder Praxis?
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100">
-            Wir prüfen gemeinsam, welche DokTV-Lösung zu Ihrem Standort passt.
-          </p>
-
-          <Link
-            href="/kontakt"
-            className="mt-10 inline-flex rounded-2xl bg-white px-10 py-5 font-black text-blue-700 shadow-2xl transition hover:bg-slate-100"
-          >
-            Kostenlose Beratung anfragen
-          </Link>
-        </div>
+      <section className="bg-[#f6f9f8] py-18 lg:py-24">
+        <Container className="text-center">
+          <Eyebrow>Berlin vor Ort</Eyebrow>
+          <h2 className="mx-auto mt-5 max-w-3xl text-balance text-3xl font-black tracking-[-0.035em] text-slate-950 sm:text-5xl">Technik wird überzeugend, wenn man sie im Alltag sieht.</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Unsere Referenzen zeigen, wie digitale Inhalte im Schaufenster sichtbar werden. Welche Lösung zu Ihrem Standort passt, besprechen wir persönlich.</p>
+        </Container>
       </section>
 
+      <CTASection title="Soll Ihr Standort die nächste Referenz werden?" text="Wir prüfen gemeinsam, welche Displaygröße und welcher Einsatzort zu Ihrer Apotheke oder Praxis passen." />
       <Footer />
     </main>
   );

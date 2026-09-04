@@ -15,9 +15,9 @@ export default function Page() {
       <Header />
 
       {/* HERO */}
-      <section className="bg-slate-950 text-white px-6 py-24">
+      <section className="page-hero px-6 py-20 text-slate-900">
         <div className="max-w-5xl mx-auto">
-          <p className="text-blue-400 font-semibold mb-4">
+          <p className="mb-4 font-semibold text-teal-700">
             Schaufenster Display Apotheke
           </p>
 
@@ -25,7 +25,7 @@ export default function Page() {
             Schaufenster Display für Apotheken: Mehr Sichtbarkeit direkt am Standort
           </h1>
 
-          <p className="mt-6 text-lg text-slate-300 leading-8">
+          <p className="mt-6 text-lg leading-8 text-slate-600">
             Das Schaufenster ist die wichtigste Werbefläche jeder Apotheke.
             Mit einem digitalen Display verwandeln Sie diesen Bereich in einen
             echten Blickfang und erreichen mehr Kunden – jeden Tag.
@@ -221,18 +221,18 @@ export default function Page() {
       </section>
 
       {/* CTA */}
-      <section className="bg-blue-600 text-white text-center py-20 px-6">
+      <section className="bg-teal-700 px-6 py-20 text-center text-white">
         <h2 className="text-3xl font-bold">
           Mach dein Schaufenster zum Kundenmagneten
         </h2>
 
-        <p className="mt-4 text-blue-100">
+        <p className="mt-4 text-teal-100">
           Lass dich kostenlos beraten und entdecke, wie ein Display deine Apotheke verändert.
         </p>
 
         <a
           href="/kontakt"
-          className="mt-8 inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold"
+          className="mt-8 inline-block rounded-xl bg-white px-8 py-4 font-semibold text-teal-800"
         >
           Beratung anfragen
         </a>

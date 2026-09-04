@@ -1,14 +1,149 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbfcfb;
+  --foreground: #172126;
+  --brand: #0f766e;
+  --brand-dark: #0b4f4a;
+  --brand-soft: #e8f7f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #99f6e4;
+  color: #0f172a;
+}
+
+.surface-card {
+  border: 1px solid rgb(226 232 240 / 0.85);
+  border-radius: 2rem;
+  background: rgb(255 255 255 / 0.92);
+  box-shadow: 0 20px 55px -38px rgb(15 23 42 / 0.42);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.surface-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(153 246 228 / 0.9);
+  box-shadow: 0 28px 65px -38px rgb(15 118 110 / 0.34);
+}
+
+.button-primary,
+.button-secondary,
+.button-secondary-dark {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border-radius: 1rem;
+  padding: 0.85rem 1.35rem;
+  font-weight: 800;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.button-primary {
+  background: var(--brand);
+  color: white;
+  box-shadow: 0 16px 35px -18px rgb(15 118 110 / 0.8);
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+  background: var(--brand-dark);
+}
+
+.button-primary:hover .button-arrow {
+  transform: translateX(3px);
+}
+
+.button-arrow {
+  transition: transform 180ms ease;
+}
+
+.button-secondary {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #172126;
+}
+
+.button-secondary:hover {
+  transform: translateY(-2px);
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.button-secondary-dark {
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(255 255 255 / 0.08);
+  color: white;
+}
+
+.button-secondary-dark:hover {
+  transform: translateY(-2px);
+  background: rgb(255 255 255 / 0.14);
+}
+
+.image-panel {
+  min-height: 18rem;
+  border-radius: 2rem;
+  background: #e2e8f0;
+  box-shadow: 0 26px 70px -42px rgb(15 23 42 / 0.65);
+}
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 80% 0%, rgb(45 212 191 / 0.18), transparent 34rem),
+    linear-gradient(180deg, #f7fbfa 0%, #ffffff 100%);
+}
+
+.prose-public a {
+  color: var(--brand);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.prose-public p {
+  color: #475569;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    padding-bottom: 0;
+  }
 }
 
 .admin-input {

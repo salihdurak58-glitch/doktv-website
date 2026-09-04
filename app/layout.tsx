@@ -1,5 +1,6 @@
 import "./globals.css";
-import Script from "next/script";
+import ConsentManager from "./components/ConsentManager";
+import MobileStickyCta from "./components/MobileStickyCta";
 
 export const metadata = {
   title: "DokTV – Digital Signage für Apotheken & Arztpraxen",
@@ -32,21 +33,9 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body>
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-FXSC8MLRXM"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-FXSC8MLRXM');
-          `}
-        </Script>
-
         {children}
+        <MobileStickyCta />
+        <ConsentManager />
       </body>
     </html>
   );

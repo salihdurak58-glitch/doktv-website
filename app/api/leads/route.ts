@@ -2,13 +2,6 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -28,23 +21,47 @@ function cleanPhone(phone: string) {
 
 export async function POST(req: Request) {
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!resendApiKey || !supabaseUrl || !supabaseServiceRoleKey) {
+      console.error("Lead API configuration is incomplete.");
+      return NextResponse.json(
+        { error: "Das Kontaktformular ist derzeit nicht verfügbar." },
+        { status: 503 }
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const body = await req.json();
 
-    const {
-      name,
-      company,
-      email,
-      phone,
-      customer_type,
-      message,
-      website,
-    } = body;
+    const name = String(body.name || "").trim();
+    const company = String(body.company || "").trim();
+    const industry = String(body.industry || "").trim();
+    const location = String(body.location || "").trim();
+    const email = String(body.email || "").trim();
+    const phone = String(body.phone || "").trim();
+    const desired_solution = String(body.desired_solution || "").trim();
+    const message = String(body.message || "").trim();
+    const privacy_accepted = Boolean(body.privacy_accepted);
+    const website = String(body.website || "").trim();
 
     if (website) {
       return NextResponse.json({ success: true });
     }
 
-    if (!name || !email || !message || !customer_type) {
+    if (
+      !name ||
+      !industry ||
+      !location ||
+      !email ||
+      !phone ||
+      !desired_solution ||
+      !message ||
+      !privacy_accepted
+    ) {
       return NextResponse.json(
         { error: "Bitte alle Pflichtfelder ausfüllen." },
         { status: 400 }
@@ -60,11 +77,23 @@ export async function POST(req: Request) {
 
     const safeName = escapeHtml(name);
     const safeCompany = escapeHtml(company || "-");
+    const safeIndustry = escapeHtml(industry);
+    const safeLocation = escapeHtml(location);
     const safeEmail = escapeHtml(email);
     const safePhone = escapeHtml(phone || "");
-    const safeCustomerType = escapeHtml(customer_type);
+    const safeDesiredSolution = escapeHtml(desired_solution);
     const safeMessage = escapeHtml(message).replaceAll("\n", "<br />");
     const phoneDigits = cleanPhone(phone || "");
+    const storedMessage = [
+      `Gewünschte Lösung: ${desired_solution}`,
+      `Standort: ${location}`,
+      `Branche: ${industry}`,
+      "",
+      message,
+      "",
+      "DSGVO: Datenschutzhinweise akzeptiert.",
+    ].join("\n");
+    const safeStoredMessage = escapeHtml(storedMessage).replaceAll("\n", "<br />");
 
     const { error: supabaseError } = await supabase.from("leads").insert([
       {
@@ -72,8 +101,8 @@ export async function POST(req: Request) {
         company,
         email,
         phone,
-        customer_type,
-        message,
+        customer_type: industry,
+        message: storedMessage,
       },
     ]);
 
@@ -89,7 +118,7 @@ export async function POST(req: Request) {
       from: "DokTV Kontaktformular <info@doktv.de>",
       to: [process.env.LEAD_NOTIFICATION_EMAIL || "info@doktv.de"],
       replyTo: `${name} <${email}>`,
-      subject: `Neue Anfrage von ${name} (${customer_type})`,
+      subject: `Neue Anfrage von ${name} (${desired_solution})`,
       html: `
         <div style="font-family: Arial, sans-serif; background:#f7fafb; padding:24px;">
           <div style="max-width:640px; margin:auto; background:white; border-radius:16px; padding:28px; border:1px solid #e6eef1;">
@@ -140,13 +169,21 @@ export async function POST(req: Request) {
 
             <p><strong>Name:</strong> ${safeName}</p>
             <p><strong>Firma:</strong> ${safeCompany}</p>
+            <p><strong>Branche:</strong> ${safeIndustry}</p>
+            <p><strong>Standort:</strong> ${safeLocation}</p>
             <p><strong>E-Mail:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
             <p><strong>Telefon:</strong> ${safePhone || "-"}</p>
-            <p><strong>Typ:</strong> ${safeCustomerType}</p>
+            <p><strong>Gewünschte Lösung:</strong> ${safeDesiredSolution}</p>
+            <p><strong>DSGVO:</strong> Datenschutzhinweise akzeptiert.</p>
 
             <p><strong>Nachricht:</strong></p>
             <div style="background:#f7fafb; padding:15px; border-radius:10px; line-height:1.6;">
               ${safeMessage}
+            </div>
+
+            <p><strong>Gespeicherte Lead-Zusammenfassung:</strong></p>
+            <div style="background:#f7fafb; padding:15px; border-radius:10px; line-height:1.6;">
+              ${safeStoredMessage}
             </div>
           </div>
         </div>

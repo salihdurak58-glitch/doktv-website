@@ -81,21 +81,20 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7fafb] text-[#334c59]">
+    <main className="min-h-screen bg-[#f7faf9] text-slate-900">
       <Header />
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <p className="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#6fa8b0] shadow-sm">
-          Standortfinder
+      <section className="page-hero mx-auto max-w-7xl px-6 py-16 sm:py-20">
+        <p className="mb-5 inline-flex rounded-full border border-teal-200 bg-teal-50 px-4 py-2 text-sm font-extrabold uppercase tracking-[0.16em] text-teal-800">
+          Reale Standorte
         </p>
 
-        <h1 className="max-w-4xl text-5xl font-bold md:text-7xl">
-          Wählen Sie Ihre Werbestandorte in Berlin.
+        <h1 className="max-w-4xl text-4xl font-black tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+          DokTV Standorte in Berlin.
         </h1>
 
         <p className="mt-6 max-w-3xl text-lg text-[#5d737d]">
-          Sehen Sie verfügbare Apotheken und Arztpraxen, vergleichen Sie Preise
-          und senden Sie direkt eine Anfrage.
+          Entdecken Sie reale Installationen und fragen Sie passende Werbeflächen direkt bei uns an. Verfügbarkeit und Konditionen klären wir persönlich.
         </p>
       </section>
 
@@ -108,8 +107,8 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
                 onClick={() => setFilter(item)}
                 className={`rounded-full px-5 py-3 text-sm font-semibold ${
                   filter === item
-                    ? "bg-[#334c59] text-white"
-                    : "bg-white text-[#334c59]"
+                    ? "bg-teal-600 text-white"
+                    : "border border-slate-200 bg-white text-slate-700"
                 }`}
               >
                 {item}
@@ -117,8 +116,8 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
             ))}
           </div>
 
-          <div className="mb-8 rounded-[2rem] bg-[#334c59] p-6 text-white">
-            <div className="overflow-hidden rounded-[1.5rem] bg-[#6fa8b0]/40">
+          <div className="mb-8 rounded-[2rem] bg-slate-950 p-4 text-white sm:p-6">
+            <div className="overflow-hidden rounded-[1.5rem] bg-teal-900/40">
               {isLoaded ? (
                 <GoogleMap
                   mapContainerStyle={mapContainerStyle}
@@ -166,16 +165,17 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
               return (
                 <div
                   key={location.id}
-                  className={`rounded-3xl bg-white p-5 shadow ${
-                    isSelected ? "ring-2 ring-[#6fa8b0]" : ""
+                  className={`overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm ${
+                    isSelected ? "ring-2 ring-teal-500" : ""
                   }`}
                 >
-                  <div className="mb-5 flex h-40 items-center justify-center rounded-2xl bg-[#f7fafb]">
+                  <div className="relative mb-5 h-52 overflow-hidden rounded-2xl bg-slate-100">
                     <Image
                       src={location.image}
                       alt={location.name}
-                      width={160}
-                      height={70}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   </div>
 
@@ -188,14 +188,11 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
 
                   <p className="mt-2">{location.description}</p>
 
-                  <div className="mt-4 flex justify-between text-sm">
-                    <span>{location.monthlyPrice} €/Monat</span>
-                    <span>{location.yearlyPrice} €/Jahr</span>
-                  </div>
+                  <p className="mt-4 text-sm font-bold text-teal-700">Konditionen und Verfügbarkeit auf Anfrage</p>
 
                   <button
                     onClick={() => toggleLocation(location.id)}
-                    className="mt-4 w-full rounded-full bg-[#334c59] py-3 text-white"
+                    className="mt-4 w-full rounded-full bg-slate-950 py-3 font-bold text-white transition hover:bg-teal-700"
                   >
                     {isSelected ? "Auswahl entfernen" : "Standort auswählen"}
                   </button>
@@ -205,7 +202,7 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
           </div>
         </div>
 
-        <aside className="rounded-3xl bg-white p-6 shadow-xl">
+        <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-6 shadow-xl lg:sticky lg:top-28">
           <h2 className="text-xl font-bold">Ihre Auswahl</h2>
 
           <div className="mt-4 space-y-2">
@@ -218,14 +215,16 @@ export default function StandorteClient({ locations }: StandorteClientProps) {
             ))}
           </div>
 
-          <div className="mt-6">
-            <p>Monatlich: {monthlyTotal} €</p>
-            <p>Jährlich: {yearlyTotal} €</p>
-          </div>
+          {monthlyTotal > 0 || yearlyTotal > 0 ? (
+            <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm">
+              {monthlyTotal > 0 ? <p>Monatlich: {monthlyTotal} €</p> : null}
+              {yearlyTotal > 0 ? <p>Jährlich: {yearlyTotal} €</p> : null}
+            </div>
+          ) : null}
 
           <a
             href="/kontakt"
-            className="mt-6 block w-full rounded-full bg-[#334c59] py-3 text-center text-white"
+            className="mt-6 block w-full rounded-full bg-teal-600 py-3 text-center font-bold text-white transition hover:bg-teal-700"
           >
             Jetzt anfragen
           </a>

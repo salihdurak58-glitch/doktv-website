@@ -2,24 +2,24 @@
 
 import { useState } from "react";
 
-const customerTypes = [
-  "Apotheke",
-  "Arztpraxis",
-  "Hersteller / Marke",
-  "Agentur",
-  "Sonstiges Unternehmen",
-];
-
-const projectOptions = [
-  "Schaufenster Display",
+const solutionOptions = [
+  "55-Zoll-Display für Apotheke",
+  "65-Zoll-Display für Apotheke",
+  "Notdienstanzeiger",
+  "Schaufenster Display Apotheke",
+  "Digital Signage Apotheke",
   "Wartezimmer TV",
   "Hersteller Werbung",
-  "Digital Signage Berlin",
-  "Mehrere Standorte",
-  "Noch unsicher",
+  "Individuelle Anfrage",
 ];
 
-export default function KontaktForm() {
+const displaySelection: Record<string, string> = {
+  "55": "55-Zoll-Display für Apotheke",
+  "65": "65-Zoll-Display für Apotheke",
+  notdienst: "Notdienstanzeiger",
+};
+
+export default function KontaktForm({ initialDisplay }: { initialDisplay?: string }) {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{
     type: "success" | "error";
@@ -34,19 +34,32 @@ export default function KontaktForm() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const customerType = String(formData.get("customer_type") || "");
-    const projectType = String(formData.get("project_type") || "");
+    const industry = String(formData.get("industry") || "");
+    const location = String(formData.get("location") || "");
+    const desiredSolution = String(formData.get("desired_solution") || "");
     const message = String(formData.get("message") || "");
+    const privacyAccepted = formData.get("privacy_accepted") === "on";
+
+    if (!privacyAccepted) {
+      setStatus({
+        type: "error",
+        message:
+          "Bitte bestätigen Sie die Datenschutzhinweise, bevor Sie die Anfrage senden.",
+      });
+      setLoading(false);
+      return;
+    }
 
     const payload = {
       name: String(formData.get("name") || ""),
       company: String(formData.get("company") || ""),
+      industry,
+      location,
       email: String(formData.get("email") || ""),
       phone: String(formData.get("phone") || ""),
-      customer_type: customerType,
-      message: projectType
-        ? `Projektart: ${projectType}\n\n${message}`
-        : message,
+      desired_solution: desiredSolution,
+      message,
+      privacy_accepted: privacyAccepted,
       website: String(formData.get("website") || ""),
     };
 
@@ -87,6 +100,7 @@ export default function KontaktForm() {
 
   return (
     <form
+      id="anfrage"
       onSubmit={handleSubmit}
       className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-200/80 md:p-8"
     >
@@ -101,7 +115,7 @@ export default function KontaktForm() {
       />
 
       <div className="relative mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.18em] text-blue-600">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-teal-700">
           Anfrageformular
         </p>
 
@@ -146,7 +160,7 @@ export default function KontaktForm() {
 
             <div>
               <label className="mb-2 block text-sm font-bold text-slate-800">
-                Firma / Praxis / Apotheke
+                Firma
               </label>
               <input
                 name="company"
@@ -159,6 +173,47 @@ export default function KontaktForm() {
             <div className="grid gap-5 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-bold text-slate-800">
+                  Branche *
+                </label>
+                <input
+                  name="industry"
+                  type="text"
+                  required
+                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                  placeholder="z. B. Apotheke, Praxis, Hersteller"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-bold text-slate-800">
+                  Standort *
+                </label>
+                <input
+                  name="location"
+                  type="text"
+                  required
+                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                  placeholder="Ort, Bezirk oder Adresse"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-bold text-slate-800">
+                  Telefonnummer *
+                </label>
+                <input
+                  name="phone"
+                  type="tel"
+                  required
+                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                  placeholder="+49 ..."
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-bold text-slate-800">
                   E-Mail *
                 </label>
                 <input
@@ -167,18 +222,6 @@ export default function KontaktForm() {
                   required
                   className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
                   placeholder="name@email.de"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-bold text-slate-800">
-                  Telefon
-                </label>
-                <input
-                  name="phone"
-                  type="tel"
-                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                  placeholder="+49 ..."
                 />
               </div>
             </div>
@@ -198,45 +241,25 @@ export default function KontaktForm() {
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-bold text-slate-800">
-                Ich bin / wir sind *
-              </label>
-              <select
-                name="customer_type"
-                required
-                defaultValue=""
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
-              >
-                <option value="" disabled>
-                  Bitte auswählen
+          <div>
+            <label className="mb-2 block text-sm font-bold text-slate-800">
+              Gewünschte Lösung *
+            </label>
+            <select
+              name="desired_solution"
+              required
+              defaultValue={displaySelection[initialDisplay ?? ""] ?? ""}
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition focus:border-teal-600 focus:bg-white focus:ring-4 focus:ring-teal-100"
+            >
+              <option value="" disabled>
+                Bitte auswählen
+              </option>
+              {solutionOptions.map((type) => (
+                <option key={type} value={type}>
+                  {type}
                 </option>
-                {customerTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-bold text-slate-800">
-                Gewünschte Lösung
-              </label>
-              <select
-                name="project_type"
-                defaultValue=""
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
-              >
-                <option value="">Bitte auswählen</option>
-                {projectOptions.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </section>
 
@@ -266,6 +289,20 @@ export default function KontaktForm() {
           </div>
         </section>
 
+        <label className="flex gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+          <input
+            name="privacy_accepted"
+            type="checkbox"
+            required
+            className="mt-1 h-5 w-5 shrink-0 accent-blue-600"
+          />
+          <span>
+            Ich habe die Datenschutzhinweise gelesen und bin damit
+            einverstanden, dass meine Angaben zur Bearbeitung der Anfrage
+            verarbeitet werden. *
+          </span>
+        </label>
+
         {status && (
           <div
             className={`rounded-2xl border p-4 text-sm font-bold ${
@@ -281,7 +318,7 @@ export default function KontaktForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-2xl bg-slate-950 px-7 py-4 font-black text-white shadow-xl shadow-slate-300/80 transition hover:-translate-y-0.5 hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
+          className="w-full rounded-2xl bg-teal-600 px-7 py-4 font-black text-white shadow-xl shadow-teal-200/70 transition hover:-translate-y-0.5 hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
         >
           {loading ? "Wird gesendet..." : "Anfrage senden"}
         </button>
