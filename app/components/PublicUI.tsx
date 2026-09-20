@@ -160,9 +160,13 @@ export function PricingTeaser() {
         <p className="relative mt-4 leading-7 text-slate-300">
           Professionelle Werbeinhalte, Ausspielung und laufende Betreuung.
         </p>
-        <p className="relative mt-4 text-sm font-bold text-teal-200">
-          Optional: Notdienstanzeiger +{formatEuro(pricing.emergencyDisplay.price)} / Monat
-        </p>
+        <Link
+          href="/apotheken-notdienst-anzeiger"
+          className="relative mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal-200 transition hover:text-white"
+        >
+          Optional: Notdienst Anzeiger +{formatEuro(pricing.emergencyDisplay.price)} / Monat
+          <span aria-hidden="true">→</span>
+        </Link>
       </article>
     </div>
   );

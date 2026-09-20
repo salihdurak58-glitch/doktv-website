@@ -30,6 +30,11 @@ body {
   color: #0f172a;
 }
 
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #2dd4bf;
+  outline-offset: 3px;
+}
+
 .surface-card {
   border: 1px solid rgb(226 232 240 / 0.85);
   border-radius: 2rem;
@@ -115,6 +120,64 @@ body {
     linear-gradient(180deg, #f7fbfa 0%, #ffffff 100%);
 }
 
+.notdienst-hero {
+  background:
+    radial-gradient(circle at 86% 14%, rgb(153 246 228 / 0.42), transparent 34rem),
+    radial-gradient(circle at 8% 30%, rgb(254 243 199 / 0.45), transparent 28rem),
+    linear-gradient(180deg, #f8fcfb 0%, #ffffff 100%);
+}
+
+.notdienst-hero-copy {
+  animation: notdienst-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.notdienst-hero-visual {
+  animation: notdienst-enter 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.notdienst-display {
+  animation: notdienst-float 6s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes notdienst-enter {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes notdienst-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .notdienst-reveal {
+    animation: notdienst-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+
+  @keyframes notdienst-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 .prose-public a {
   color: var(--brand);
   font-weight: 750;
@@ -137,6 +200,14 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .notdienst-hero-copy,
+  .notdienst-hero-visual,
+  .notdienst-display,
+  .notdienst-reveal {
+    animation: none !important;
+    transform: none !important;
   }
 }
 

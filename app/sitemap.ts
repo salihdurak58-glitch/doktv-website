@@ -1,6 +1,11 @@
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 
 export default async function sitemap() {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
+  const notdienstPage = {
+    url: `${baseUrl}/apotheken-notdienst-anzeiger`,
+    lastModified: new Date().toISOString(),
+  };
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase
@@ -9,18 +14,19 @@ export default async function sitemap() {
 
   if (error) {
     console.error("Sitemap Fehler:", error.message);
-    return [];
+    return [notdienstPage];
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
-
-  return (
+  const dynamicPages =
     data
       ?.filter((page) => !page.noindex)
       .map((page) => ({
         url: `${baseUrl}${page.route}`,
         lastModified: page.updated_at || new Date().toISOString(),
-      })) || []
-  );
+      })) || [];
+
+  return [
+    ...dynamicPages.filter((page) => page.url !== notdienstPage.url),
+    notdienstPage,
+  ];
 }

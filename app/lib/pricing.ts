@@ -21,7 +21,7 @@ export const pricing = {
     interval: "Monat",
   },
   emergencyDisplay: {
-    name: "Notdienstanzeiger",
+    name: "Apotheken Notdienst Anzeiger",
     price: 10,
     interval: "Monat",
   },

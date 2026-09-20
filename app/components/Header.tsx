@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const navItems = [
   { href: "/schaufenster-display-apotheken", label: "Apotheken" },
+  { href: "/apotheken-notdienst-anzeiger", label: "Notdienst Anzeiger" },
   { href: "/wartezimmer-tv-praxen", label: "Praxen" },
   { href: "/hersteller-werbung", label: "Hersteller" },
   { href: "/referenzen", label: "Referenzen" },
@@ -39,7 +40,7 @@ export default function Header() {
         </Link>
 
         {/* NAVIGATION */}
-        <nav className="hidden items-center gap-6 whitespace-nowrap text-[15px] font-bold text-slate-700 lg:flex xl:gap-8">
+        <nav className="hidden items-center gap-4 whitespace-nowrap text-[13px] font-bold text-slate-700 lg:flex xl:gap-6 xl:text-[14px]">
           {navItems.map((item) => {
             const isActive = isActivePath(pathname, item.href);
 

@@ -72,7 +72,10 @@ export default function SchaufensterDisplayPage() {
         <Container>
           <SectionHeading eyebrow="Klare Kosten" title="Die passende Größe für Ihr Schaufenster" text="Einmalige Hardware, transparenter monatlicher Service und eine optionale Notdienstanzeige." align="center" />
           <div className="mt-12"><PricingTeaser /></div>
-          <div className="mt-8 text-center"><SecondaryButton href="/preise">Alle Preisdetails</SecondaryButton></div>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <SecondaryButton href="/preise">Alle Preisdetails</SecondaryButton>
+            <SecondaryButton href="/apotheken-notdienst-anzeiger">Notdienst Anzeiger ansehen</SecondaryButton>
+          </div>
         </Container>
       </section>
 

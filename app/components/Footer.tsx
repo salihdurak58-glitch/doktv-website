@@ -26,6 +26,7 @@ export default function Footer() {
             <Link href="/standorte">Standorte</Link>
             <Link href="/referenzen">Referenzen</Link>
             <Link href="/preise">Preise</Link>
+            <Link href="/apotheken-notdienst-anzeiger">Notdienst Anzeiger</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/kontakt">Kontakt</Link>
           </div>
@@ -36,6 +37,9 @@ export default function Footer() {
           <div className="mt-4 grid gap-2.5 text-slate-600">
             <Link href="/digital-signage-berlin">Digital Signage Berlin</Link>
             <Link href="/werbung-apotheke-display">Apotheken-Display Werbung</Link>
+            <Link href="/apotheken-notdienst-anzeiger">
+              Apotheken Notdienst Anzeiger
+            </Link>
             <Link href="/blog/digital-signage-apotheke">
               Digital Signage Apotheke
             </Link>

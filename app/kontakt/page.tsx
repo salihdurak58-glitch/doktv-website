@@ -17,7 +17,10 @@ const nextSteps = [
 export default async function KontaktPage({ searchParams }: { searchParams: Promise<{ display?: string | string[] }> }) {
   const params = await searchParams;
   const requestedDisplay = Array.isArray(params.display) ? params.display[0] : params.display;
-  const initialDisplay = requestedDisplay === "55" || requestedDisplay === "65" ? requestedDisplay : undefined;
+  const initialDisplay =
+    requestedDisplay === "55" || requestedDisplay === "65" || requestedDisplay === "notdienst"
+      ? requestedDisplay
+      : undefined;
 
   return (
     <main className="min-h-screen bg-[#f7faf9] text-slate-900">
@@ -44,7 +47,7 @@ export default async function KontaktPage({ searchParams }: { searchParams: Prom
               <SectionHeading
                 eyebrow="So geht es weiter"
                 title="Einfach anfragen. Persönlich planen."
-                text="Schon wenige Angaben reichen für den ersten Austausch. Wenn Sie eine Displaygröße auf der Preisseite gewählt haben, ist sie im Formular bereits vorausgewählt."
+                text="Schon wenige Angaben reichen für den ersten Austausch. Wenn Sie eine Lösung ausgewählt haben, ist sie im Formular bereits vorausgewählt."
               />
               <div className="mt-8 grid gap-4">
                 {nextSteps.map((step, index) => (

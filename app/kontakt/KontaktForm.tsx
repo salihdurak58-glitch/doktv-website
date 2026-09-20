@@ -5,7 +5,7 @@ import { useState } from "react";
 const solutionOptions = [
   "55-Zoll-Display für Apotheke",
   "65-Zoll-Display für Apotheke",
-  "Notdienstanzeiger",
+  "Apotheken Notdienst Anzeiger",
   "Schaufenster Display Apotheke",
   "Digital Signage Apotheke",
   "Wartezimmer TV",
@@ -16,7 +16,7 @@ const solutionOptions = [
 const displaySelection: Record<string, string> = {
   "55": "55-Zoll-Display für Apotheke",
   "65": "65-Zoll-Display für Apotheke",
-  notdienst: "Notdienstanzeiger",
+  notdienst: "Apotheken Notdienst Anzeiger",
 };
 
 export default function KontaktForm({ initialDisplay }: { initialDisplay?: string }) {

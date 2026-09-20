@@ -129,7 +129,10 @@ export default function PreisePage() {
             <div className="md:text-right">
               <p className="text-4xl font-black text-slate-950">+{formatEuro(pricing.emergencyDisplay.price)}</p>
               <p className="mt-1 font-bold text-slate-500">/ Monat</p>
-              <Link href="/kontakt?display=notdienst#anfrage" className="mt-5 inline-flex font-black text-teal-700">Notdienstanzeiger mit anfragen →</Link>
+              <div className="mt-5 flex flex-col items-start gap-2 md:items-end">
+                <Link href="/apotheken-notdienst-anzeiger" className="inline-flex font-black text-teal-700">Mehr zum Notdienst Anzeiger →</Link>
+                <Link href="/kontakt?display=notdienst#anfrage" className="inline-flex text-sm font-bold text-slate-600">Direkt mit anfragen</Link>
+              </div>
             </div>
           </article>
         </Container>
