@@ -2,7 +2,7 @@ import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import {
   locations as fallbackLocations,
   type Location,
-} from "@/app/standorte/locations";
+} from "@/app/(public)/standorte/locations";
 
 type LocationRow = {
   id: string | number;

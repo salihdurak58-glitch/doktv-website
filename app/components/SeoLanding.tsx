@@ -1,5 +1,3 @@
-import Header from "./Header";
-import Footer from "./Footer";
 import { Container, CTASection, Eyebrow, FeatureCard, ImagePanel, PrimaryButton, SecondaryButton, SectionHeading } from "./PublicUI";
 
 type SeoLandingProps = {
@@ -19,7 +17,6 @@ type SeoLandingProps = {
 export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectionText, items, image, primaryHref = "/kontakt", primaryLabel = "Kostenlose Beratung", secondaryHref = "/preise", secondaryLabel = "Preise ansehen" }: SeoLandingProps) {
   return (
     <main className="min-h-screen bg-[#f7faf9] text-slate-900">
-      <Header />
       <section className="page-hero py-16 sm:py-20 lg:py-24">
         <Container>
           <div className={`grid items-center gap-10 ${image ? "lg:grid-cols-[0.9fr_1.1fr] lg:gap-16" : "mx-auto max-w-5xl text-center"}`}>
@@ -43,7 +40,6 @@ export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectio
         </Container>
       </section>
       <CTASection />
-      <Footer />
     </main>
   );
 }

@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import { locations as fallbackLocations } from "@/app/standorte/locations";
-import type { Location, LocationType } from "@/app/standorte/locations";
+import { locations as fallbackLocations } from "@/app/(public)/standorte/locations";
+import type { Location, LocationType } from "@/app/(public)/standorte/locations";
 
 type LocationRow = {
   id: string | number;

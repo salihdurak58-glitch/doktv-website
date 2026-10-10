@@ -59,4 +59,37 @@ Keine verbleibenden P0/P1/P2-Abweichungen im geprüften Umfang.
 - [x] Beauftragten Preisüberblick und Netto-Hinweis geprüft
 - [x] Produktions-Build erfolgreich
 
+## Siteweite Vereinheitlichung – 10. Oktober 2026
+
+### Vergleichsbasis und Captures
+
+- Visuelle Referenz ist die bereits umgesetzte helle Startseite; ihr finaler lokaler Desktop-Capture liegt unter `/private/tmp/doktv-local-final-home-desktop.jpg`.
+- Implementierung: `/private/tmp/doktv-local-final-{schaufenster,preise,notdienst,kontakt}-{desktop,mobile}.jpg` sowie Home-Desktop/Mobil-Captures. CUA-Browseraufnahmen bei 1440 × 900 bzw. 390 × 844 CSS px, ungefähr 1× Pixeldichte. Die Startseite und jede Unterseite wurden im selben Browserzustand verglichen.
+- Ergänzende Layoutprüfung bei 768 × 1024 und 1024 × 768 CSS px; Beispiel-Captures `/private/tmp/doktv-local-schaufenster-768.jpg` und `/private/tmp/doktv-local-notdienst-1024.jpg`.
+
+### Full-view comparison und Fokusregionen
+
+- Der gemeinsame Header übernimmt Logo, helle Fläche, Lösungsauswahl, Linkhierarchie und türkisfarbene Beratungs-CTA der Startseite. Jede öffentliche Route zeigt genau einen Header, einen Main und einen gemeinsamen hellen Footer; Admin/Login zeigen keinen Public-Header oder -Footer.
+- Schaufenster, Preise, Notdienst und Kontakt folgen nun derselben Weiß-/Mint-/Teal-/Navy-Palette, denselben Containerbreiten, Card-Radien und Button-Zuständen. Bestehende Produktfotos und fachliche Inhalte bleiben erhalten.
+- Auf Mobilgeräten bleibt die Sticky-Beratungsleiste vom Seiteninhalt und Menü getrennt. Das Menü enthält sämtliche sechs Lösungen und die primären Navigationsziele. Desktop-Disclosure und Mobile-Menü schließen bei Linkauswahl, Escape und Außenklick; Tastaturfokus bleibt nachvollziehbar.
+- Kontakt: Die Notdienst-Lösung wird mit `/kontakt?display=notdienst#anfrage` weiterhin im unveränderten Formular vorausgewählt. Es wurde kein echtes Formular abgeschickt.
+
+### Pflichtprüfung
+
+| Fläche | Ergebnis |
+| --- | --- |
+| Typografie und Copy | Hierarchie und Zeilenlängen über fünf repräsentative Seiten konsistent; individuelle Seitentitel/H1 bleiben erhalten. |
+| Layout und Abstände | 23 statische öffentliche Routen bei 1440 px ohne Dokument-Überlauf; fünf repräsentative Routen zusätzlich bei 390, 768 und 1024 px ohne Überlauf. |
+| Farben und Tokens | Gemeinsame `--doktv-*`-Tokens für öffentliche Seiten; Akzent, Flächen, Buttons und Fokuszustände an die Startseite angeglichen. |
+| Bilder und Icons | Bestehende echte Produkt-/Referenzbilder bleiben erhalten; keine neuen unbelegten Visuals oder Icons. |
+| Verhalten | Navigation Start → Schaufenster → Preise → Referenzen → Notdienst → Kontakt → Ablauf → Start funktioniert. Menüs öffnen und schließen per Maus, Touch und Tastatur. |
+| SEO und Routen | Alle 23 statischen Routen erreichbar, individuelle Canonicals auf `https://doktv.de/`; Sitemap enthält diese Routen ohne www. Blog-Karten führen zu vorhandenen Artikeln. Admin bleibt außerhalb des öffentlichen Layouts. |
+| Build und Konsole | Next.js-Produktions-Build und TypeScript erfolgreich; Lint ohne Fehler, drei vorbestehende `<img>`-Warnungen im Adminbereich. Browserkonsole ohne Fehler/Warnungen. |
+
+### Vergleichshistorie und Restpunkte
+
+1. Erstes Mobil-Capture des Notdienstanzeigers: [P1] lange H1 innerhalb des Hero abgeschnitten, obwohl das Dokument keinen horizontalen Überlauf meldete.
+2. H1 mit semantischer Umbruchstelle und Grid-Korrektur behoben; nachfolgendes 390-px-Capture zeigte den gesamten Titel. CTA-Abstand zur Sticky-Leiste danach korrigiert und erneut geprüft (CTA y=662–716, Leiste ab y=738).
+3. Finale lokale Prüfung: keine offenen P0/P1/P2-Abweichungen auf den geprüften Seiten und Viewports. Produktionsprüfung und Live-Captures werden beim Release ergänzt.
+
 final result: passed

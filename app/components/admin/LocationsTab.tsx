@@ -5,7 +5,7 @@ import { supabase } from "@/app/lib/supabase/supabaseClient";
 import {
   locations as fallbackLocations,
   type Location,
-} from "@/app/standorte/locations";
+} from "@/app/(public)/standorte/locations";
 
 type LocationRow = {
   id: string | number;

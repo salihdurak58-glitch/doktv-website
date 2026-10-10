@@ -1,11 +1,19 @@
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
-import { canonicalUrl, SITE_URL } from "@/app/lib/seo/site";
+import { canonicalUrl } from "@/app/lib/seo/site";
+import type { MetadataRoute } from "next";
 
-export default async function sitemap() {
-  const notdienstPage = {
-    url: `${SITE_URL}/apotheken-notdienst-anzeiger`,
-    lastModified: new Date().toISOString(),
-  };
+const staticPublicRoutes = [
+  "/", "/schaufenster-display-apotheken", "/apotheken",
+  "/apotheken-notdienst-anzeiger", "/wartezimmer-tv-praxen", "/arztpraxen",
+  "/hersteller-werbung", "/hersteller", "/werbung-apotheke-display",
+  "/referenzen", "/preise", "/ueber-uns", "/kontakt", "/standorte",
+  "/blog", "/blog/digital-signage-apotheke", "/blog/schaufenster-display-apotheke",
+  "/blog/apotheken-marketing-berlin", "/digital-signage-berlin",
+  "/apotheke-werbung-berlin", "/arztpraxis-werbung-berlin",
+  "/impressum", "/datenschutz",
+] as const;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase
@@ -14,19 +22,21 @@ export default async function sitemap() {
 
   if (error) {
     console.error("Sitemap Fehler:", error.message);
-    return [notdienstPage];
+    return staticPublicRoutes.map((route) => ({ url: canonicalUrl(route) }));
   }
 
-  const dynamicPages =
-    data
-      ?.filter((page) => !page.noindex)
-      .map((page) => ({
-        url: canonicalUrl(page.route),
-        lastModified: page.updated_at || new Date().toISOString(),
-      })) || [];
+  const excludedRoutes = new Set(data?.filter((page) => page.noindex).map((page) => page.route) || []);
+  const entries = new Map<string, MetadataRoute.Sitemap[number]>();
 
-  return [
-    ...dynamicPages.filter((page) => page.url !== notdienstPage.url),
-    notdienstPage,
-  ];
+  for (const route of staticPublicRoutes) {
+    if (!excludedRoutes.has(route)) entries.set(canonicalUrl(route), { url: canonicalUrl(route) });
+  }
+
+  for (const page of data || []) {
+    if (page.noindex) continue;
+    const url = canonicalUrl(page.route);
+    entries.set(url, { url, lastModified: page.updated_at || undefined });
+  }
+
+  return [...entries.values()];
 }

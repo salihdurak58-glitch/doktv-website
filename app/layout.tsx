@@ -1,7 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import ConsentManager from "./components/ConsentManager";
-import MobileStickyCta from "./components/MobileStickyCta";
 import { SITE_URL } from "./lib/seo/site";
 
 export const metadata: Metadata = {
@@ -37,8 +35,6 @@ export default function RootLayout({
     <html lang="de" data-scroll-behavior="smooth">
       <body>
         {children}
-        <MobileStickyCta />
-        <ConsentManager />
       </body>
     </html>
   );

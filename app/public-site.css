@@ -1,0 +1,63 @@
+.public-site {
+  --doktv-navy: #0b1738;
+  --doktv-teal: #087f7a;
+  --doktv-teal-dark: #066c68;
+  --doktv-mint: #e9f9f6;
+  --doktv-ink: #40526a;
+  --brand: var(--doktv-teal);
+  --brand-dark: var(--doktv-teal-dark);
+  --brand-soft: var(--doktv-mint);
+  min-height: 100vh;
+  background: #fff;
+  color: var(--doktv-navy);
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+
+.public-site :is(section[id], article[id]) { scroll-margin-top: 96px; }
+.public-site .text-slate-950,
+.public-site .text-slate-900 { color: var(--doktv-navy); }
+.public-site .text-slate-600,
+.public-site .text-slate-700 { color: var(--doktv-ink); }
+.public-site .text-teal-700,
+.public-site .text-blue-600 { color: var(--doktv-teal); }
+.public-site .bg-teal-600,
+.public-site .bg-teal-700,
+.public-site .bg-blue-600 { background-color: var(--doktv-teal); }
+.public-site .bg-teal-600:hover,
+.public-site .bg-teal-700:hover,
+.public-site .bg-blue-600:hover { background-color: var(--doktv-teal-dark); }
+
+.public-site .button-primary {
+  min-height: 54px;
+  border-radius: 10px;
+  background: var(--doktv-teal);
+  box-shadow: 0 12px 28px rgb(2 115 108 / .18);
+}
+.public-site .button-primary:hover { background: var(--doktv-teal-dark); }
+.public-site .button-secondary { border-radius: 10px; color: var(--doktv-navy); }
+.public-site .surface-card {
+  border-color: #dbeceb;
+  border-radius: 18px;
+  box-shadow: 0 13px 32px rgb(16 55 71 / .055);
+}
+.public-site .surface-card:hover { border-color: #9fd6ce; box-shadow: 0 18px 36px rgb(16 55 71 / .1); }
+.public-site .image-panel { border-radius: 18px; }
+.public-site .page-hero .image-panel { min-height: clamp(340px, 38vw, 500px); }
+.public-site .page-hero { background: #f5fbfa; }
+.public-site .prose-public a { color: var(--doktv-teal); }
+.public-site .public-reading { max-width: 800px; }
+.public-site :is(input, select, textarea, button) { scroll-margin-bottom: 125px; }
+
+@media (min-width: 1024px) {
+  .public-site { padding-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-site *,
+  .public-site *::before,
+  .public-site *::after {
+    animation-duration: 0.01ms;
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+  }
+}

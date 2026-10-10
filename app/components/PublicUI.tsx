@@ -11,7 +11,7 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={`mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1320px] px-5 sm:px-6 lg:px-8 ${className}`}>
       {children}
     </div>
   );
@@ -141,28 +141,27 @@ export function PricingTeaser() {
           <p className="text-sm font-extrabold uppercase tracking-[0.16em] text-teal-700">
             {display.size}
           </p>
-          <p className="mt-6 text-5xl font-black tracking-tight text-slate-950">
+        <p className="mt-6 text-5xl font-black tracking-tight text-slate-950">
             {formatEuro(display.price)}
           </p>
           <p className="mt-2 font-semibold text-slate-500">einmalig für die Hardware</p>
         </article>
       ))}
 
-      <article className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-xl shadow-slate-300/40">
-        <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-teal-400/20 blur-3xl" />
-        <p className="relative text-sm font-extrabold uppercase tracking-[0.16em] text-teal-300">
+      <article className="surface-card relative overflow-hidden p-7">
+        <p className="relative text-sm font-extrabold uppercase tracking-[0.16em] text-teal-700">
           DokTV Service
         </p>
         <div className="relative mt-6 flex items-end gap-2">
           <p className="text-5xl font-black tracking-tight">{formatEuro(pricing.service.price)}</p>
-          <p className="pb-1.5 font-semibold text-slate-300">/ Monat</p>
+          <p className="pb-1.5 font-semibold text-slate-600">/ Monat</p>
         </div>
-        <p className="relative mt-4 leading-7 text-slate-300">
+        <p className="relative mt-4 leading-7 text-slate-600">
           Professionelle Werbeinhalte, Ausspielung und laufende Betreuung.
         </p>
         <Link
           href="/apotheken-notdienst-anzeiger"
-          className="relative mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal-200 transition hover:text-white"
+          className="relative mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal-700 transition hover:underline"
         >
           Optional: Notdienst Anzeiger +{formatEuro(pricing.emergencyDisplay.price)} / Monat
           <span aria-hidden="true">→</span>
@@ -201,16 +200,14 @@ export function CTASection({
 }) {
   return (
     <section className="px-5 py-20 sm:px-6 lg:py-28">
-      <Container className="relative overflow-hidden rounded-[2.5rem] bg-slate-950 px-6 py-14 text-center text-white sm:px-10 lg:py-20">
-        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-teal-400/20 blur-3xl" />
-        <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-blue-500/15 blur-3xl" />
+      <Container className="relative overflow-hidden rounded-[1.5rem] bg-[#e5f9f5] px-6 py-14 text-center sm:px-10 lg:py-20">
         <div className="relative mx-auto max-w-3xl">
-          <Eyebrow light>Persönlich beraten</Eyebrow>
+          <Eyebrow>Persönlich beraten</Eyebrow>
           <h2 className="mt-5 text-balance text-3xl font-black tracking-[-0.035em] sm:text-5xl">{title}</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">{text}</p>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">{text}</p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <PrimaryButton href="/kontakt">Kostenlose Beratung</PrimaryButton>
-            <SecondaryButton href="/referenzen" light>Referenzen ansehen</SecondaryButton>
+            <SecondaryButton href="/referenzen">Referenzen ansehen</SecondaryButton>
           </div>
         </div>
       </Container>

@@ -149,7 +149,7 @@ export default function ConsentManager() {
           <div className="mx-auto w-full max-w-3xl rounded-3xl bg-white p-6 text-slate-900 shadow-2xl sm:p-8">
             <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
               <div>
-                <p className="font-semibold text-blue-600">
+                <p className="font-semibold text-teal-700">
                   Cookie-Einstellungen
                 </p>
                 <h2 className="mt-2 text-2xl font-black text-slate-950 sm:text-3xl">
@@ -198,7 +198,7 @@ export default function ConsentManager() {
                             statistics: event.target.checked,
                           }))
                         }
-                        className="mt-1 h-5 w-5 accent-blue-600"
+                        className="mt-1 h-5 w-5 accent-teal-700"
                       />
                     </div>
                   </label>
@@ -223,7 +223,7 @@ export default function ConsentManager() {
                             marketing: event.target.checked,
                           }))
                         }
-                        className="mt-1 h-5 w-5 accent-blue-600"
+                        className="mt-1 h-5 w-5 accent-teal-700"
                       />
                     </div>
                   </label>
@@ -240,7 +240,7 @@ export default function ConsentManager() {
                       marketing: true,
                     })
                   }
-                  className="rounded-2xl bg-blue-600 px-6 py-4 font-bold text-white transition hover:bg-blue-500"
+                  className="rounded-xl bg-teal-700 px-6 py-4 font-bold text-white transition hover:bg-teal-800"
                 >
                   Alle akzeptieren
                 </button>

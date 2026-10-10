@@ -1,0 +1,16 @@
+.footer { border-top: 1px solid #dcece9; background: #f4fbf9; color: var(--doktv-ink); }
+.inner { width: min(100% - 64px, 1320px); margin-inline: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 70px; padding-block: 64px 70px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; color: var(--doktv-navy); }
+.brandImage { width: 135px; height: 63px; object-fit: cover; }
+.brand span { border-left: 1px solid #d6e2e5; padding-left: 12px; color: #6b7e90; font-size: 11px; line-height: 1.18; font-weight: 650; }
+.brandColumn > p { max-width: 390px; margin-top: 19px; line-height: 1.7; }
+.contact { display: grid; gap: 8px; margin-top: 25px; font-size: 14px; }
+.contact a:hover, .links a:hover, .bottom a:hover, .bottom button:hover { color: var(--doktv-teal); }
+.inner h2 { margin: 10px 0 21px; color: var(--doktv-navy); font-size: 15px; font-weight: 850; }
+.inner .knowledgeTitle { margin-top: 30px; }
+.links { display: grid; gap: 12px; font-size: 14px; line-height: 1.35; }
+.bottom { border-top: 1px solid #dcece9; }
+.bottomInner { width: min(100% - 64px, 1320px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 22px; font-size: 13px; }
+.bottomInner > div { display: flex; flex-wrap: wrap; gap: 24px; }
+@media (max-width: 900px) { .inner { grid-template-columns: 1fr 1fr; gap: 34px; } .brandColumn { grid-column: 1 / -1; } }
+@media (max-width: 600px) { .inner, .bottomInner { width: min(100% - 40px, 1320px); } .inner { gap: 28px 18px; padding-block: 45px; } .brandColumn > p { font-size: 14px; } .inner h2 { margin: 0 0 16px; } .links { font-size: 13px; } .bottomInner { flex-direction: column; align-items: start; } }
