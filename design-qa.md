@@ -90,6 +90,8 @@ Keine verbleibenden P0/P1/P2-Abweichungen im geprüften Umfang.
 
 1. Erstes Mobil-Capture des Notdienstanzeigers: [P1] lange H1 innerhalb des Hero abgeschnitten, obwohl das Dokument keinen horizontalen Überlauf meldete.
 2. H1 mit semantischer Umbruchstelle und Grid-Korrektur behoben; nachfolgendes 390-px-Capture zeigte den gesamten Titel. CTA-Abstand zur Sticky-Leiste danach korrigiert und erneut geprüft (CTA y=662–716, Leiste ab y=738).
-3. Finale lokale Prüfung: keine offenen P0/P1/P2-Abweichungen auf den geprüften Seiten und Viewports. Produktionsprüfung und Live-Captures werden beim Release ergänzt.
+3. Finale lokale Prüfung: keine offenen P0/P1/P2-Abweichungen auf den geprüften Seiten und Viewports.
+4. Production-Captures nach dem Release: `/Users/salihdurak/.codex/visualizations/2026/10/10/01a12751-b9ae-7b20-89f4-26f30bd38cd3/doktv-live/doktv-live-unified-{startseite,schaufenster,preise,notdienst,kontakt}-{desktop,mobile}.jpg`. Die fünf sichtbaren Seiten wurden bei 1440 × 900 und 390 × 844 CSS px erneut verglichen; alle sichtbaren Bilder waren geladen, alle Seiten ohne horizontalen Überlauf.
+5. Live-Navigation inklusive mobilem Menü und `/#ablauf` geprüft, Browserkonsole ohne Warnungen/Fehler. 23/23 Sitemap-URLs: HTTP 200, genau eine H1, jeweils eigener Canonical ohne `noindex`. Sitemap: 23 eindeutige Apex-URLs, kein www. `www` leitet mit 308 in einem Schritt und mit Pfad/Query weiter.
 
 final result: passed
