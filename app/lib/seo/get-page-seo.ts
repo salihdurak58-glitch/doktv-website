@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
+import { canonicalUrl, SITE_URL } from "@/app/lib/seo/site";
 
 type PageSeo = {
   route: string;
@@ -14,7 +15,6 @@ type PageSeo = {
 };
 
 const siteName = "DokTV";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
 
 export async function getPageSeo(route: string): Promise<PageSeo | null> {
   const supabase = await createSupabaseServerClient();
@@ -35,28 +35,28 @@ export async function getPageSeo(route: string): Promise<PageSeo | null> {
 
 export async function generatePageMetadata(route: string): Promise<Metadata> {
   const seo = await getPageSeo(route);
+  const routeCanonicalUrl = canonicalUrl(route);
 
   if (!seo) {
     return {
       title: "DokTV – Digital Signage",
       description:
         "DokTV bietet moderne Digital Signage Lösungen für Apotheken, Praxen und lokale Unternehmen.",
+      alternates: {
+        canonical: routeCanonicalUrl,
+      },
     };
   }
 
-  const canonicalPath = seo.canonical_url || route;
+  const pageCanonicalUrl = canonicalUrl(seo.canonical_url || route);
 
-  const canonicalUrl = canonicalPath.startsWith("http")
-    ? canonicalPath
-    : `${siteUrl}${canonicalPath}`;
-
-  const ogImage = seo.og_image_url || `${siteUrl}/og-image.jpg`;
+  const ogImage = seo.og_image_url || `${SITE_URL}/og-image.jpg`;
 
   return {
     title: seo.meta_title,
     description: seo.meta_description,
     alternates: {
-      canonical: canonicalUrl,
+      canonical: pageCanonicalUrl,
     },
     robots: {
       index: !seo.noindex,
@@ -65,7 +65,7 @@ export async function generatePageMetadata(route: string): Promise<Metadata> {
     openGraph: {
       title: seo.og_title || seo.meta_title,
       description: seo.og_description || seo.meta_description,
-      url: canonicalUrl,
+      url: pageCanonicalUrl,
       siteName,
       images: [
         {

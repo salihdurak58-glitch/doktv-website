@@ -5,6 +5,7 @@ import { Container, CTASection, Eyebrow, FeatureCard, ImagePanel, PrimaryButton,
 export const metadata = {
   title: "Über DokTV | Digital Signage für Apotheken & Praxen",
   description: "DokTV verbindet Displaytechnik, Werbeinhalte und laufende Betreuung für Apotheken, Praxen und Gesundheitsmarken.",
+  alternates: { canonical: "https://doktv.de/ueber-uns" },
 };
 
 export default function UeberUnsPage() {

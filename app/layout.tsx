@@ -1,8 +1,11 @@
 import "./globals.css";
+import type { Metadata } from "next";
 import ConsentManager from "./components/ConsentManager";
 import MobileStickyCta from "./components/MobileStickyCta";
+import { SITE_URL } from "./lib/seo/site";
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "DokTV – Digital Signage für Apotheken & Arztpraxen",
   description:
     "Digitale Werbung in Apotheken und Arztpraxen. DokTV bietet moderne Digital Signage Displays für mehr Sichtbarkeit im Gesundheitsbereich.",

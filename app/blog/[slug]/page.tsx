@@ -1,4 +1,5 @@
 import { getPostBySlug } from "@/app/lib/blog/get-post";
+import { canonicalUrl } from "@/app/lib/seo/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -13,8 +14,6 @@ export async function generateMetadata({
 }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   if (!post) {
     return {
@@ -31,12 +30,12 @@ export async function generateMetadata({
       follow: !post.noindex,
     },
     alternates: {
-      canonical: `${baseUrl}/blog/${post.slug}`,
+      canonical: canonicalUrl(`/blog/${post.slug}`),
     },
     openGraph: {
       title: post.meta_title || post.title,
       description: post.meta_description || "",
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: canonicalUrl(`/blog/${post.slug}`),
       type: "article",
       images: post.og_image_url
         ? [

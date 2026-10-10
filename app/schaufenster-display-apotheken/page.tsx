@@ -5,6 +5,7 @@ import { CheckList, Container, CTASection, Eyebrow, FeatureCard, ImagePanel, Pri
 export const metadata = {
   title: "Schaufenster Display Apotheke | Digital Signage Apotheke – DokTV",
   description: "Digitale Schaufenster Displays für Apotheken. Hardware, Werbeinhalte und laufende Betreuung aus einer Hand.",
+  alternates: { canonical: "https://doktv.de/schaufenster-display-apotheken" },
 };
 
 const benefits = [

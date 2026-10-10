@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 export const metadata: Metadata = {
   title: "Datenschutz | DokTV",
   description: "Datenschutzerklärung der DokTv UG (haftungsbeschränkt).",
+  alternates: { canonical: "https://doktv.de/datenschutz" },
 };
 
 const logFiles = [

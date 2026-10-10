@@ -1,7 +1,6 @@
-export default function robots() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
+import { SITE_URL } from "@/app/lib/seo/site";
 
+export default function robots() {
   return {
     rules: [
       {
@@ -9,6 +8,6 @@ export default function robots() {
         allow: "/",
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

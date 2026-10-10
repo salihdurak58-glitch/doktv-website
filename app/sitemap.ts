@@ -1,9 +1,9 @@
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
+import { canonicalUrl, SITE_URL } from "@/app/lib/seo/site";
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doktv.de";
   const notdienstPage = {
-    url: `${baseUrl}/apotheken-notdienst-anzeiger`,
+    url: `${SITE_URL}/apotheken-notdienst-anzeiger`,
     lastModified: new Date().toISOString(),
   };
   const supabase = await createSupabaseServerClient();
@@ -21,7 +21,7 @@ export default async function sitemap() {
     data
       ?.filter((page) => !page.noindex)
       .map((page) => ({
-        url: `${baseUrl}${page.route}`,
+        url: canonicalUrl(page.route),
         lastModified: page.updated_at || new Date().toISOString(),
       })) || [];
 

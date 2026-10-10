@@ -7,6 +7,7 @@ export const metadata = {
     "Apotheken Marketing Berlin: Mehr Kunden durch Digital Signage & lokale Sichtbarkeit",
   description:
     "Strategien für Apotheken in Berlin: Mehr Kunden durch Digital Signage, Google Optimierung und lokale Sichtbarkeit.",
+  alternates: { canonical: "https://doktv.de/blog/apotheken-marketing-berlin" },
 };
 
 export default function Page() {

@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 export const metadata: Metadata = {
   title: "Impressum | DokTV",
   description: "Impressum der DokTv UG (haftungsbeschränkt).",
+  alternates: { canonical: "https://doktv.de/impressum" },
 };
 
 export default function ImpressumPage() {

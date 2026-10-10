@@ -7,6 +7,7 @@ export const metadata = {
     "Digital Signage Apotheke: Schaufenster Display für mehr Kunden in Berlin",
   description:
     "Digital Signage für Apotheken: Mehr Sichtbarkeit, mehr Kunden und mehr Umsatz durch moderne Schaufenster-Displays.",
+  alternates: { canonical: "https://doktv.de/blog/digital-signage-apotheke" },
 };
 
 export default function Page() {

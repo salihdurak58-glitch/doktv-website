@@ -5,6 +5,7 @@ import { CheckList, Container, CTASection, Eyebrow, FeatureCard, ImagePanel, Pri
 export const metadata = {
   title: "Hersteller Werbung in Apotheken & Praxen | DokTV",
   description: "Digitale Herstellerwerbung im Gesundheitsumfeld: Kampagnen planen, Inhalte gestalten und über passende DokTV Standorte ausspielen.",
+  alternates: { canonical: "https://doktv.de/hersteller-werbung" },
 };
 
 const campaignTypes = ["OTC- und Gesundheitsprodukte", "Nahrungsergänzung und Pflege", "Kosmetik und Wohlbefinden", "Produktneuheiten und Aktionen", "Saisonale Gesundheitsthemen", "Regionale Kampagnen"];

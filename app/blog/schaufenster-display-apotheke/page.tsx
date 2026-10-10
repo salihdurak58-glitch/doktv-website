@@ -7,6 +7,7 @@ export const metadata = {
     "Schaufenster Display Apotheke: Mehr Kunden durch digitale Werbung",
   description:
     "Warum ein Schaufenster Display für Apotheken der Schlüssel zu mehr Aufmerksamkeit und Laufkundschaft ist.",
+  alternates: { canonical: "https://doktv.de/blog/schaufenster-display-apotheke" },
 };
 
 export default function Page() {
