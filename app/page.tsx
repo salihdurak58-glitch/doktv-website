@@ -1,183 +1,232 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import {
-  Container,
-  CTASection,
-  Eyebrow,
-  FeatureCard,
-  ImagePanel,
-  PrimaryButton,
-  PricingTeaser,
-  SecondaryButton,
-  SectionHeading,
-} from "./components/PublicUI";
-import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
-import { getSiteContent } from "@/app/lib/content/get-site-content";
-import { doktvReferences } from "@/app/lib/references";
+  ArrowRight, BadgeCheck, CalendarDays, CircleCheck, Headset,
+  Megaphone, Monitor, Moon, Palette, Settings2, Store,
+} from "lucide-react";
+import HomeHeader from "./components/HomeHeader";
+import Footer from "./components/Footer";
+import { getSiteContent } from "./lib/content/get-site-content";
+import { generatePageMetadata } from "./lib/seo/get-page-seo";
+import { doktvReferences } from "./lib/references";
+import { formatEuro, pricing } from "./lib/pricing";
+import styles from "./home.module.css";
 
-export async function generateMetadata() {
-  return generatePageMetadata("/");
+const metaTitle = "Digital Signage für Apotheken | Displays & Inhalte – DokTV";
+const metaDescription = "DokTV macht Ihre Apotheke digital sichtbar: Displays für Schaufenster, Wartezimmer und Notdienst, individuelle Inhalte und persönliche Betreuung. Jetzt beraten lassen.";
+const previousMetaTitle = "DokTV – Digital Signage für Apotheken, Praxen & Schaufenster";
+const previousMetaDescription = "DokTV macht Ihr Schaufenster digital: moderne Displays, professionelle Inhalte und einfache Verwaltung für Apotheken, Praxen und lokale Unternehmen.";
+const previousOgDescription = "Moderne Schaufenster-Displays und Digital Signage Lösungen für lokale Unternehmen.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const metadata = await generatePageMetadata("/");
+  // Replace only the previous homepage copy; future SEO edits in the admin area keep working.
+  const title = metadata.title === previousMetaTitle ? metaTitle : metadata.title || metaTitle;
+  const description = metadata.description === previousMetaDescription ? metaDescription : metadata.description || metaDescription;
+  return {
+    ...metadata,
+    title,
+    description,
+    // Next.js 16 normalizes a root canonical URL to the bare origin. The
+    // exact trailing-slash homepage canonical is rendered below instead.
+    alternates: { ...metadata.alternates, canonical: null },
+    openGraph: {
+      ...metadata.openGraph,
+      title: metadata.openGraph?.title === previousMetaTitle ? metaTitle : metadata.openGraph?.title || title,
+      description: metadata.openGraph?.description === previousMetaDescription || metadata.openGraph?.description === previousOgDescription ? metaDescription : metadata.openGraph?.description || description,
+    },
+    twitter: {
+      ...metadata.twitter,
+      title: metadata.twitter?.title === previousMetaTitle ? metaTitle : metadata.twitter?.title || title,
+      description: metadata.twitter?.description === previousMetaDescription ? metaDescription : metadata.twitter?.description || description,
+    },
+  };
 }
 
-const serviceSteps = [
-  { number: "01", title: "Display", text: "Passende 55- oder 65-Zoll-Hardware für Ihren Standort." },
-  { number: "02", title: "Einrichtung", text: "Wir richten das System für Ihre Apotheke oder Praxis ein." },
-  { number: "03", title: "Werbung & Content", text: "Wir erstellen die Werbeinhalte. Sie entscheiden, was auf Ihrem Display läuft." },
-  { number: "04", title: "Laufende Betreuung", text: "Inhalte können regelmäßig aktualisiert und angepasst werden." },
+const solutions = [
+  {
+    icon: Store, title: "Schaufenster-Displays",
+    text: "Angebote und Gesundheitsthemen fallen schon vor dem Betreten Ihrer Apotheke ins Auge.",
+    href: "/schaufenster-display-apotheken",
+  },
+  {
+    icon: Monitor, title: "Wartezimmer-TV",
+    text: "Nutzen Sie Wartezeiten für verständliche Informationen und wechselnde Inhalte.",
+    href: "/wartezimmer-tv-praxen",
+  },
+  {
+    icon: Moon, title: "Notdienstanzeiger",
+    text: "Informieren Sie zuverlässig über Notdienste und wichtige Hinweise – auch außerhalb der Öffnungszeiten.",
+    href: "/apotheken-notdienst-anzeiger",
+  },
+  {
+    icon: Palette, title: "Individuelle Inhalte",
+    text: "Wir gestalten digitale Werbung, die zu Ihrer Apotheke, Ihren Angeboten und Ihrer Saison passt.",
+    href: "/werbung-apotheke-display",
+  },
 ];
 
-const faqs = [
-  { q: "Was macht DokTV?", a: "DokTV verbindet professionelle Displays, Einrichtung und Content-Service für Apotheken und Praxen. Hersteller können Kampagnen im Gesundheitsumfeld besprechen." },
-  { q: "Was kann auf den Displays gezeigt werden?", a: "Möglich sind Angebote, Aktionen, Gesundheitsinformationen, Praxisleistungen, Öffnungszeiten, Notdienst-Hinweise, Herstellerwerbung und saisonale Inhalte." },
-  { q: "Wer entscheidet über die Inhalte?", a: "Die Apotheke oder Praxis entscheidet, welche Werbung und welche Inhalte ausgespielt werden. DokTV übernimmt die professionelle Gestaltung und Ausspielung." },
-  { q: "Ist DokTV nur für Berlin?", a: "DokTV hat echte Installationen in Berlin und kann grundsätzlich auch für Standorte außerhalb Berlins angefragt werden." },
-];
+const reference = doktvReferences[1];
 
 export default async function HomePage() {
   const content = await getSiteContent([
-    "homepage_hero_eyebrow",
-    "homepage_hero_title",
-    "homepage_hero_subtitle",
-    "homepage_primary_cta",
-    "homepage_secondary_cta",
+    "homepage_hero_eyebrow", "homepage_hero_title",
+    "homepage_hero_subtitle", "homepage_primary_cta",
   ]);
-  const legacyTitle = content.homepage_hero_title?.includes("Mehr Sichtbarkeit");
-  const heroTitle = content.homepage_hero_title && !legacyTitle ? content.homepage_hero_title : "Ihr Schaufenster kann mehr.";
-  const heroSubtitle = content.homepage_hero_subtitle && !legacyTitle ? content.homepage_hero_subtitle : "Professionelle Displays, individuelle Werbeinhalte und laufende Betreuung – alles aus einer Hand.";
+  const storedTitle = content.homepage_hero_title?.trim();
+  const hasCurrentTitle = storedTitle && !/Ihr Schaufenster kann mehr|Mehr Sichtbarkeit/i.test(storedTitle);
+  const heroTitle = hasCurrentTitle ? storedTitle : "Digitale Sichtbarkeit für Apotheken.";
+  const heroSubtitle = hasCurrentTitle && content.homepage_hero_subtitle
+    ? content.homepage_hero_subtitle
+    : "Moderne Displays für Schaufenster, Wartezimmer und Notdienstanzeige. DokTV gestaltet Ihre Werbeinhalte und betreut die Ausspielung – Sie entscheiden, was Ihre Apotheke zeigt.";
+  const heroEyebrow = content.homepage_hero_eyebrow && !/Apotheken & Praxen/i.test(content.homepage_hero_eyebrow)
+    ? content.homepage_hero_eyebrow : "Moderne Digital-Signage-Lösungen";
 
   return (
-    <main className="overflow-hidden bg-white text-slate-900">
-      <Header />
+    <main className={styles.page}>
+      <link rel="canonical" href="https://doktv.de/" />
+      <HomeHeader />
 
-      <section className="page-hero py-14 sm:py-18 lg:py-24">
-        <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-teal-100/60 blur-3xl" />
-        <Container className="relative grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          <div>
-            <Eyebrow>{content.homepage_hero_eyebrow || "Digital Signage für Apotheken & Praxen"}</Eyebrow>
-            <h1 className="mt-6 max-w-3xl text-balance text-5xl font-black leading-[0.98] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl xl:text-[5.4rem]">{heroTitle}</h1>
-            <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">{heroSubtitle}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <PrimaryButton href="/kontakt">{content.homepage_primary_cta || "Kostenlose Beratung"}</PrimaryButton>
-              <SecondaryButton href="/referenzen">{content.homepage_secondary_cta || "Echte Installationen ansehen"}</SecondaryButton>
+      <section className={styles.hero} aria-labelledby="home-title">
+        <div className={styles.heroImage}>
+          <Image
+            src="/home/apotheke-hero-visualisierung.jpg"
+            alt="Visualisierung eines digitalen Schaufenster-Displays an einer modernen Apotheke"
+            fill priority sizes="100vw" className={styles.heroPhoto}
+          />
+        </div>
+        <div className={styles.heroInner}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}><span aria-hidden="true" />{heroEyebrow}</p>
+            <h1 id="home-title">{heroTitle === "Digitale Sichtbarkeit für Apotheken." ? <>Digitale Sichtbarkeit <span>für Apotheken.</span></> : heroTitle}</h1>
+            <p className={styles.heroLead}>{heroSubtitle}</p>
+            <div className={styles.heroButtons}>
+              <Link className={styles.primaryButton} href="/kontakt">
+                {content.homepage_primary_cta && content.homepage_primary_cta !== "Kostenlose Beratung"
+                  ? content.homepage_primary_cta : "Kostenlose Beratung vereinbaren"}
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+              <Link className={styles.secondaryButton} href="#loesungen">Lösungen ansehen <ArrowRight size={17} aria-hidden="true" /></Link>
             </div>
-            <div className="mt-8 grid gap-3 text-sm font-bold text-slate-700 sm:grid-cols-3">
-              {["Installation & Einrichtung", "Individuelle Werbeinhalte", "Laufende Betreuung"].map((point) => (
-                <p key={point} className="flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-teal-100 text-xs text-teal-800">✓</span>
-                  {point}
-                </p>
-              ))}
-            </div>
+            <ul className={styles.heroUsps}>
+              <li><Settings2 size={20} aria-hidden="true" /><span>Einrichtung &<br />Betreuung</span></li>
+              <li><Palette size={20} aria-hidden="true" /><span>Individuelle<br />Werbeinhalte</span></li>
+              <li><Moon size={20} aria-hidden="true" /><span>Notdienstanzeiger<br />optional</span></li>
+              <li><Monitor size={20} aria-hidden="true" /><span>55 & 65 Zoll<br />Displays</span></li>
+            </ul>
           </div>
-
-          <div className="relative">
-            <ImagePanel
-              src="/referenzen/sky-apotheke-kudamm-2.jpg"
-              alt="Zwei digitale DokTV Schaufenster-Displays in der Sky Apotheke am Kurfürstendamm"
-              priority
-              className="aspect-[4/3] min-h-[24rem] lg:min-h-[36rem]"
-              sizes="(max-width: 1024px) 100vw, 55vw"
-            />
-            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/25 bg-slate-950/75 p-4 text-white shadow-xl backdrop-blur-md sm:left-7 sm:right-auto sm:max-w-xs sm:p-5">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-teal-300">Echt installiert</p>
-              <p className="mt-2 text-lg font-black">Sky Apotheke Kudamm</p>
-              <p className="mt-1 text-sm text-slate-300">Kurfürstendamm 139 · Berlin</p>
-            </div>
+          <div className={styles.heroPanel} aria-label="Einsatzbereiche">
+            <p>Ihre Apotheke. Digital sichtbar.</p>
+            <span><Store size={18} aria-hidden="true" /> Im Schaufenster</span>
+            <span><Monitor size={18} aria-hidden="true" /> Im Wartebereich</span>
+            <span><Moon size={18} aria-hidden="true" /> Im Notdienst</span>
           </div>
-        </Container>
+          <p className={styles.visualNote}>Visualisierung</p>
+        </div>
       </section>
 
-      <section className="bg-[#f6f9f8] py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Echte Installationen" title="So sieht DokTV im echten Einsatz aus." text="Keine Renderings. Keine Stockfotos. Echte Display-Installationen in Berliner Apotheken." />
-          <div className="mt-12 grid gap-5 lg:grid-cols-12 lg:grid-rows-2">
-            <Link href="/referenzen" className="group relative min-h-[32rem] overflow-hidden rounded-[2rem] lg:col-span-7 lg:row-span-2">
-              <Image src={doktvReferences[1].images[1].src} alt={doktvReferences[1].images[1].alt} fill sizes="(max-width: 1024px) 100vw, 58vw" className="object-cover transition duration-700 group-hover:scale-[1.025]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
-                <p className="text-sm font-bold text-teal-200">Berlin-Kudamm</p>
-                <h3 className="mt-2 text-3xl font-black">{doktvReferences[1].title}</h3>
-                <p className="mt-2 text-slate-200">{doktvReferences[1].address}</p>
-              </div>
-            </Link>
-            {[doktvReferences[0], doktvReferences[2]].map((reference) => (
-              <Link key={reference.title} href="/referenzen" className="group relative min-h-[19rem] overflow-hidden rounded-[2rem] lg:col-span-5">
-                <Image src={reference.images[1].src} alt={reference.images[1].alt} fill sizes="(max-width: 1024px) 100vw, 42vw" className="object-cover transition duration-700 group-hover:scale-[1.025]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-teal-200">{reference.location}</p>
-                  <h3 className="mt-2 text-xl font-black">{reference.title}</h3>
-                  <p className="mt-1 text-sm text-slate-200">{reference.address}</p>
-                </div>
+      <section className={styles.trustBar} aria-label="DokTV auf einen Blick">
+        <div className={styles.container}>
+          <div className={styles.trustIntro}>
+            <strong>Echte Installationen in Berliner Apotheken</strong>
+            <span>Technik, Inhalte und Betreuung aus einer Hand.</span>
+          </div>
+          <ul>
+            <li><CircleCheck size={18} aria-hidden="true" /> Persönlich</li>
+            <li><CircleCheck size={18} aria-hidden="true" /> Flexibel aktualisierbar</li>
+            <li><CircleCheck size={18} aria-hidden="true" /> Vor Ort sichtbar</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="loesungen" className={styles.solutionsSection} aria-labelledby="solutions-title">
+        <div className={styles.container}>
+          <div className={styles.sectionTopline}>
+            <div><p className={styles.sectionLabel}>Unsere Lösungen</p><h2 id="solutions-title">Eine Lösung. Viele Möglichkeiten.</h2></div>
+            <p>Mit digitalen Displays machen Sie Ihre Apotheke zum Blickfang – im Schaufenster, im Wartebereich und beim Notdienst.</p>
+          </div>
+          <div className={styles.solutionGrid}>
+            {solutions.map(({ icon: Icon, title, text, href }) => (
+              <Link className={styles.solutionCard} href={href} key={title}>
+                <span className={styles.solutionIcon}><Icon size={27} strokeWidth={2} aria-hidden="true" /></span>
+                <span className={styles.solutionContent}><strong>{title}</strong><span>{text}</span></span>
+                <span className={styles.cardArrow}><ArrowRight size={18} aria-hidden="true" /></span>
               </Link>
             ))}
           </div>
-          <div className="mt-8"><SecondaryButton href="/referenzen">Alle Referenzen ansehen</SecondaryButton></div>
-        </Container>
+          <Link className={styles.textLink} href="/apotheken">Alle Lösungen für Apotheken ansehen <ArrowRight size={17} aria-hidden="true" /></Link>
+        </div>
       </section>
 
-      <section className="py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Alles aus einer Hand" title="Display, Werbung und Betreuung. Alles aus einer Hand." text="Ein klarer Ablauf, ein persönlicher Ansprechpartner und Inhalte, die zu Ihrem Standort passen." />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {serviceSteps.map((item) => <FeatureCard key={item.number} number={item.number} title={item.title}><p>{item.text}</p></FeatureCard>)}
+      <section className={styles.referenceSection} aria-labelledby="reference-title">
+        <div className={styles.container}>
+          <div className={styles.referenceHeading}>
+            <p className={styles.sectionLabel}>Aus der Praxis</p>
+            <h2 id="reference-title">Echte Apotheken. Echte Installationen.</h2>
+            <p>Sehen Sie, wie digitale Schaufensterwerbung in einer Apotheke tatsächlich eingesetzt wird.</p>
           </div>
-        </Container>
-      </section>
-
-      <section className="bg-slate-950 py-20 text-white lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="So funktioniert DokTV" title="Vom passenden Display zum fertigen Programm." text="Sie sagen uns, was Ihr Standort braucht. Wir kümmern uns um die technische und visuelle Umsetzung." light />
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {["Display auswählen", "DokTV einrichten lassen", "Werbung auswählen & ausspielen"].map((step, index) => (
-              <article key={step} className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-7">
-                <p className="text-sm font-black tracking-[0.2em] text-teal-300">0{index + 1}</p>
-                <h3 className="mt-8 text-2xl font-black">{step}</h3>
-                <p className="mt-4 leading-7 text-slate-300">
-                  {index === 0 && "55 oder 65 Zoll – passend für Schaufenster, Verkaufsbereich oder Wartezimmer."}
-                  {index === 1 && "Wir bereiten Ihre DokTV-Lösung vor und stimmen die Einrichtung persönlich mit Ihnen ab."}
-                  {index === 2 && "Sie bestimmen die Inhalte. DokTV gestaltet, verwaltet und aktualisiert sie."}
-                </p>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="bg-[#f6f9f8] py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Transparente Preise" title="Einmal Display. Monatlich Rundum-Service." text="Klare Hardwarepreise und ein Content-Service, der Ihre laufende Kommunikation übernimmt." />
-          <div className="mt-12"><PricingTeaser /></div>
-          <p className="mt-6 max-w-3xl leading-7 text-slate-600">Wir erstellen die Werbeinhalte für Ihr Display. Ihre Apotheke oder Praxis entscheidet, welche Werbung ausgespielt wird. Details zur Installation besprechen wir im persönlichen Angebot.</p>
-          <div className="mt-8"><PrimaryButton href="/preise">Preise & Leistungen ansehen</PrimaryButton></div>
-        </Container>
-      </section>
-
-      <section className="py-20 lg:py-28">
-        <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <ImagePanel src="/referenzen/sky-apotheke-kreuzberg-2.jpg" alt="DokTV Display in der Sky Apotheke Kreuzberg am Abend" className="aspect-[4/3]" />
-          <div>
-            <SectionHeading eyebrow="Digitale Gesundheitskommunikation" title="Ihre Angebote verdienen Aufmerksamkeit." text="Klassische Aushänge gehen im Alltag schnell unter. Digitale Displays machen wechselnde Angebote, Gesundheitsinformationen, Praxisleistungen und saisonale Kampagnen am Standort sichtbar." />
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {["Apotheken", "Arztpraxen", "Gesundheitszentren", "Hersteller & Marken"].map((item) => <div key={item} className="rounded-2xl border border-slate-200 bg-white px-5 py-4 font-bold text-slate-700 shadow-sm">{item}</div>)}
+          <div className={styles.referenceCard}>
+            <div className={styles.referenceImage}>
+              <Image src={reference.images[1].src} alt={reference.images[1].alt} fill sizes="(max-width: 800px) 100vw, 38vw" className={styles.coverImage} />
             </div>
-            <p className="mt-7 leading-8 text-slate-600">DokTV verbindet digitale Schaufenster-Displays, Wartezimmer TV und Herstellerwerbung zu einer professionellen Kommunikationsfläche, die flexibel aktualisiert werden kann – in Berlin und grundsätzlich auch deutschlandweit.</p>
+            <div className={styles.referenceCopy}>
+              <span className={styles.referenceLocation}>{reference.location}</span>
+              <h3>{reference.title}</h3>
+              <p>{reference.description}</p>
+              <Link className={styles.textLink} href="/referenzen">Referenz ansehen <ArrowRight size={17} aria-hidden="true" /></Link>
+            </div>
+            <div className={styles.referenceFacts} aria-label="Fakten zur Installation">
+              <span><strong>2</strong> Schaufenster-Displays</span>
+              <span><strong>Tag & Nacht</strong> sichtbar</span>
+              <span><strong>Berlin</strong> Kurfürstendamm</span>
+            </div>
           </div>
-        </Container>
+        </div>
       </section>
 
-      <section className="bg-[#f6f9f8] py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Häufige Fragen" title="Kurz erklärt, bevor wir persönlich sprechen." />
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {faqs.map((faq) => <article key={faq.q} className="surface-card p-7"><h3 className="text-xl font-black text-slate-950">{faq.q}</h3><p className="mt-4 leading-7 text-slate-600">{faq.a}</p></article>)}
+      <section className={styles.pricingSection} aria-labelledby="pricing-title">
+        <div className={styles.container}>
+          <div className={styles.pricingHeading}>
+            <div><p className={styles.sectionLabel}>Transparente Preise</p><h2 id="pricing-title">Ein Display. Ein Service. Klare Kosten.</h2></div>
+            <p>Wählen Sie die passende Displaygröße. Der DokTV Content-Service kommt monatlich hinzu; den Notdienstanzeiger können Sie optional ergänzen.</p>
           </div>
-        </Container>
+          <div className={styles.pricingGrid}>
+            <article><span>Hardware · einmalig</span><h3>55-Zoll-Display</h3><p className={styles.priceValue}>{formatEuro(pricing.displays[55].price)}</p></article>
+            <article><span>Hardware · einmalig</span><h3>65-Zoll-Display</h3><p className={styles.priceValue}>{formatEuro(pricing.displays[65].price)}</p></article>
+            <article><span>Monatlich</span><h3>DokTV Content-Service</h3><p className={styles.priceValue}>{formatEuro(pricing.service.price)} <small>/ Monat</small></p></article>
+          </div>
+          <p className={styles.pricingNote}>Optional: Apotheken-Notdienstanzeiger für zusätzlich {formatEuro(pricing.emergencyDisplay.price)} netto pro Monat, zzgl. gesetzlicher MwSt. <Link href="/preise">Alle Preise im Detail ansehen <ArrowRight size={16} aria-hidden="true" /></Link></p>
+        </div>
       </section>
 
-      <CTASection />
+      <section id="ablauf" className={styles.processSection} aria-labelledby="process-title">
+        <div className={styles.container}>
+          <div className={styles.processIntro}>
+            <p className={styles.sectionLabel}>So funktioniert DokTV</p>
+            <h2 id="process-title">Von der Idee zum sichtbaren Auftritt.</h2>
+            <p>Wir besprechen Ihren Standort, richten die passende Lösung ein und kümmern uns anschließend um Ihre Inhalte.</p>
+          </div>
+          <div className={styles.processGrid}>
+            <article><span><Megaphone size={23} aria-hidden="true" /></span><small>01</small><h3>Bedarf besprechen</h3><p>Gemeinsam klären wir, welche Flächen und Botschaften für Ihre Apotheke sinnvoll sind.</p></article>
+            <article><span><Monitor size={23} aria-hidden="true" /></span><small>02</small><h3>Display einrichten</h3><p>DokTV stimmt Hardware und Installation mit Ihnen auf den Standort ab.</p></article>
+            <article><span><Headset size={23} aria-hidden="true" /></span><small>03</small><h3>Inhalte betreuen</h3><p>Sie entscheiden über Ihre Werbung. Wir gestalten, spielen aus und aktualisieren die Inhalte.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.finalCta} aria-labelledby="cta-title">
+        <div className={styles.container}>
+          <div><p className={styles.sectionLabel}>Gemeinsam mehr erreichen</p><h2 id="cta-title">Bereit für mehr Sichtbarkeit?</h2><p>Wir zeigen Ihnen unverbindlich, welche Digital-Signage-Lösung zu Ihrer Apotheke passt.</p></div>
+          <Link className={styles.primaryButton} href="/kontakt">Kostenlose Beratung vereinbaren <ArrowRight size={18} aria-hidden="true" /></Link>
+          <ul>
+            <li><CalendarDays size={20} aria-hidden="true" /> Unverbindlich</li>
+            <li><Headset size={20} aria-hidden="true" /> Persönlich</li>
+            <li><BadgeCheck size={20} aria-hidden="true" /> Passend zu Ihrem Standort</li>
+          </ul>
+        </div>
+      </section>
+
       <Footer />
     </main>
   );

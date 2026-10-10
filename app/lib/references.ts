@@ -58,7 +58,7 @@ export const doktvReferences: DoktvReference[] = [
       },
       {
         src: "/referenzen/sky-apotheke-kudamm-2.jpg",
-        alt: "Sky Apotheke Kudamm mit digitalen Schaufensterdisplays bei Tageslicht",
+        alt: "Sky Apotheke Kudamm mit zwei beleuchteten digitalen Schaufensterdisplays am Abend",
       },
     ],
     summary:
