@@ -176,6 +176,9 @@ export default function Page() {
           </h2>
 
           <div className="space-y-4">
+            <Link href="/apotheken#schaufenster" className="block font-semibold text-teal-700 hover:underline">
+              → DokTV-Lösung: Schaufenster-Displays für Apotheken
+            </Link>
             <Link
               href="/blog/digital-signage-apotheke"
               className="block text-teal-700 hover:underline"

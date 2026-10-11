@@ -11,7 +11,7 @@ import { doktvReferences } from "../lib/references";
 import { formatEuro, pricing } from "../lib/pricing";
 import styles from "../home.module.css";
 
-const metaTitle = "Digital Signage für Apotheken | Displays & Inhalte – DokTV";
+const metaTitle = "Digitale Sichtbarkeit für Apotheken | DokTV";
 const metaDescription = "DokTV macht Ihre Apotheke digital sichtbar: Displays für Schaufenster, Wartezimmer und Notdienst, individuelle Inhalte und persönliche Betreuung. Jetzt beraten lassen.";
 const previousMetaTitle = "DokTV – Digital Signage für Apotheken, Praxen & Schaufenster";
 const previousMetaDescription = "DokTV macht Ihr Schaufenster digital: moderne Displays, professionelle Inhalte und einfache Verwaltung für Apotheken, Praxen und lokale Unternehmen.";
@@ -46,7 +46,7 @@ const solutions = [
   {
     icon: Store, title: "Schaufenster-Displays",
     text: "Angebote und Gesundheitsthemen fallen schon vor dem Betreten Ihrer Apotheke ins Auge.",
-    href: "/schaufenster-display-apotheken",
+    href: "/apotheken#schaufenster",
   },
   {
     icon: Monitor, title: "Wartezimmer-TV",

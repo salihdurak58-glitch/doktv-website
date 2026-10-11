@@ -6,12 +6,12 @@ export const publicContact = {
 } as const;
 
 export const solutionLinks = [
-  { href: "/schaufenster-display-apotheken", label: "Schaufenster-Displays" },
-  { href: "/apotheken-notdienst-anzeiger", label: "Notdienstanzeiger" },
-  { href: "/apotheken", label: "Digital Signage für Apotheken" },
-  { href: "/wartezimmer-tv-praxen", label: "Wartezimmer-TV" },
-  { href: "/werbung-apotheke-display", label: "Individuelle Werbeinhalte" },
-  { href: "/hersteller-werbung", label: "Herstellerwerbung" },
+  { href: "/apotheken", label: "Digital Signage für Apotheken", level: "main" },
+  { href: "/apotheken#schaufenster", label: "Schaufenster-Displays", level: "sub" },
+  { href: "/apotheken-notdienst-anzeiger", label: "Notdienstanzeiger", level: "sub" },
+  { href: "/werbung-apotheke-display", label: "Individuelle Werbeinhalte", level: "sub" },
+  { href: "/wartezimmer-tv-praxen", label: "Wartezimmer-TV", level: "other" },
+  { href: "/hersteller-werbung", label: "Herstellerwerbung", level: "other" },
 ] as const;
 
 export const primaryLinks = [

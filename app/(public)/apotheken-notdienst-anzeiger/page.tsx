@@ -534,7 +534,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                   ·
                 </span>
                 <Link
-                  href="/schaufenster-display-apotheken"
+                  href="/apotheken#schaufenster"
                   className="text-teal-800 underline decoration-teal-300 underline-offset-4"
                 >
                   Apotheken-Displays entdecken
@@ -670,7 +670,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
             </p>
             <p>
               Sie möchten neben der Notdienstanzeige auch weitere Inhalte zeigen? Erfahren Sie mehr
-              über das <Link href="/schaufenster-display-apotheken">digitale Schaufenster für Apotheken</Link>,
+              über das <Link href="/apotheken#schaufenster">digitale Schaufenster für Apotheken</Link>,
               unsere <Link href="/preise">Preise</Link> oder sprechen Sie direkt mit uns über Ihre
               gewünschte Lösung.
             </p>
@@ -792,7 +792,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                   Notdienst Anzeiger jetzt anfragen
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </Link>
-                <Link href="/schaufenster-display-apotheken" className="button-secondary min-h-14">
+                <Link href="/apotheken" className="button-secondary min-h-14">
                   DOKTV kennenlernen
                 </Link>
               </div>

@@ -22,7 +22,7 @@ export default function Footer() {
         </div>
         <div>
           <h2>Lösungen</h2>
-          <div className={styles.links}>{solutionLinks.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}</div>
+          <div className={styles.links}>{solutionLinks.map((item) => <Link key={item.href} href={item.href} className={item.level === "sub" ? styles.subLink : item.level === "main" ? styles.mainLink : undefined}>{item.label}</Link>)}</div>
         </div>
         <div>
           <h2>DokTV entdecken</h2>

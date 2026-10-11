@@ -12,6 +12,9 @@
 .popover { position: absolute; top: calc(100% + 24px); right: -18px; z-index: 70; width: 296px; display: grid; gap: 3px; padding: 10px; border: 1px solid #d9ebea; border-radius: 15px; background: #fff; box-shadow: 0 18px 50px rgb(10 39 52 / .15); }
 .popover a { border-radius: 9px; padding: 11px 12px; color: var(--doktv-navy); font-size: 13px; font-weight: 700; white-space: normal; }
 .popover a:hover, .popover a[aria-current="page"] { background: #eaf8f6; color: var(--doktv-teal); }
+.popover a.mainSolution { background: #eaf8f6; color: var(--doktv-teal); font-weight: 900; }
+.popover a.subSolution { padding-left: 25px; color: #51657a; font-weight: 650; }
+.popover a.subSolution::before { content: "↳"; margin-right: 7px; color: var(--doktv-teal); }
 .actions { display: flex; align-items: center; flex: none; gap: 16px; }
 .phone { display: inline-flex; align-items: center; gap: 8px; color: var(--doktv-navy); font-size: 13px; font-weight: 800; white-space: nowrap; }
 .phone svg, .phone:hover { color: var(--doktv-teal); }
@@ -35,6 +38,8 @@
   .mobileInner a:hover, .mobileInner a[aria-current="page"] { background: #eaf8f6; color: var(--doktv-teal); }
   .mobileLabel { padding: 12px 12px 4px; color: var(--doktv-teal); font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
   .mobileSolutions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 10px; }
+  .mobileSolutions a.mainSolution { background: #eaf8f6; color: var(--doktv-teal); font-weight: 900; }
+  .mobileSolutions a.subSolution { padding-left: 25px; color: #51657a; font-weight: 650; }
 }
 @media (max-width: 800px) {
   .inner, .mobileInner { width: min(100% - 40px, 1320px); }

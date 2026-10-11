@@ -85,7 +85,7 @@ function SiteHeaderContent({ pathname }: { pathname: string }) {
             {desktopOpen && (
               <div id="site-solutions-list" className={styles.popover}>
                 {solutionLinks.map((item) => (
-                  <Link key={item.href} href={item.href} aria-current={pathname === item.href ? "page" : undefined} onClick={closeMenus}>
+                  <Link key={item.href} href={item.href} className={item.level === "sub" ? styles.subSolution : item.level === "main" ? styles.mainSolution : undefined} aria-current={pathname === item.href ? "page" : undefined} onClick={closeMenus}>
                     {item.label}
                   </Link>
                 ))}
@@ -116,7 +116,7 @@ function SiteHeaderContent({ pathname }: { pathname: string }) {
             <span className={styles.mobileLabel}>Lösungen</span>
             <div className={styles.mobileSolutions}>
               {solutionLinks.map((item) => (
-                <Link key={item.href} href={item.href} aria-current={pathname === item.href ? "page" : undefined} onClick={closeMenus}>{item.label}</Link>
+                <Link key={item.href} href={item.href} className={item.level === "sub" ? styles.subSolution : item.level === "main" ? styles.mainSolution : undefined} aria-current={pathname === item.href ? "page" : undefined} onClick={closeMenus}>{item.label}</Link>
               ))}
             </div>
             <span className={styles.mobileLabel}>DokTV</span>

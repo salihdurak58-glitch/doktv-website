@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [{ source: "/schaufenster-display-apotheken", destination: "/apotheken", permanent: true }];
+  },
 };
 
 export default nextConfig;

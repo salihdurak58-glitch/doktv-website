@@ -3,7 +3,7 @@ import { canonicalUrl } from "@/app/lib/seo/site";
 import type { MetadataRoute } from "next";
 
 const staticPublicRoutes = [
-  "/", "/schaufenster-display-apotheken", "/apotheken",
+  "/", "/apotheken",
   "/apotheken-notdienst-anzeiger", "/wartezimmer-tv-praxen", "/arztpraxen",
   "/hersteller-werbung", "/hersteller", "/werbung-apotheke-display",
   "/referenzen", "/preise", "/ueber-uns", "/kontakt", "/standorte",
@@ -12,6 +12,8 @@ const staticPublicRoutes = [
   "/apotheke-werbung-berlin", "/arztpraxis-werbung-berlin",
   "/impressum", "/datenschutz",
 ] as const;
+
+const redirectedRoutes = new Set(["/schaufenster-display-apotheken"]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createSupabaseServerClient();
@@ -33,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   for (const page of data || []) {
-    if (page.noindex) continue;
+    if (page.noindex || redirectedRoutes.has(page.route)) continue;
     const url = canonicalUrl(page.route);
     entries.set(url, { url, lastModified: page.updated_at || undefined });
   }
