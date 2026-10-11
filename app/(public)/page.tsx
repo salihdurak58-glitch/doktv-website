@@ -14,13 +14,18 @@ import styles from "../home.module.css";
 const metaTitle = "Digitale Sichtbarkeit für Apotheken | DokTV";
 const metaDescription = "DokTV macht Ihre Apotheke digital sichtbar: Displays für Schaufenster, Wartezimmer und Notdienst, individuelle Inhalte und persönliche Betreuung. Jetzt beraten lassen.";
 const previousMetaTitle = "DokTV – Digital Signage für Apotheken, Praxen & Schaufenster";
+const previousLaunchMetaTitle = "Digital Signage für Apotheken | Displays & Inhalte – DokTV";
 const previousMetaDescription = "DokTV macht Ihr Schaufenster digital: moderne Displays, professionelle Inhalte und einfache Verwaltung für Apotheken, Praxen und lokale Unternehmen.";
 const previousOgDescription = "Moderne Schaufenster-Displays und Digital Signage Lösungen für lokale Unternehmen.";
+
+function isPreviousHomepageTitle(value: unknown) {
+  return value === previousMetaTitle || value === previousLaunchMetaTitle;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata = await generatePageMetadata("/");
   // Replace only the previous homepage copy; future SEO edits in the admin area keep working.
-  const title = metadata.title === previousMetaTitle ? metaTitle : metadata.title || metaTitle;
+  const title = isPreviousHomepageTitle(metadata.title) ? metaTitle : metadata.title || metaTitle;
   const description = metadata.description === previousMetaDescription ? metaDescription : metadata.description || metaDescription;
   return {
     ...metadata,
@@ -31,12 +36,12 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { ...metadata.alternates, canonical: null },
     openGraph: {
       ...metadata.openGraph,
-      title: metadata.openGraph?.title === previousMetaTitle ? metaTitle : metadata.openGraph?.title || title,
+      title: isPreviousHomepageTitle(metadata.openGraph?.title) ? metaTitle : metadata.openGraph?.title || title,
       description: metadata.openGraph?.description === previousMetaDescription || metadata.openGraph?.description === previousOgDescription ? metaDescription : metadata.openGraph?.description || description,
     },
     twitter: {
       ...metadata.twitter,
-      title: metadata.twitter?.title === previousMetaTitle ? metaTitle : metadata.twitter?.title || title,
+      title: isPreviousHomepageTitle(metadata.twitter?.title) ? metaTitle : metadata.twitter?.title || title,
       description: metadata.twitter?.description === previousMetaDescription ? metaDescription : metadata.twitter?.description || description,
     },
   };
