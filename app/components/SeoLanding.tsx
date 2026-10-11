@@ -7,7 +7,7 @@ type SeoLandingProps = {
   sectionTitle: string;
   sectionText: string;
   items: string[];
-  itemDescriptions?: string[];
+  itemDescriptions: string[];
   image?: { src: string; alt: string };
   primaryHref?: string;
   primaryLabel?: string;
@@ -37,7 +37,7 @@ export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectio
         <Container>
           <SectionHeading eyebrow="Im Überblick" title={sectionTitle} text={sectionText} align="center" />
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item, index) => <FeatureCard key={item} number={`0${index + 1}`} title={item}>{itemDescriptions?.[index] || "Individuell auf Standort, Zielgruppe und laufende Kommunikation abgestimmt."}</FeatureCard>)}
+            {items.map((item, index) => <FeatureCard key={item} number={`0${index + 1}`} title={item}>{itemDescriptions[index]}</FeatureCard>)}
           </div>
         </Container>
       </section>
