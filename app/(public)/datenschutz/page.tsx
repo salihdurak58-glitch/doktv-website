@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata: Metadata = {
-  title: "Datenschutz | DokTV",
-  description: "Datenschutzerklärung der DokTv UG (haftungsbeschränkt).",
-  alternates: { canonical: "https://doktv.de/datenschutz" },
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/datenschutz",
+  "Datenschutz | DokTV",
+  "Datenschutzerklärung der DokTv UG (haftungsbeschränkt).",
+  "/logo.png",
+);
 
 const logFiles = [
   "IP-Adresse",

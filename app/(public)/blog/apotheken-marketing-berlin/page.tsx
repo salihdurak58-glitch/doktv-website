@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { publicPageMetadata } from "../../../lib/seo/public-metadata";
 
-export const metadata = {
-  title:
-    "Apotheken Marketing Berlin: Mehr Kunden durch Digital Signage & lokale Sichtbarkeit",
-  description:
-    "Strategien für Apotheken in Berlin: Mehr Kunden durch Digital Signage, Google Optimierung und lokale Sichtbarkeit.",
-  alternates: { canonical: "https://doktv.de/blog/apotheken-marketing-berlin" },
-};
+export const metadata = publicPageMetadata(
+  "/blog/apotheken-marketing-berlin",
+  "Apothekenmarketing in Berlin: Online & vor Ort | DokTV",
+  "Praktische Ansätze für Berliner Apotheken: lokale Online-Sichtbarkeit, Schaufenster-Kommunikation und digitale Inhalte sinnvoll verbinden.",
+  "/referenzen/sky-apotheke-kreuzberg-2.jpg",
+  "article",
+);
 
 export default function Page() {
   return (
@@ -20,14 +21,13 @@ export default function Page() {
           </p>
 
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Apotheken Marketing in Berlin: So gewinnen Sie mehr Kunden vor Ort
+            Apothekenmarketing in Berlin: online und am Standort sichtbar sein
           </h1>
 
           <p className="mt-6 text-lg leading-8 text-slate-600">
             Der Wettbewerb unter Apotheken in Berlin ist hoch. Wer sichtbar ist,
-            gewinnt. In diesem Artikel zeigen wir, wie Sie mit Digital Signage,
-            Google Optimierung und modernen Marketingstrategien mehr Kunden
-            erreichen.
+            kann leichter gefunden werden. Dieser Artikel beleuchtet lokale
+            Online-Sichtbarkeit und digitale Kommunikation am Standort.
           </p>
         </div>
       </section>
@@ -48,8 +48,9 @@ export default function Page() {
 
         <p>
           Genau deshalb ist modernes Apotheken Marketing heute entscheidend.
-          Eine Kombination aus Online-Sichtbarkeit und starker Präsenz vor Ort
-          sorgt dafür, dass Sie mehr Kunden erreichen und langfristig wachsen.
+          Eine Kombination aus aktuellen Online-Informationen und klarer
+          Kommunikation vor Ort hilft Interessierten, Ihre Angebote zu finden
+          und einzuordnen.
         </p>
       </section>
 
@@ -155,7 +156,7 @@ export default function Page() {
       {/* CTA */}
       <section className="bg-[#f4fbf9] px-6 py-20 text-center">
         <h2 className="text-3xl font-bold">
-          Mehr Kunden für Ihre Apotheke in Berlin
+          Digitale Kommunikation für Ihre Apotheke in Berlin
         </h2>
 
         <p className="mt-4 text-slate-600">

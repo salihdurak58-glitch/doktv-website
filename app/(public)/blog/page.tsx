@@ -2,7 +2,10 @@ import { generatePageMetadata } from "@/app/lib/seo/get-page-seo";
 import Link from "next/link";
 
 export async function generateMetadata() {
-  return generatePageMetadata("/blog");
+  return generatePageMetadata("/blog", {
+    title: "DokTV Blog | Wissen zu Digital Signage für Apotheken",
+    description: "Praxisnahe Artikel zu digitalen Displays, Apothekenwerbung und Schaufenster-Kommunikation.",
+  });
 }
 
 const posts = [

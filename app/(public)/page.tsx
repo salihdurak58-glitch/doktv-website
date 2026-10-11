@@ -11,7 +11,7 @@ import { doktvReferences } from "../lib/references";
 import { formatEuro, pricing } from "../lib/pricing";
 import styles from "../home.module.css";
 
-const metaTitle = "Digitale Sichtbarkeit für Apotheken | DokTV";
+const metaTitle = "Digitale Werbung für Apotheken | Displays & Service – DokTV";
 const metaDescription = "DokTV macht Ihre Apotheke digital sichtbar: Displays für Schaufenster, Wartezimmer und Notdienst, individuelle Inhalte und persönliche Betreuung. Jetzt beraten lassen.";
 const previousMetaTitle = "DokTV – Digital Signage für Apotheken, Praxen & Schaufenster";
 const previousLaunchMetaTitle = "Digital Signage für Apotheken | Displays & Inhalte – DokTV";
@@ -71,6 +71,14 @@ const solutions = [
 ];
 
 const reference = doktvReferences[1];
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://doktv.de/#organization",
+  name: "DokTv UG (haftungsbeschränkt)",
+  url: "https://doktv.de/",
+  logo: "https://doktv.de/logo.png",
+};
 
 export default async function HomePage() {
   const content = await getSiteContent([
@@ -89,6 +97,7 @@ export default async function HomePage() {
   return (
     <main className={styles.page}>
       <link rel="canonical" href="https://doktv.de/" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
 
       <section className={styles.hero} aria-labelledby="home-title">
         <div className={styles.heroImage}>
@@ -139,6 +148,19 @@ export default async function HomePage() {
             <li><CircleCheck size={18} aria-hidden="true" /> Flexibel aktualisierbar</li>
             <li><CircleCheck size={18} aria-hidden="true" /> Vor Ort sichtbar</li>
           </ul>
+        </div>
+      </section>
+
+      <section className={styles.introSection} aria-labelledby="intro-title">
+        <div className={styles.container}>
+          <div>
+            <p className={styles.sectionLabel}>Digitale Werbung am Standort</p>
+            <h2 id="intro-title">Digitale Werbung für Apotheken, die zum Alltag passt.</h2>
+          </div>
+          <div className={styles.introCopy}>
+            <p>Ein Apotheken-Display kann mehr zeigen als ein gedrucktes Plakat: aktuelle Angebote, Leistungen und gut lesbare Informationen. Im Schaufenster erreicht die Botschaft Menschen vor dem Betreten; im Innenbereich begleitet sie den Besuch. Welche Fläche sinnvoll ist, hängt von Standort, Blickwinkel und Ihren Inhalten ab.</p>
+            <p>DokTV verbindet Displaytechnik, individuelle Werbeinhalte und laufende Betreuung. Sie legen die Themen fest; wir stimmen Darstellung und Ausspielung mit Ihnen ab. <Link href="/apotheken">So funktioniert Digital Signage für Apotheken</Link> und <Link href="/werbung-apotheke-display">so entstehen passende Werbeinhalte</Link>.</p>
+          </div>
         </div>
       </section>
 
@@ -213,6 +235,20 @@ export default async function HomePage() {
             <article><span><Megaphone size={23} aria-hidden="true" /></span><small>01</small><h3>Bedarf besprechen</h3><p>Gemeinsam klären wir, welche Flächen und Botschaften für Ihre Apotheke sinnvoll sind.</p></article>
             <article><span><Monitor size={23} aria-hidden="true" /></span><small>02</small><h3>Display einrichten</h3><p>DokTV stimmt Hardware und Installation mit Ihnen auf den Standort ab.</p></article>
             <article><span><Headset size={23} aria-hidden="true" /></span><small>03</small><h3>Inhalte betreuen</h3><p>Sie entscheiden über Ihre Werbung. Wir gestalten, spielen aus und aktualisieren die Inhalte.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.faqSection} aria-labelledby="home-faq-title">
+        <div className={styles.container}>
+          <div className={styles.faqHeading}>
+            <p className={styles.sectionLabel}>Häufige Fragen</p>
+            <h2 id="home-faq-title">Was Apotheken vor einem Display wissen möchten.</h2>
+          </div>
+          <div className={styles.faqGrid}>
+            <article><h3>Wo kann ein Display eingesetzt werden?</h3><p>Im Schaufenster macht es Angebote und Services von außen sichtbar. Im Verkaufs- oder Wartebereich kann es Informationen verständlich darstellen. Die Platzierung sollte zu Ihrer Fläche und den Sichtachsen passen.</p><Link href="/apotheken#einsatzbereiche">Einsatzbereiche ansehen <ArrowRight size={16} aria-hidden="true" /></Link></article>
+            <article><h3>Wer erstellt und aktualisiert die Inhalte?</h3><p>Ihre Apotheke entscheidet über Themen und Angebote. DokTV gestaltet die Werbeinhalte, spielt sie aus und betreut Aktualisierungen im laufenden Betrieb.</p><Link href="/werbung-apotheke-display">Mehr zu digitalen Werbeinhalten <ArrowRight size={16} aria-hidden="true" /></Link></article>
+            <article><h3>Welche Kosten fallen an?</h3><p>Das Display wird einmalig berechnet; der DokTV-Service kommt monatlich hinzu und kostet bei beiden Displaygrößen gleich viel. Der Notdienstanzeiger ist optional.</p><Link href="/preise">Alle Hardware- und Servicepreise <ArrowRight size={16} aria-hidden="true" /></Link></article>
           </div>
         </div>
       </section>

@@ -3,7 +3,10 @@ import { Container, Eyebrow, FeatureCard, SectionHeading } from "../../component
 import KontaktForm from "./KontaktForm";
 
 export async function generateMetadata() {
-  return generatePageMetadata("/kontakt");
+  return generatePageMetadata("/kontakt", {
+    title: "Kontakt & Beratung für Digital Signage | DokTV",
+    description: "Sprechen Sie mit DokTV über Displays für Apotheken und Praxen. Wir beraten Sie persönlich zu Standort, Inhalten und Kosten.",
+  });
 }
 
 const nextSteps = [

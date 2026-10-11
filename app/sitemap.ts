@@ -13,32 +13,42 @@ const staticPublicRoutes = [
   "/impressum", "/datenschutz",
 ] as const;
 
-const redirectedRoutes = new Set(["/schaufenster-display-apotheken"]);
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase
     .from("page_seo")
-    .select("route, updated_at, noindex");
+    .select("route, updated_at, noindex, canonical_url");
 
   if (error) {
     console.error("Sitemap Fehler:", error.message);
-    return staticPublicRoutes.map((route) => ({ url: canonicalUrl(route) }));
   }
 
-  const excludedRoutes = new Set(data?.filter((page) => page.noindex).map((page) => page.route) || []);
-  const entries = new Map<string, MetadataRoute.Sitemap[number]>();
+  const seoByRoute = new Map(data?.map((page) => [page.route, page]) || []);
+  const entries: MetadataRoute.Sitemap = [];
 
   for (const route of staticPublicRoutes) {
-    if (!excludedRoutes.has(route)) entries.set(canonicalUrl(route), { url: canonicalUrl(route) });
+    const seo = seoByRoute.get(route);
+    if (seo?.noindex || (seo?.canonical_url && canonicalUrl(seo.canonical_url) !== canonicalUrl(route))) continue;
+    entries.push({ url: canonicalUrl(route), lastModified: seo?.updated_at || undefined });
   }
 
-  for (const page of data || []) {
-    if (page.noindex || redirectedRoutes.has(page.route)) continue;
-    const url = canonicalUrl(page.route);
-    entries.set(url, { url, lastModified: page.updated_at || undefined });
+  // Only real blog articles can add dynamic routes. SEO-admin rows are metadata,
+  // not proof that a page exists; adding them here can publish redirects or 404s.
+  const { data: posts, error: postsError } = await supabase
+    .from("blog_posts")
+    .select("slug, noindex, updated_at");
+
+  if (postsError) {
+    console.error("Blog-Sitemap Fehler:", postsError.message);
+    return entries;
   }
 
-  return [...entries.values()];
+  for (const post of posts || []) {
+    if (post.noindex || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug)) continue;
+    const route = `/blog/${post.slug}`;
+    entries.push({ url: canonicalUrl(route), lastModified: post.updated_at || undefined });
+  }
+
+  return entries;
 }

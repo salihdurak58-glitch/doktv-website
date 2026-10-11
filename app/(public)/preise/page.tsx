@@ -8,13 +8,14 @@ import {
   SectionHeading,
 } from "../../components/PublicUI";
 import { formatEuro, pricing } from "../../lib/pricing";
+import { generatePageMetadata } from "../../lib/seo/get-page-seo";
 
-export const metadata = {
-  title: "Digital Signage Preise | DokTV Berlin",
-  description:
-    "Transparente DokTV Preise: Displays mit einmaligen Hardwarekosten und monatlicher Content-Service für Apotheken und Praxen.",
-  alternates: { canonical: "https://doktv.de/preise" },
-};
+export async function generateMetadata() {
+  return generatePageMetadata("/preise", {
+    title: "Digital Signage für Apotheken: Preise & Kosten | DokTV",
+    description: "55-Zoll-Display 749 € und 65-Zoll-Display 849 € einmalig. DokTV-Service 69 € monatlich, Notdienstanzeiger optional +10 € netto monatlich.",
+  });
+}
 
 const displayFeatures = {
   55: [

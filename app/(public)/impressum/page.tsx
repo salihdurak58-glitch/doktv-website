@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata: Metadata = {
-  title: "Impressum | DokTV",
-  description: "Impressum der DokTv UG (haftungsbeschränkt).",
-  alternates: { canonical: "https://doktv.de/impressum" },
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/impressum",
+  "Impressum | DokTV",
+  "Impressum und rechtliche Angaben der DokTv UG (haftungsbeschränkt).",
+  "/logo.png",
+);
 
 export default function ImpressumPage() {
   return (

@@ -7,14 +7,16 @@ type SeoLandingProps = {
   sectionTitle: string;
   sectionText: string;
   items: string[];
+  itemDescriptions?: string[];
   image?: { src: string; alt: string };
   primaryHref?: string;
   primaryLabel?: string;
   secondaryHref?: string;
   secondaryLabel?: string;
+  children?: React.ReactNode;
 };
 
-export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectionText, items, image, primaryHref = "/kontakt", primaryLabel = "Kostenlose Beratung", secondaryHref = "/preise", secondaryLabel = "Preise ansehen" }: SeoLandingProps) {
+export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectionText, items, itemDescriptions, image, primaryHref = "/kontakt", primaryLabel = "Kostenlose Beratung", secondaryHref = "/preise", secondaryLabel = "Preise ansehen", children }: SeoLandingProps) {
   return (
     <main className="min-h-screen bg-[#f7faf9] text-slate-900">
       <section className="page-hero py-16 sm:py-20 lg:py-24">
@@ -35,10 +37,11 @@ export default function SeoLanding({ eyebrow, title, intro, sectionTitle, sectio
         <Container>
           <SectionHeading eyebrow="Im Überblick" title={sectionTitle} text={sectionText} align="center" />
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item, index) => <FeatureCard key={item} number={`0${index + 1}`} title={item}>Individuell auf Standort, Zielgruppe und laufende Kommunikation abgestimmt.</FeatureCard>)}
+            {items.map((item, index) => <FeatureCard key={item} number={`0${index + 1}`} title={item}>{itemDescriptions?.[index] || "Individuell auf Standort, Zielgruppe und laufende Kommunikation abgestimmt."}</FeatureCard>)}
           </div>
         </Container>
       </section>
+      {children}
       <CTASection />
     </main>
   );

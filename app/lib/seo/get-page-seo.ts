@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createSupabaseServerClient } from "@/app/lib/supabase/server";
 import { canonicalUrl, SITE_URL } from "@/app/lib/seo/site";
+import { publicPageMetadata } from "@/app/lib/seo/public-metadata";
 
 type PageSeo = {
   route: string;
@@ -33,24 +34,23 @@ export async function getPageSeo(route: string): Promise<PageSeo | null> {
   return data;
 }
 
-export async function generatePageMetadata(route: string): Promise<Metadata> {
+export async function generatePageMetadata(
+  route: string,
+  fallback?: { title: string; description: string; image?: string },
+): Promise<Metadata> {
   const seo = await getPageSeo(route);
-  const routeCanonicalUrl = canonicalUrl(route);
-
   if (!seo) {
-    return {
-      title: "DokTV – Digital Signage",
-      description:
-        "DokTV bietet moderne Digital Signage Lösungen für Apotheken, Praxen und lokale Unternehmen.",
-      alternates: {
-        canonical: routeCanonicalUrl,
-      },
-    };
+    return publicPageMetadata(
+      route,
+      fallback?.title || "DokTV – Digital Signage",
+      fallback?.description || "DokTV bietet Digital Signage für Apotheken und Praxen.",
+      fallback?.image,
+    );
   }
 
   const pageCanonicalUrl = canonicalUrl(seo.canonical_url || route);
 
-  const ogImage = seo.og_image_url || `${SITE_URL}/og-image.jpg`;
+  const ogImage = seo.og_image_url || fallback?.image || `${SITE_URL}/referenzen/sky-apotheke-wedding-2.jpg`;
 
   return {
     title: seo.meta_title,
@@ -70,8 +70,6 @@ export async function generatePageMetadata(route: string): Promise<Metadata> {
       images: [
         {
           url: ogImage,
-          width: 1200,
-          height: 630,
           alt: seo.og_title || seo.meta_title,
         },
       ],

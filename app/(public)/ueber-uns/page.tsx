@@ -1,10 +1,12 @@
 import { Container, CTASection, Eyebrow, FeatureCard, ImagePanel, PrimaryButton, SecondaryButton, SectionHeading } from "../../components/PublicUI";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata = {
-  title: "Über DokTV | Digital Signage für Apotheken & Praxen",
-  description: "DokTV verbindet Displaytechnik, Werbeinhalte und laufende Betreuung für Apotheken, Praxen und Gesundheitsmarken.",
-  alternates: { canonical: "https://doktv.de/ueber-uns" },
-};
+export const metadata = publicPageMetadata(
+  "/ueber-uns",
+  "Über DokTV | Displaytechnik, Inhalte & Betreuung",
+  "DokTV verbindet Displaytechnik, individuelle Werbeinhalte und laufende Betreuung für Apotheken und Praxen. Lernen Sie unsere Arbeitsweise kennen.",
+  "/referenzen/sky-apotheke-kudamm-1.jpg",
+);
 
 export default function UeberUnsPage() {
   return (

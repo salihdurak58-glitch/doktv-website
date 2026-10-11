@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { publicPageMetadata } from "../../../lib/seo/public-metadata";
 
-export const metadata = {
-  title:
-    "Schaufenster Display Apotheke: Mehr Kunden durch digitale Werbung",
-  description:
-    "Warum ein Schaufenster Display für Apotheken der Schlüssel zu mehr Aufmerksamkeit und Laufkundschaft ist.",
-  alternates: { canonical: "https://doktv.de/blog/schaufenster-display-apotheke" },
-};
+export const metadata = publicPageMetadata(
+  "/blog/schaufenster-display-apotheke",
+  "Schaufenster-Display für Apotheken: Planung & Inhalte | DokTV",
+  "Worauf es bei einem digitalen Schaufenster-Display in der Apotheke ankommt: Lesbarkeit, Platzierung, wechselnde Inhalte und laufende Betreuung.",
+  "/referenzen/sky-apotheke-kudamm-2.jpg",
+  "article",
+);
 
 export default function Page() {
   return (
@@ -26,7 +27,7 @@ export default function Page() {
           <p className="mt-6 text-lg leading-8 text-slate-600">
             Das Schaufenster ist die wichtigste Werbefläche jeder Apotheke.
             Mit einem digitalen Display verwandeln Sie diesen Bereich in einen
-            echten Blickfang und erreichen mehr Kunden – jeden Tag.
+            flexibel nutzbare Informations- und Werbefläche.
           </p>
         </div>
       </section>

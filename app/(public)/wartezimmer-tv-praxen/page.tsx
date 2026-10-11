@@ -1,10 +1,11 @@
 import { CheckList, Container, CTASection, Eyebrow, FeatureCard, PrimaryButton, SecondaryButton, SectionHeading } from "../../components/PublicUI";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata = {
-  title: "Wartezimmer TV Arztpraxis | Digital Signage für Praxen – DokTV",
-  description: "Wartezimmer TV für Arztpraxen: Patienten informieren, Praxisleistungen zeigen und Inhalte professionell betreuen lassen.",
-  alternates: { canonical: "https://doktv.de/wartezimmer-tv-praxen" },
-};
+export const metadata = publicPageMetadata(
+  "/wartezimmer-tv-praxen",
+  "Wartezimmer-TV für Arztpraxen | Inhalte & Betreuung – DokTV",
+  "Wartezimmer-TV für Arztpraxen: Praxisleistungen und Patienteninformationen ruhig darstellen. DokTV übernimmt Gestaltung, Ausspielung und Betreuung.",
+);
 
 const practiceTypes = ["Haus- und Facharztpraxen", "Zahnarztpraxen", "Kinderarztpraxen", "MVZ und Gesundheitszentren", "Physiotherapien", "Privatpraxen"];
 const content = ["Praxisleistungen und Behandlungen", "Vorsorge- und Präventionsangebote", "Gesundheitstipps und Saisonthemen", "Organisatorische Hinweise", "Praxisvorstellung und Team", "Individuelle Patienteninformationen"];

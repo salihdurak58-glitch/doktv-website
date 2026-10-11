@@ -1,10 +1,12 @@
 import { CheckList, Container, CTASection, Eyebrow, FeatureCard, ImagePanel, PrimaryButton, SecondaryButton, SectionHeading } from "../../components/PublicUI";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata = {
-  title: "Hersteller Werbung in Apotheken & Praxen | DokTV",
-  description: "Digitale Herstellerwerbung im Gesundheitsumfeld: Kampagnen planen, Inhalte gestalten und über passende DokTV Standorte ausspielen.",
-  alternates: { canonical: "https://doktv.de/hersteller-werbung" },
-};
+export const metadata = publicPageMetadata(
+  "/hersteller-werbung",
+  "Herstellerwerbung in Apotheken & Praxen | DokTV",
+  "Digitale Herstellerkampagnen im Gesundheitsumfeld: Standorte auswählen, Inhalte abstimmen und über passende DokTV-Displays ausspielen.",
+  "/referenzen/sky-apotheke-wedding-1.jpg",
+);
 
 const campaignTypes = ["OTC- und Gesundheitsprodukte", "Nahrungsergänzung und Pflege", "Kosmetik und Wohlbefinden", "Produktneuheiten und Aktionen", "Saisonale Gesundheitsthemen", "Regionale Kampagnen"];
 

@@ -19,20 +19,21 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Container, Eyebrow, SectionHeading } from "../../components/PublicUI";
+import { formatEuro, pricing } from "../../lib/pricing";
 
 const pageUrl = "https://doktv.de/apotheken-notdienst-anzeiger";
 
 export const metadata: Metadata = {
-  title: "Apotheken Notdienst Anzeiger | Digitales Display | DOKTV",
+  title: "Digitaler Apotheken-Notdienstanzeiger | DokTV",
   description:
-    "Digitaler Apotheken Notdienst Anzeiger von DOKTV: Notdienstinformationen modern und gut sichtbar auf Ihrem Display präsentieren. Nur 10 € netto/Monat.",
+    `Digitaler Notdienstanzeiger für Apotheken: Notdienstinformationen auf dem Display sichtbar machen. Optional für +${formatEuro(pricing.emergencyDisplay.price)} netto monatlich zum DokTV-Service.`,
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: "Apotheken Notdienst Anzeiger | Digitales Display | DOKTV",
+    title: "Digitaler Apotheken-Notdienstanzeiger | DokTV",
     description:
-      "Notdienstinformationen modern und gut sichtbar auf Ihrem DOKTV Display präsentieren – für 10 € netto im Monat.",
+      `Notdienstinformationen auf dem DokTV-Display zeigen. Optionale Zusatzfunktion für +${formatEuro(pricing.emergencyDisplay.price)} netto monatlich.`,
     url: pageUrl,
-    siteName: "DOKTV",
+    siteName: "DokTV",
     type: "website",
     locale: "de_DE",
     images: [
@@ -46,9 +47,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apotheken Notdienst Anzeiger | DOKTV",
+    title: "Digitaler Apotheken-Notdienstanzeiger | DokTV",
     description:
-      "Professionelle Notdienstinformationen auf Ihrem DOKTV Display – für 10 € netto im Monat.",
+      `Optionale Notdienstanzeige für Apotheken: +${formatEuro(pricing.emergencyDisplay.price)} netto monatlich zum DokTV-Service.`,
     images: ["https://doktv.de/notdienst/apotheken-notdienst-anzeiger-doktv.png"],
   },
 };
@@ -193,7 +194,7 @@ const faqs = [
   },
   {
     question: "Was kostet der DOKTV Notdienst Anzeiger?",
-    answer: "Der DOKTV Apotheken Notdienst Anzeiger kostet 10 € netto pro Monat.",
+    answer: `Der Notdienstanzeiger ist eine optionale Zusatzfunktion für +${formatEuro(pricing.emergencyDisplay.price)} netto pro Monat zum DokTV-Service.`,
   },
   {
     question: "Wo wird die Notdienstanzeige dargestellt?",
@@ -218,7 +219,7 @@ const faqs = [
   {
     question: "Kann ich den Notdienst Anzeiger zu DOKTV hinzubuchen?",
     answer:
-      "Ja. Der Notdienst Anzeiger kann als Zusatzfunktion für 10 € netto monatlich zu DOKTV hinzugebucht werden.",
+      `Ja. Der Notdienstanzeiger kann als Zusatzfunktion für +${formatEuro(pricing.emergencyDisplay.price)} netto monatlich zum DokTV-Service hinzugebucht werden.`,
   },
 ];
 
@@ -236,13 +237,6 @@ const serviceSchema = {
   areaServed: {
     "@type": "Country",
     name: "Deutschland",
-  },
-  offers: {
-    "@type": "Offer",
-    price: "10.00",
-    priceCurrency: "EUR",
-    url: pageUrl,
-    description: "10 € netto pro Monat als Zusatzfunktion zu DOKTV",
   },
 };
 
@@ -399,7 +393,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
 
               <div className="mt-5 flex flex-wrap items-end gap-x-3 gap-y-1 sm:mt-7 lg:mt-4 xl:mt-7">
                 <p className="text-3xl font-black tracking-[-0.04em] text-teal-800 sm:text-4xl">
-                  Nur 10 €
+                  +{formatEuro(pricing.emergencyDisplay.price)}
                 </p>
                 <p className="pb-1 font-extrabold text-slate-700">netto / Monat</p>
               </div>
@@ -422,7 +416,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                   "Professionelle Darstellung",
                   "Klar strukturiert und gut lesbar",
                   "Für große Apotheken-Displays optimiert",
-                  "Nur 10 € netto monatlich",
+                  `Optional +${formatEuro(pricing.emergencyDisplay.price)} netto monatlich`,
                 ].map((point) => (
                   <p key={point} className="flex items-start gap-2.5">
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-800">
@@ -496,7 +490,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                 Apotheken Notdienst Anzeiger
               </p>
               <div className="relative mt-8 flex flex-wrap items-end gap-3">
-                <p className="text-7xl font-black tracking-[-0.065em] sm:text-8xl">10 €</p>
+                <p className="text-7xl font-black tracking-[-0.065em] sm:text-8xl">+{formatEuro(pricing.emergencyDisplay.price)}</p>
                 <p className="pb-3 font-bold text-slate-300">netto / Monat</p>
               </div>
               <p className="relative mt-6 max-w-md text-lg leading-8 text-slate-300">
@@ -506,7 +500,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                 href="/kontakt?display=notdienst#anfrage"
                 className="relative mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-teal-300 px-6 py-4 font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-teal-200"
               >
-                Für 10 € netto / Monat anfragen
+                Für +{formatEuro(pricing.emergencyDisplay.price)} netto / Monat anfragen
                 <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </Link>
               <p className="relative mt-4 text-sm text-slate-400">zzgl. gesetzlicher MwSt.</p>
@@ -643,7 +637,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
               <Info className="h-7 w-7 text-teal-300" aria-hidden="true" />
               <p className="mt-5 leading-7 text-slate-300">
                 DOKTV verbindet den Apotheken Notdienst Bildschirm mit Ihrer bestehenden Digital
-                Signage Apotheke – als klar gestaltetes Zusatzmodul für 10 € netto monatlich.
+                Signage Apotheke – als klar gestaltetes Zusatzmodul für +{formatEuro(pricing.emergencyDisplay.price)} netto monatlich.
               </p>
             </div>
           </div>
@@ -782,7 +776,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
                 Mit dem DOKTV Notdienst Anzeiger präsentieren Sie wichtige Informationen modern,
-                übersichtlich und professionell – für nur 10 € netto im Monat.
+                übersichtlich und professionell – optional für +{formatEuro(pricing.emergencyDisplay.price)} netto im Monat zum DokTV-Service.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link

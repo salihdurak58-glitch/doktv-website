@@ -2,6 +2,7 @@ import { getPostBySlug } from "@/app/lib/blog/get-post";
 import { canonicalUrl } from "@/app/lib/seo/site";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 type BlogDetailPageProps = {
   params: Promise<{
@@ -37,22 +38,13 @@ export async function generateMetadata({
       description: post.meta_description || "",
       url: canonicalUrl(`/blog/${post.slug}`),
       type: "article",
-      images: post.og_image_url
-        ? [
-            {
-              url: post.og_image_url,
-              width: 1200,
-              height: 630,
-              alt: post.title,
-            },
-          ]
-        : [],
+      images: [{ url: post.og_image_url || "/referenzen/sky-apotheke-wedding-2.jpg", alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.meta_title || post.title,
       description: post.meta_description || "",
-      images: post.og_image_url ? [post.og_image_url] : [],
+      images: [post.og_image_url || "/referenzen/sky-apotheke-wedding-2.jpg"],
     },
   };
 }
@@ -67,8 +59,20 @@ export default async function BlogDetailPage({
     notFound();
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    mainEntityOfPage: canonicalUrl(`/blog/${post.slug}`),
+    author: { "@type": "Organization", name: "DokTV", url: canonicalUrl("/") },
+    publisher: { "@type": "Organization", name: "DokTV", url: canonicalUrl("/") },
+    dateModified: post.updated_at,
+    description: post.meta_description || undefined,
+  };
+
   return (
     <main className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c") }} />
       <article className="public-reading mx-auto px-6 py-20">
         <p className="mb-4 text-sm font-bold text-teal-700">DokTV Blog</p>
 
@@ -85,6 +89,12 @@ export default async function BlogDetailPage({
         <div className="mt-10 whitespace-pre-line text-lg leading-8 text-slate-700">
           {post.content}
         </div>
+
+        <nav className="mt-12 flex flex-wrap gap-6 border-t border-slate-200 pt-6 text-sm font-bold text-teal-700" aria-label="Weiterführende Seiten">
+          <Link href="/apotheken">Digital Signage für Apotheken</Link>
+          <Link href="/preise">Displays und Preise</Link>
+          <Link href="/kontakt">Beratung anfragen</Link>
+        </nav>
       </article>
     </main>
   );

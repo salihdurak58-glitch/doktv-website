@@ -43,6 +43,13 @@
 .trustBar li { display: flex; align-items: center; gap: 7px; color: #4f6478; font-size: 12px; font-weight: 750; white-space: nowrap; }
 .trustBar li svg { color: #16a99e; }
 
+.introSection { padding: 72px 0 26px; }
+.introSection > .container { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 7vw, 100px); }
+.introSection h2, .faqHeading h2 { margin-top: 12px; color: var(--doktv-navy); font-size: clamp(31px, 3vw, 45px); font-weight: 900; line-height: 1.09; letter-spacing: -.045em; }
+.introCopy { display: grid; gap: 17px; }
+.introCopy p { color: #5f7288; font-size: 16px; line-height: 1.72; }
+.introCopy a { color: var(--doktv-teal); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+
 .solutionsSection { padding: 78px 0 62px; }
 .sectionLabel { color: var(--doktv-teal); font-size: 11px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
 .sectionTopline { display: flex; align-items: end; justify-content: space-between; gap: 32px; }
@@ -102,6 +109,15 @@
 .processGrid h3 { margin-top: 23px; font-size: 20px; font-weight: 850; }
 .processGrid p { margin-top: 9px; color: #66788c; font-size: 14px; line-height: 1.6; }
 
+.faqSection { padding: 8px 0 76px; }
+.faqHeading { max-width: 720px; }
+.faqGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; margin-top: 30px; }
+.faqGrid article { display: flex; flex-direction: column; align-items: start; border: 1px solid #dbeceb; border-radius: 17px; padding: 27px; background: #fff; box-shadow: 0 13px 32px rgb(16 55 71 / .045); }
+.faqGrid h3 { color: var(--doktv-navy); font-size: 18px; font-weight: 850; line-height: 1.3; }
+.faqGrid p { margin-top: 13px; color: #66788c; font-size: 14px; line-height: 1.62; }
+.faqGrid a { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 22px; color: var(--doktv-teal); font-size: 13px; font-weight: 850; }
+.faqGrid a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
 .finalCta { padding: 0 0 30px; }
 .finalCta > .container { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 30px; row-gap: 24px; border-radius: 19px; padding: 36px 42px; background: #e5f9f5; }
 .finalCta h2 { margin-top: 9px; font-size: clamp(30px, 2.6vw, 39px); }
@@ -136,6 +152,8 @@
   .heroPhoto { object-position: 70% 48%; }
   .visualNote { display: none; }
   .trustBar > .container { flex-direction: column; align-items: start; justify-content: center; gap: 18px; padding-block: 21px; }
+  .introSection > .container { grid-template-columns: 1fr; gap: 21px; }
+  .faqGrid { grid-template-columns: 1fr; }
   .sectionTopline { display: block; }
   .sectionTopline > p { max-width: 660px; margin-top: 15px; }
   .referenceCard { grid-template-columns: 1fr; }
@@ -160,7 +178,9 @@
   .trustBar ul { flex-wrap: wrap; gap: 12px 18px; }
   .trustBar li { font-size: 11px; }
   .solutionsSection { padding: 58px 0 49px; }
-  .sectionTopline h2, .referenceHeading h2, .pricingHeading h2, .processIntro h2, .finalCta h2 { font-size: clamp(29px, 8.5vw, 38px); }
+  .introSection { padding: 53px 0 8px; }
+  .faqSection { padding: 0 0 56px; }
+  .sectionTopline h2, .referenceHeading h2, .pricingHeading h2, .processIntro h2, .finalCta h2, .introSection h2, .faqHeading h2 { font-size: clamp(29px, 8.5vw, 38px); }
   .solutionGrid { grid-template-columns: 1fr; gap: 12px; margin-top: 25px; }
   .solutionCard { min-height: 113px; grid-template-columns: 47px minmax(0, 1fr) 28px; padding: 17px; }
   .cardArrow { display: grid; }

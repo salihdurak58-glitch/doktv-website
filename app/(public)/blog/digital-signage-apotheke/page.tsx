@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { publicPageMetadata } from "../../../lib/seo/public-metadata";
 
-export const metadata = {
-  title:
-    "Digital Signage Apotheke: Schaufenster Display für mehr Kunden in Berlin",
-  description:
-    "Digital Signage für Apotheken: Mehr Sichtbarkeit, mehr Kunden und mehr Umsatz durch moderne Schaufenster-Displays.",
-  alternates: { canonical: "https://doktv.de/blog/digital-signage-apotheke" },
-};
+export const metadata = publicPageMetadata(
+  "/blog/digital-signage-apotheke",
+  "Digital Signage in der Apotheke: Einsatz & Inhalte | DokTV",
+  "Wie Apotheken digitale Displays für Schaufenster, Angebote und Informationen nutzen können – mit Hinweisen zu Inhalten, Platzierung und Betreuung.",
+  "/referenzen/sky-apotheke-wedding-2.jpg",
+  "article",
+);
 
 export default function Page() {
   return (
@@ -20,8 +21,7 @@ export default function Page() {
           </p>
 
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Digital Signage für Apotheken: Mehr Kunden durch
-            Schaufenster-Displays
+            Digital Signage für Apotheken: Displays sinnvoll einsetzen
           </h1>
 
           <p className="mt-6 text-lg leading-8 text-slate-600">
@@ -50,9 +50,9 @@ export default function Page() {
         </p>
 
         <p>
-          Digital Signage für Apotheken ist deshalb eine der effektivsten
-          Möglichkeiten, um lokale Sichtbarkeit zu steigern, Vertrauen
-          aufzubauen und den Umsatz nachhaltig zu erhöhen.
+          Digital Signage kann die Kommunikation am Standort ergänzen.
+          Entscheidend sind eine passende Platzierung, gut lesbare Inhalte und
+          eine verlässliche Betreuung im laufenden Betrieb.
         </p>
       </section>
 
@@ -113,9 +113,9 @@ export default function Page() {
         </p>
 
         <p>
-          Für Apotheken bedeutet das: Mehr Sichtbarkeit, mehr Aufmerksamkeit und
-          eine deutlich höhere Wahrscheinlichkeit, dass Kunden das Geschäft
-          betreten.
+          Für Apotheken kann das Schaufenster damit mehr Raum für wechselnde
+          Angebote und Informationen bieten. Wie gut das funktioniert, hängt
+          vom Standort, der Gestaltung und den Inhalten ab.
         </p>
 
         <h2 className="text-3xl font-bold">
@@ -231,7 +231,7 @@ export default function Page() {
         </h2>
 
         <p className="mt-4 text-slate-600">
-          Lassen Sie sich kostenlos beraten und erfahren Sie, wie Sie mehr Kunden gewinnen.
+          Lassen Sie sich kostenlos zu Platzierung, Inhalten und Betreuung beraten.
         </p>
 
         <a

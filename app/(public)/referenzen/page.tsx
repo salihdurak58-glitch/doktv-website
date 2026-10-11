@@ -3,12 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckList, Container, CTASection, Eyebrow } from "../../components/PublicUI";
 import { doktvReferences } from "../../lib/references";
+import { publicPageMetadata } from "../../lib/seo/public-metadata";
 
-export const metadata: Metadata = {
-  title: "Referenzen | Echte DokTV Installationen in Berlin",
-  description: "Echte Digital-Signage-Installationen von DokTV in Berliner Apotheken – Wedding, Kudamm und Kreuzberg.",
-  alternates: { canonical: "https://doktv.de/referenzen" },
-};
+export const metadata: Metadata = publicPageMetadata(
+  "/referenzen",
+  "Referenzen: Digital Signage in Berliner Apotheken | DokTV",
+  "Echte DokTV-Installationen in Berliner Apotheken: Bilder aus Wedding, vom Kurfürstendamm und aus Kreuzberg ansehen.",
+  "/referenzen/sky-apotheke-kudamm-2.jpg",
+);
 
 export default function ReferenzenPage() {
   return (
