@@ -44,6 +44,7 @@ export async function POST(req: Request) {
     const email = String(body.email || "").trim();
     const phone = String(body.phone || "").trim();
     const desired_solution = String(body.desired_solution || "").trim();
+    const notdienst = body.notdienst === true;
     const message = String(body.message || "").trim();
     const privacy_accepted = Boolean(body.privacy_accepted);
     const website = String(body.website || "").trim();
@@ -86,6 +87,7 @@ export async function POST(req: Request) {
     const phoneDigits = cleanPhone(phone || "");
     const storedMessage = [
       `Gewünschte Lösung: ${desired_solution}`,
+      `Notdienstanzeiger: ${notdienst ? "Ja, zusätzlich angefragt" : "Nein"}`,
       `Standort: ${location}`,
       `Branche: ${industry}`,
       "",
@@ -174,6 +176,7 @@ export async function POST(req: Request) {
             <p><strong>E-Mail:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
             <p><strong>Telefon:</strong> ${safePhone || "-"}</p>
             <p><strong>Gewünschte Lösung:</strong> ${safeDesiredSolution}</p>
+            <p><strong>Notdienstanzeiger:</strong> ${notdienst ? "Ja, zusätzlich angefragt" : "Nein"}</p>
             <p><strong>DSGVO:</strong> Datenschutzhinweise akzeptiert.</p>
 
             <p><strong>Nachricht:</strong></p>

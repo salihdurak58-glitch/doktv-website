@@ -1,0 +1,181 @@
+.page { overflow: clip; background: #fff; color: var(--doktv-navy); }
+.page h1, .page h2, .page h3 { color: var(--doktv-navy); }
+.hero { position: relative; isolation: isolate; min-height: 405px; display: flex; align-items: center; background: #effaf8; }
+.heroImage { z-index: -2; object-fit: cover; object-position: center 46%; }
+.hero::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(247,253,252,.96) 0%, rgba(247,253,252,.9) 38%, rgba(247,253,252,.42) 65%, rgba(247,253,252,0) 100%); }
+.heroInner { position: relative; padding-top: 22px; padding-bottom: 22px; }
+.heroCopy { max-width: 790px; }
+.hero h1 { margin-top: 10px; font-size: clamp(2.8rem, 4.1vw, 3.8rem); font-weight: 900; line-height: .99; letter-spacing: -.055em; text-wrap: balance; }
+.heroLead { margin-top: 9px; font-size: clamp(1.12rem, 1.6vw, 1.5rem); font-weight: 750; }
+.heroText { max-width: 620px; margin-top: 7px; color: #40526a; line-height: 1.45; font-size: .98rem; }
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 13px; }
+.heroActions a { min-height: 46px; font-size: .9rem; }
+.heroFeatures { display: grid; grid-template-columns: repeat(4, max-content); gap: clamp(12px, 2vw, 25px); margin-top: 16px; list-style: none; padding: 0; }
+.heroFeatures li { display: flex; align-items: center; gap: 6px; max-width: 140px; font-size: .76rem; font-weight: 800; line-height: 1.25; }
+.heroFeatures svg { flex: none; width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: #d6f8f2; color: #00867e; }
+.heroCaption { position: absolute; right: 12px; bottom: 10px; color: #234757; background: rgba(255,255,255,.84); padding: 3px 7px; border-radius: 5px; font-size: .68rem; font-weight: 700; }
+
+.selectionSection { position: relative; z-index: 1; padding: 0 0 55px; background: linear-gradient(180deg, #f8fcfb 0%, #fff 100%); }
+.selectionIntro { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 24px; }
+.selectionIntro h2 { max-width: 740px; margin-top: 11px; font-size: clamp(1.65rem, 2.5vw, 2.45rem); font-weight: 900; line-height: 1.08; letter-spacing: -.04em; }
+.selectionIntro > p { max-width: 390px; color: #40526a; line-height: 1.55; }
+.selectionGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(290px, .77fr); gap: 15px; align-items: start; margin-top: -16px; }
+.productCard, .summaryCard { min-width: 0; border: 1px solid #dbeceb; border-radius: 17px; background: rgba(255,255,255,.98); box-shadow: 0 18px 37px rgba(19,65,69,.08); }
+.productCard { min-height: 434px; padding: 17px 18px 14px; }
+.productCardActive { border: 2px solid #00a99c; padding: 16px 17px 13px; box-shadow: 0 20px 39px rgba(0,142,132,.12); }
+.productTop { min-height: 28px; }
+.selectedBadge { display: inline-flex; align-items: center; gap: 5px; border-radius: 50px; padding: 7px 11px; background: #00a996; color: #fff; font-size: .64rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.productTopSpacer { display: block; height: 25px; }
+.productMain { display: grid; grid-template-columns: 48% minmax(0, 1fr); align-items: center; gap: 10px; min-height: 330px; }
+.deviceVisual { display: flex; align-items: center; justify-content: center; min-width: 0; height: 300px; }
+.deviceSize { width: 145px; max-width: 100%; }
+.deviceLarger { width: calc(145px * 65 / 55); }
+.deviceSize img { width: 100%; height: auto; filter: drop-shadow(2px 10px 10px rgba(7,37,50,.13)); }
+.productInfo { min-width: 0; align-self: center; }
+.productInfo h3 { font-size: clamp(1.35rem, 1.7vw, 1.55rem); font-weight: 900; line-height: 1.08; letter-spacing: -.045em; }
+.productDescription { min-height: 58px; margin-top: 8px; font-size: .88rem; line-height: 1.42; color: #52637a; }
+.productPrice { margin-top: 13px; color: #00847d; font-size: clamp(2.2rem, 3vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -.05em; }
+.productPriceCaption { margin-top: 4px; color: #40526a; font-size: .78rem; }
+.productService { margin-top: 17px; padding-top: 15px; border-top: 1px solid #dce8e9; color: #0b1738; font-size: .8rem; line-height: 1.35; }
+.difference { margin-top: 8px; color: #4d6071; font-size: .72rem; font-weight: 700; line-height: 1.35; }
+.productActions { display: flex; flex-direction: column; align-items: start; gap: 10px; margin-top: 15px; }
+.selectControl { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: .85rem; font-weight: 800; }
+.selectControl input { width: 17px; height: 17px; accent-color: #087f7a; }
+.directLink { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 39px; border-radius: 8px; padding: 7px 11px; background: #087f7a; color: #fff; font-size: .78rem; font-weight: 850; }
+.directLink:hover { background: #066c68; }
+.visualDisclaimer { margin-top: 2px; color: #627187; font-size: .68rem; line-height: 1.35; }
+.summaryCard { position: sticky; top: 96px; padding: 22px; }
+.summaryHeading { display: flex; align-items: center; gap: 9px; }
+.summaryHeading svg { color: #00847d; }
+.summaryHeading h3 { font-size: 1.28rem; font-weight: 900; letter-spacing: -.04em; }
+.summarySelected { margin-top: 20px; border-radius: 8px; padding: 12px 13px; background: #e4f7f3; color: #006f6b; font-weight: 900; }
+.summaryList { margin-top: 14px; }
+.summaryList > div { display: flex; justify-content: space-between; gap: 9px; padding: 13px 0; border-bottom: 1px solid #dbe6e8; font-size: .81rem; font-weight: 800; }
+.summaryList dd { white-space: nowrap; font-weight: 900; }
+.summarySubtext { margin-top: 7px; color: #40526a; font-size: .75rem; line-height: 1.4; }
+.notdienstOption { display: flex; gap: 10px; margin-top: 18px; cursor: pointer; font-size: .78rem; line-height: 1.38; }
+.notdienstOption input { flex: none; width: 19px; height: 19px; margin-top: 1px; accent-color: #087f7a; }
+.notdienstOption strong { font-size: .8rem; }
+.notdienstOption small { display: block; margin-top: 5px; color: #52637a; font-size: .73rem; }
+.summaryInfo { display: flex; gap: 9px; margin-top: 18px; padding-top: 15px; border-top: 1px solid #dbe6e8; color: #40526a; font-size: .76rem; line-height: 1.4; }
+.summaryInfo svg { flex: none; color: #40526a; }
+.summaryButton { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 51px; margin-top: 20px; border-radius: 9px; padding: 9px 11px; background: #087f7a; color: #fff; font-size: .82rem; font-weight: 900; text-align: center; box-shadow: 0 11px 23px rgba(3,114,108,.18); }
+.summaryButton:hover { background: #066c68; }
+
+.serviceSection { padding: 73px 0 77px; background: radial-gradient(circle at 95% 48%, #e1f4e8 0, transparent 23%), linear-gradient(90deg, #f7fcfb, #eaf8f6); }
+.serviceSection h2, .splitHeading h2, .faqSection h2, .finalPanel h2 { max-width: 800px; margin-top: 15px; font-size: clamp(2rem, 3.6vw, 3.45rem); font-weight: 900; line-height: 1.05; letter-spacing: -.05em; text-wrap: balance; }
+.servicePrice { margin-top: 18px; color: #087f7a; font-size: 2.45rem; font-weight: 900; letter-spacing: -.045em; }
+.servicePrice span { color: #40526a; font-size: 1.1rem; letter-spacing: 0; }
+.serviceIntro { max-width: 740px; margin-top: 10px; color: #40526a; font-size: 1.07rem; line-height: 1.6; }
+.serviceGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; margin: 38px 0; }
+.serviceGrid article { padding-right: 25px; border-right: 1px solid #dbe9e6; }
+.serviceGrid article:last-child { border: 0; }
+.iconCircle { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #d6f4ef; color: #078980; }
+.serviceGrid h3 { margin-top: 12px; font-size: 1.05rem; font-weight: 900; }
+.serviceGrid p { max-width: 285px; margin-top: 6px; color: #40526a; line-height: 1.5; }
+
+.contentSection, .referencesSection, .faqSection { padding: 75px 0; }
+.referencesSection { background: #f5faf9; }
+.splitHeading { display: flex; align-items: end; justify-content: space-between; gap: 45px; margin-bottom: 30px; }
+.splitHeading h2 { font-size: clamp(2rem, 3.2vw, 3rem); }
+.splitHeading > p { max-width: 380px; color: #40526a; line-height: 1.6; }
+.tableWrap { overflow-x: auto; border: 1px solid #dbeceb; border-radius: 15px; }
+.tableWrap table { width: 100%; min-width: 680px; border-collapse: collapse; text-align: left; }
+.tableWrap th, .tableWrap td { padding: 16px; border-bottom: 1px solid #e6eeed; font-size: .9rem; }
+.tableWrap thead { background: #e9f9f6; }
+.tableWrap th { font-weight: 850; }
+.tableWrap tbody tr:last-child th, .tableWrap tbody tr:last-child td { border-bottom: 0; }
+.note { margin-top: 15px; color: #52637a; font-size: .83rem; line-height: 1.5; }
+.referenceGrid, .costGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.referenceCard, .costGrid article, .faqGrid article { overflow: hidden; border: 1px solid #dbeceb; border-radius: 15px; background: #fff; box-shadow: 0 10px 24px rgba(13,65,70,.055); }
+.referenceImage { position: relative; aspect-ratio: 1.48; }
+.referenceImage img { object-fit: cover; }
+.referenceBody { padding: 17px 20px; }
+.referenceBody h3, .costGrid h3, .faqGrid h3 { font-size: 1.1rem; font-weight: 900; }
+.referenceBody p { margin-top: 4px; color: #52637a; }
+.textLink { display: inline-flex; align-items: center; gap: 7px; margin-top: 24px; color: #087f7a; font-weight: 850; }
+.textLink:hover, .relatedLinks a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.costGrid article { padding: 25px; }
+.costGrid article > span { color: #087f7a; font-size: .75rem; font-weight: 900; letter-spacing: .12em; }
+.costGrid h3 { margin-top: 15px; }
+.costGrid p { margin-top: 9px; color: #40526a; line-height: 1.55; }
+.relatedLinks { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 27px; }
+.relatedLinks a { color: #087f7a; font-size: .88rem; font-weight: 800; }
+.faqSection { background: #eaf8f6; }
+.faqSection h2 { max-width: 870px; }
+.faqGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+.faqGrid article { padding: 23px; }
+.faqGrid p { margin-top: 10px; color: #40526a; line-height: 1.6; }
+.finalSection { padding: 55px 0 80px; }
+.finalPanel { display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: 20px; padding: 39px; background: #e9f9f6; }
+.finalPanel h2 { font-size: clamp(2rem, 3vw, 3rem); }
+.finalPanel p { margin-top: 12px; color: #40526a; }
+.finalPanel > a { flex: none; }
+
+@media (min-width: 961px) and (max-width: 1190px) {
+  .selectionGrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(250px, .8fr); }
+  .productCard { padding-left: 13px; padding-right: 13px; }
+  .productCardActive { padding-left: 12px; padding-right: 12px; }
+  .productMain { grid-template-columns: 46% minmax(0, 1fr); gap: 6px; }
+  .deviceSize { width: 112px; }
+  .deviceLarger { width: calc(112px * 65 / 55); }
+  .productInfo h3 { font-size: 1.2rem; }
+  .productDescription { font-size: .76rem; }
+  .productPrice { font-size: 2.15rem; }
+  .productService { font-size: .73rem; }
+  .directLink { font-size: .72rem; }
+  .summaryCard { padding: 18px; }
+}
+@media (max-width: 960px) {
+  .selectionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .summaryCard { grid-column: 1 / -1; position: static; }
+  .summaryList { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .heroFeatures { grid-template-columns: repeat(2, max-content); }
+}
+@media (max-width: 800px) {
+  .hero { min-height: 0; }
+  .heroImage { object-position: 65% center; }
+  .hero::after { background: linear-gradient(90deg, rgba(247,253,252,.96), rgba(247,253,252,.84) 70%, rgba(247,253,252,.65)); }
+  .heroInner { padding-top: 48px; padding-bottom: 48px; }
+  .heroCopy { max-width: 625px; }
+  .heroFeatures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .selectionIntro, .splitHeading { display: block; }
+  .selectionIntro > p, .splitHeading > p { margin-top: 12px; }
+  .serviceGrid, .referenceGrid, .costGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .finalPanel { display: block; }
+  .finalPanel > a { margin-top: 20px; }
+}
+@media (max-width: 700px) {
+  .hero h1 { font-size: clamp(2.7rem, 9vw, 3.8rem); }
+  .heroActions { align-items: stretch; flex-direction: column; }
+  .heroActions a { justify-content: center; }
+  .heroFeatures { gap: 13px; }
+  .selectionSection { padding: 32px 0 56px; }
+  .selectionGrid { margin-top: 0; }
+  .selectionGrid, .serviceGrid, .referenceGrid, .costGrid, .faqGrid { grid-template-columns: 1fr; }
+  .summaryCard { grid-column: auto; }
+  .productCard { min-height: 0; }
+  .productMain { grid-template-columns: 42% 1fr; min-height: 300px; }
+  .deviceVisual { height: 270px; }
+  .deviceSize { width: 118px; }
+  .deviceLarger { width: calc(118px * 65 / 55); }
+  .productDescription { min-height: 0; }
+  .summaryList { display: block; }
+  .serviceSection, .contentSection, .referencesSection, .faqSection { padding: 55px 0; }
+  .serviceGrid { gap: 24px; }
+  .serviceGrid article { border: 0; padding: 0; }
+  .tableWrap { margin-right: -20px; }
+  .finalSection { padding: 40px 0 80px; }
+  .finalPanel { padding: 26px; }
+}
+@media (max-width: 410px) {
+  .hero h1 { font-size: 2.52rem; }
+  .heroText { font-size: .95rem; }
+  .productCard { padding: 15px; }
+  .productMain { grid-template-columns: 40% 1fr; gap: 7px; }
+  .deviceSize { width: 107px; }
+  .deviceLarger { width: calc(107px * 65 / 55); }
+  .productInfo h3 { font-size: 1.35rem; }
+  .productPrice { font-size: 2.2rem; }
+  .productService { font-size: .75rem; }
+}

@@ -95,3 +95,46 @@ Keine verbleibenden P0/P1/P2-Abweichungen im geprüften Umfang.
 5. Live-Navigation inklusive mobilem Menü und `/#ablauf` geprüft, Browserkonsole ohne Warnungen/Fehler. 23/23 Sitemap-URLs: HTTP 200, genau eine H1, jeweils eigener Canonical ohne `noindex`. Sitemap: 23 eindeutige Apex-URLs, kein www. `www` leitet mit 308 in einem Schritt und mit Pfad/Query weiter.
 
 final result: passed
+
+---
+
+# DokTV /preise – Design-QA
+
+- Source visual truth: `/Users/salihdurak/Downloads/DokTV Preise für Apotheken Displays.png`
+- Implementation: `artifacts/preise-vergleich-1024.jpg`
+- Focused card evidence: `artifacts/preise-karten-1024.jpg`
+- Responsive evidence: `artifacts/preise-desktop.jpg`, `artifacts/preise-mobil.jpg`, `artifacts/preise-mobil-auswahl.jpg`
+- Reference pixels: 1024 × 1536. Implementation comparison capture: 1009 × 1291 pixels from the in-app browser at 1024 × 1536 CSS viewport; browser chrome/capture bounds account for the difference. Device pixel ratio reported as 1. Compare the shared top content region, not the unmatched bottom crop.
+- State: 55 Zoll selected; Notdienstanzeiger off. Light theme. The reference is a static mockup; the implementation uses the existing DokTV header and real controls.
+
+## Full-view comparison
+
+The implemented hierarchy follows the source: bright pharmacy/display hero, large navy heading, two display cards, a narrower selection summary, teal prices/buttons, and a mint service section. The existing hero asset is a DokTV visualization, not the exact mockup scene. Device renders are newly created schematics rather than claims about a specific model. The screenshot's unsupported “recommended size” and inclusion claims were deliberately omitted per the written brief.
+
+## Focused comparison
+
+The product-card crop was checked against the source's card region. Both device images are visible in the same perspective and the 65-inch render is scaled by 65/55. Price, one-time hardware caption, recurring service, radio state, direct inquiry button and schematic-image disclaimer are readable. The denser text and extra selection control are intentional functional deviations from the static source.
+
+## Required fidelity surfaces
+
+- Typography: existing Avenir Next/system stack retained; single two-line H1 on desktop. Product headings were reduced so they do not wrap awkwardly. No truncation observed.
+- Spacing/layout: three-column price area at 1024 and 1440 px; two columns plus summary at 768 px; stacked cards and summary at 390 px. Prices appear within the initial 1440 × 900 viewport. One header and one footer.
+- Color: existing navy, teal, mint and white tokens match the reference direction; selected state is marked by border, badge and radio text, not color alone.
+- Images: real project pharmacy visualization in hero, transparent generated schematic device asset in cards, and verified reference photos from the shared reference data. Assets are rendered with `next/image`, meaningful alt text, dimensions and responsive sizes.
+- Copy/content: actual prices and the installation caveat supersede unsupported mockup claims. Hardware and monthly costs remain separate.
+- Accessibility/behavior: native labeled radios and checkbox, visible focus styling, compact live announcement, keyboard-compatible controls, no nested interactive elements. Four contact-query combinations verified without sending a live lead.
+
+## Comparison history
+
+1. Initial 1440 capture: H1 wrapped to three lines, the shared header CTA clipped, and the large hero pushed both prices too low. Reduced hero type/spacing and improved the responsive header gap. Follow-up: `artifacts/preise-desktop.jpg` shows a two-line H1, full header CTA and both hardware prices in the first viewport.
+2. Initial 1024 capture: summary fell beneath the cards and excessive section introduction delayed the comparison. Set the three-column breakpoint at 961 px, moved the cards directly under the compact hero, enlarged the schematics via a cropped generated asset and promoted inquiry links to buttons. Follow-up: `artifacts/preise-vergleich-1024.jpg` and `artifacts/preise-karten-1024.jpg` show the intended composition.
+
+## Findings
+
+No remaining actionable P0/P1/P2 mismatch. The different hero scene and shorter, honest product claims are intentional. P3: device renders are schematic until approved model photographs exist.
+
+## Verification gaps
+
+The local Production build returned HTTP 200 with 0.008 s TTFB and 0.311 s total transfer time for the HTML (80,449 bytes) in one local `curl` run. This is a server/transfer laboratory sample, not a Core Web Vitals result. The browser does not expose a trustworthy LCP/INP/CLS field dataset or Lighthouse trace; those targets cannot be declared passed from these screenshots. Production release and live page checks are recorded separately in the task handoff.
+
+final result: passed

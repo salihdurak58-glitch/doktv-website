@@ -19,8 +19,10 @@ const displaySelection: Record<string, string> = {
   notdienst: "Apotheken Notdienst Anzeiger",
 };
 
-export default function KontaktForm({ initialDisplay }: { initialDisplay?: string }) {
+export default function KontaktForm({ initialDisplay, initialNotdienst = false }: { initialDisplay?: string; initialNotdienst?: boolean }) {
   const [loading, setLoading] = useState(false);
+  const [solution, setSolution] = useState(displaySelection[initialDisplay ?? ""] ?? "");
+  const [notdienstSelected, setNotdienstSelected] = useState(initialNotdienst);
   const [status, setStatus] = useState<{
     type: "success" | "error";
     message: string;
@@ -37,6 +39,7 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
     const industry = String(formData.get("industry") || "");
     const location = String(formData.get("location") || "");
     const desiredSolution = String(formData.get("desired_solution") || "");
+    const notdienst = formData.get("notdienst") === "on";
     const message = String(formData.get("message") || "");
     const privacyAccepted = formData.get("privacy_accepted") === "on";
 
@@ -58,6 +61,7 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
       email: String(formData.get("email") || ""),
       phone: String(formData.get("phone") || ""),
       desired_solution: desiredSolution,
+      notdienst,
       message,
       privacy_accepted: privacyAccepted,
       website: String(formData.get("website") || ""),
@@ -145,10 +149,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
 
           <div className="grid gap-5">
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-800">
+              <label htmlFor="contact-name" className="mb-2 block text-sm font-bold text-slate-800">
                 Name *
               </label>
               <input
+                id="contact-name"
                 name="name"
                 type="text"
                 required
@@ -158,10 +163,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-800">
+              <label htmlFor="contact-company" className="mb-2 block text-sm font-bold text-slate-800">
                 Firma
               </label>
               <input
+                id="contact-company"
                 name="company"
                 type="text"
                 className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-700 focus:bg-white focus:ring-4 focus:ring-teal-100"
@@ -171,10 +177,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
 
             <div className="grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-800">
+                <label htmlFor="contact-industry" className="mb-2 block text-sm font-bold text-slate-800">
                   Branche *
                 </label>
                 <input
+                  id="contact-industry"
                   name="industry"
                   type="text"
                   required
@@ -184,10 +191,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-800">
+                <label htmlFor="contact-location" className="mb-2 block text-sm font-bold text-slate-800">
                   Standort *
                 </label>
                 <input
+                  id="contact-location"
                   name="location"
                   type="text"
                   required
@@ -199,10 +207,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
 
             <div className="grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-800">
+                <label htmlFor="contact-phone" className="mb-2 block text-sm font-bold text-slate-800">
                   Telefonnummer *
                 </label>
                 <input
+                  id="contact-phone"
                   name="phone"
                   type="tel"
                   required
@@ -212,10 +221,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-800">
+                <label htmlFor="contact-email" className="mb-2 block text-sm font-bold text-slate-800">
                   E-Mail *
                 </label>
                 <input
+                  id="contact-email"
                   name="email"
                   type="email"
                   required
@@ -241,13 +251,15 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-800">
+            <label htmlFor="contact-solution" className="mb-2 block text-sm font-bold text-slate-800">
               Gewünschte Lösung *
             </label>
             <select
+              id="contact-solution"
               name="desired_solution"
               required
-              defaultValue={displaySelection[initialDisplay ?? ""] ?? ""}
+              value={solution}
+              onChange={(event) => setSolution(event.target.value)}
               className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition focus:border-teal-600 focus:bg-white focus:ring-4 focus:ring-teal-100"
             >
               <option value="" disabled>
@@ -260,6 +272,19 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
               ))}
             </select>
           </div>
+          <label className="mt-5 flex gap-3 rounded-2xl border border-[#dbeceb] bg-[#f3fbf9] p-4 text-sm leading-6 text-slate-800">
+            <input
+              name="notdienst"
+              type="checkbox"
+              checked={notdienstSelected}
+              onChange={(event) => setNotdienstSelected(event.target.checked)}
+              className="mt-1 h-5 w-5 shrink-0 accent-teal-700"
+            />
+            <span><strong>Optionalen Apotheken-Notdienstanzeiger anfragen</strong><br />Diese Ergänzung wird unabhängig von der Displaygröße übermittelt.</span>
+          </label>
+          {solution ? <p className="mt-3 rounded-xl bg-teal-50 px-4 py-3 text-sm font-bold text-teal-900" aria-live="polite">
+            Ihre Anfrage: {solution}{notdienstSelected && solution !== displaySelection.notdienst ? " plus Notdienstanzeiger" : ""}.
+          </p> : null}
         </section>
 
         <section>
@@ -276,10 +301,11 @@ export default function KontaktForm({ initialDisplay }: { initialDisplay?: strin
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-800">
+            <label htmlFor="contact-message" className="mb-2 block text-sm font-bold text-slate-800">
               Nachricht *
             </label>
             <textarea
+              id="contact-message"
               name="message"
               required
               className="min-h-44 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-700 focus:bg-white focus:ring-4 focus:ring-teal-100"

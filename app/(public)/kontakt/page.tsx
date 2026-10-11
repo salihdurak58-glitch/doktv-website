@@ -15,13 +15,15 @@ const nextSteps = [
   { title: "Passendes Angebot", text: "Sie erhalten eine nachvollziehbare Empfehlung mit klaren Hardware- und Servicekosten." },
 ];
 
-export default async function KontaktPage({ searchParams }: { searchParams: Promise<{ display?: string | string[] }> }) {
+export default async function KontaktPage({ searchParams }: { searchParams: Promise<{ display?: string | string[]; notdienst?: string | string[] }> }) {
   const params = await searchParams;
   const requestedDisplay = Array.isArray(params.display) ? params.display[0] : params.display;
+  const requestedNotdienst = Array.isArray(params.notdienst) ? params.notdienst[0] : params.notdienst;
   const initialDisplay =
     requestedDisplay === "55" || requestedDisplay === "65" || requestedDisplay === "notdienst"
       ? requestedDisplay
       : undefined;
+  const initialNotdienst = requestedDisplay === "notdienst" || requestedNotdienst === "1";
 
   return (
     <main className="min-h-screen bg-[#f7faf9] text-slate-900">
@@ -61,12 +63,12 @@ export default async function KontaktPage({ searchParams }: { searchParams: Prom
                 ))}
               </div>
               <div className="mt-8 rounded-3xl border border-[#d9ebea] bg-[#e9f9f6] p-7 text-slate-950">
-                <p className="text-sm font-black uppercase tracking-[0.16em] text-teal-300">Gut zu wissen</p>
-                <p className="mt-3 leading-7 text-slate-300">Die Erstberatung ist kostenlos und unverbindlich. Wir melden uns persönlich statt mit einer automatischen Verkaufskette.</p>
+                <p className="text-sm font-black uppercase tracking-[0.16em] text-teal-700">Gut zu wissen</p>
+                <p className="mt-3 leading-7 text-slate-700">Die Erstberatung ist kostenlos und unverbindlich. Wir melden uns persönlich statt mit einer automatischen Verkaufskette.</p>
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <KontaktForm initialDisplay={initialDisplay} />
+              <KontaktForm key={`${initialDisplay ?? "none"}-${initialNotdienst}`} initialDisplay={initialDisplay} initialNotdienst={initialNotdienst} />
             </div>
           </div>
         </Container>

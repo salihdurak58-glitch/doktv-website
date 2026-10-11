@@ -1,165 +1,179 @@
+import Image from "next/image";
 import Link from "next/link";
-import {
-  CheckList,
-  Container,
-  CTASection,
-  Eyebrow,
-  PrimaryButton,
-  SectionHeading,
-} from "../../components/PublicUI";
+import { ArrowRight, Check, Headset, Monitor, Palette } from "lucide-react";
+import { Container, Eyebrow, PrimaryButton, SecondaryButton } from "../../components/PublicUI";
+import { doktvReferences } from "../../lib/references";
 import { formatEuro, pricing } from "../../lib/pricing";
 import { generatePageMetadata } from "../../lib/seo/get-page-seo";
+import { canonicalUrl } from "../../lib/seo/site";
+import DisplaySelection from "./DisplaySelection";
+import styles from "./preise.module.css";
+
+const pageTitle = "Digital Signage für Apotheken: Preise & Kosten | DokTV";
+const pageDescription = `55-Zoll-Display ${formatEuro(pricing.displays[55].price)}, 65-Zoll-Display ${formatEuro(pricing.displays[65].price)} einmalig. DokTV-Service ${formatEuro(pricing.service.price)} monatlich. Größen vergleichen und beraten lassen.`;
+const pageUrl = canonicalUrl("/preise");
+const pageImage = "/home/apotheke-hero-visualisierung.jpg";
+const hardwareDifference = pricing.displays[65].price - pricing.displays[55].price;
 
 export async function generateMetadata() {
-  return generatePageMetadata("/preise", {
-    title: "Digital Signage für Apotheken: Preise & Kosten | DokTV",
-    description: "55-Zoll-Display 749 € und 65-Zoll-Display 849 € einmalig. DokTV-Service 69 € monatlich, Notdienstanzeiger optional +10 € netto monatlich.",
+  const existing = await generatePageMetadata("/preise", {
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage,
   });
+  return {
+    ...existing,
+    title: pageTitle,
+    description: pageDescription,
+    alternates: { ...existing.alternates, canonical: pageUrl },
+    robots: { index: true, follow: true },
+    openGraph: {
+      ...existing.openGraph,
+      title: existing.openGraph?.title || pageTitle,
+      description: pageDescription,
+      url: pageUrl,
+    },
+    twitter: {
+      ...existing.twitter,
+      card: "summary_large_image" as const,
+      title: existing.twitter?.title || pageTitle,
+      description: pageDescription,
+    },
+  };
 }
 
-const displayFeatures = {
-  55: [
-    "55-Zoll-Display",
-    "geeignet für Apotheken & Praxen",
-    "professionelle Darstellung Ihrer Inhalte",
-    "Vorbereitung für DokTV",
-  ],
-  65: [
-    "65-Zoll-Display",
-    "große Präsentationsfläche",
-    "geeignet für Schaufenster & Innenbereich",
-    "Vorbereitung für DokTV",
-  ],
-};
-
-const serviceFeatures = [
-  "Erstellung der Werbeinhalte",
-  "Anpassung an Angebote und Aktionen der Apotheke",
-  "Ausspielung der gewünschten Inhalte",
-  "regelmäßige Aktualisierung",
-  "zentrale Verwaltung",
-  "persönlicher Ansprechpartner",
+const faqs = [
+  { question: "Was kostet ein 55-Zoll-Apotheken-Display?", answer: `Das 55-Zoll-Display kostet ${formatEuro(pricing.displays[55].price)} einmalig für die Hardware. Hinzu kommt der DokTV Content-Service für ${formatEuro(pricing.service.price)} monatlich.` },
+  { question: "Was kostet ein 65-Zoll-Apotheken-Display?", answer: `Das 65-Zoll-Display kostet ${formatEuro(pricing.displays[65].price)} einmalig für die Hardware – ${formatEuro(hardwareDifference)} mehr als die 55-Zoll-Variante. Der monatliche Servicepreis ist bei beiden Größen gleich.` },
+  { question: "Welche monatlichen Kosten kommen hinzu?", answer: `Der DokTV Content-Service kostet unabhängig von der Displaygröße ${formatEuro(pricing.service.price)} monatlich. Der Notdienstanzeiger kann für zusätzlich ${formatEuro(pricing.emergencyDisplay.price)} netto monatlich angefragt werden.` },
+  { question: "Was umfasst der DokTV Content-Service?", answer: "DokTV gestaltet abgestimmte Werbeinhalte für Ihre Apotheke und betreut deren Ausspielung und Aktualisierung." },
+  { question: "Kann der Notdienstanzeiger ergänzt werden?", answer: `Ja. Der digitale Apotheken-Notdienstanzeiger ist eine optionale Ergänzung für ${formatEuro(pricing.emergencyDisplay.price)} netto pro Monat.` },
+  { question: "Wer entscheidet über die Inhalte?", answer: "Sie entscheiden, welche Angebote, Aktionen und Informationen Ihre Apotheke zeigt. DokTV setzt die abgestimmten Inhalte um." },
+  { question: "Was kostet die Installation?", answer: "Details zur Installation und zu weiteren Leistungen besprechen wir im persönlichen Angebot." },
+  { question: "Wie finde ich die passende Displaygröße?", answer: "Entscheidend sind verfügbare Fläche, Platzierung, Blickwinkel, Betrachtungsabstand und die Darstellungsgröße Ihrer Inhalte. Wir besprechen das passend zu Ihrem Standort." },
 ];
 
-const faqs = [
+const schemas = [
   {
-    q: "Was kostet ein DokTV Display?",
-    a: `Das 55-Zoll-Display kostet ${formatEuro(pricing.displays[55].price)}, das 65-Zoll-Display ${formatEuro(pricing.displays[65].price)}. Beide Preise fallen einmalig für die Hardware an.`,
+    "@context": "https://schema.org", "@type": "WebPage", name: pageTitle, description: pageDescription, url: pageUrl,
+    isPartOf: { "@type": "WebSite", name: "DokTV", url: canonicalUrl("/") },
+    publisher: { "@type": "Organization", name: "DokTV UG (haftungsbeschränkt)", url: canonicalUrl("/") },
   },
   {
-    q: "Welche monatlichen Kosten gibt es?",
-    a: `Der DokTV Content-Service kostet ${formatEuro(pricing.service.price)} pro Monat. Der optionale Notdienstanzeiger kostet zusätzlich ${formatEuro(pricing.emergencyDisplay.price)} netto pro Monat.`,
-  },
-  {
-    q: "Wer entscheidet, welche Werbung läuft?",
-    a: "Ihre Apotheke oder Praxis entscheidet, welche Werbung und welche Inhalte ausgespielt werden. DokTV setzt Ihre Auswahl professionell um.",
-  },
-  {
-    q: "Was kostet die Installation?",
-    a: "Details zur Installation, zum Standort und zu möglichen Zusatzleistungen besprechen wir im persönlichen Angebot.",
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Startseite", item: canonicalUrl("/") },
+      { "@type": "ListItem", position: 2, name: "Preise", item: pageUrl },
+    ],
   },
 ];
 
 export default function PreisePage() {
   return (
-    <main className="overflow-hidden bg-white text-slate-900">
+    <main className={styles.page}>
+      {schemas.map((schema) => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
 
-      <section className="page-hero py-18 sm:py-24 lg:py-28">
-        <Container>
-          <Eyebrow>Transparent. Einfach. Planbar.</Eyebrow>
-          <h1 className="mt-6 max-w-4xl text-balance text-5xl font-black leading-[0.98] tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-7xl">
-            Wählen Sie Ihr Display.
-          </h1>
-          <p className="mt-7 max-w-2xl text-xl leading-8 text-slate-600">
-            Einmalige Hardwarekosten. Monatlicher DokTV-Service. Keine komplizierten Pakete.
-          </p>
-          <div className="mt-9"><PrimaryButton href="/kontakt">Kostenlose Beratung</PrimaryButton></div>
-        </Container>
-      </section>
-
-      <section className="pb-20 lg:pb-28">
-        <Container>
-          <SectionHeading eyebrow="Hardware-Auswahl" title="55 oder 65 Zoll? Sie entscheiden." text="Beide Displaygrößen sind für DokTV vorbereitet. Welche Größe zu Ihrem Standort passt, klären wir gern persönlich." />
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {([55, 65] as const).map((size) => {
-              const display = pricing.displays[size];
-              return (
-                <article key={size} className={`relative rounded-[2.25rem] border p-7 shadow-xl sm:p-10 ${size === 65 ? "border-teal-300 bg-teal-50/60 shadow-teal-100/70" : "border-slate-200 bg-white shadow-slate-200/60"}`}>
-                  {size === 65 ? <p className="absolute right-6 top-6 rounded-full bg-teal-700 px-3.5 py-2 text-xs font-black uppercase tracking-[0.14em] text-white">Mehr Sichtbarkeit</p> : null}
-                  <p className="text-lg font-black text-teal-800">{display.size}</p>
-                  <p className="mt-8 text-6xl font-black tracking-[-0.055em] text-slate-950">{formatEuro(display.price)}</p>
-                  <p className="mt-2 font-bold text-slate-500">einmalig für die Hardware</p>
-                  <p className="mt-7 max-w-lg text-lg leading-8 text-slate-600">{display.description}</p>
-                  <div className="mt-8"><CheckList items={displayFeatures[size]} /></div>
-                  <Link href={`/kontakt?display=${display.query}#anfrage`} className="button-primary mt-9 w-full sm:w-auto">{display.size} anfragen <span aria-hidden="true">→</span></Link>
-                </article>
-              );
-            })}
+      <section className={styles.hero} aria-labelledby="preise-title">
+        <Image src={pageImage} alt="Visualisierung einer Apotheke mit digitalem Schaufenster-Display" fill priority sizes="100vw" className={styles.heroImage} />
+        <Container className={styles.heroInner}>
+          <div className={styles.heroCopy}>
+            <Eyebrow>Digital Signage für Apotheken</Eyebrow>
+            <h1 id="preise-title">Apotheken-Displays.<br />Größen &amp; Preise.</h1>
+            <p className={styles.heroLead}>Einmal Hardware. Monatlich persönlicher Service.</p>
+            <p className={styles.heroText}>Vergleichen Sie unsere 55- und 65-Zoll-Displays für Ihre Apotheke. DokTV gestaltet Ihre Werbeinhalte und betreut die Ausspielung – Sie entscheiden, was gezeigt wird.</p>
+            <div className={styles.heroActions}><PrimaryButton href="#display-auswahl">Displays vergleichen</PrimaryButton><SecondaryButton href="/kontakt">Persönlich beraten lassen</SecondaryButton></div>
+            <ul className={styles.heroFeatures} aria-label="Leistungsmerkmale">
+              {["Individuelle Werbeinhalte", "Ausspielung & Betreuung", "Notdienstanzeiger optional", "55 und 65 Zoll"].map((item) => <li key={item}><Check size={16} aria-hidden="true" />{item}</li>)}
+            </ul>
           </div>
         </Container>
+        <span className={styles.heroCaption}>Visualisierung</span>
       </section>
 
-      <section className="bg-[#f6f9f8] py-20 lg:py-28">
+      <section id="display-auswahl" className={styles.selectionSection} aria-labelledby="display-auswahl-title">
         <Container>
-          <article className="grid gap-10 rounded-[2.5rem] border border-slate-200 bg-white p-7 shadow-xl shadow-slate-200/50 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:p-14">
-            <div>
-              <Eyebrow>Monatlicher Service</Eyebrow>
-              <h2 className="mt-5 text-4xl font-black tracking-[-0.04em] text-slate-950 sm:text-5xl">{pricing.service.name}</h2>
-              <div className="mt-7 flex items-end gap-2">
-                <p className="text-6xl font-black tracking-[-0.055em] text-teal-700">{formatEuro(pricing.service.price)}</p>
-                <p className="pb-2 font-bold text-slate-500">/ Monat</p>
-              </div>
-              <p className="mt-7 text-xl font-bold leading-8 text-slate-800">Wir kümmern uns um das, was auf Ihrem Display zu sehen ist.</p>
-              <p className="mt-4 leading-8 text-slate-600">Sie teilen uns mit, welche Angebote, Aktionen oder Informationen Sie zeigen möchten. DokTV erstellt daraus professionelle Werbeinhalte und spielt diese auf Ihrem Display aus.</p>
-            </div>
-            <div className="rounded-[2rem] bg-[#f3f8f7] p-6 sm:p-8">
-              <CheckList items={serviceFeatures} />
-              <p className="mt-7 rounded-2xl border border-teal-200 bg-white p-5 font-bold leading-7 text-slate-800">Die Apotheke entscheidet, welche Werbung und welche Inhalte ausgespielt werden.</p>
-            </div>
-          </article>
-
-          <article className="mt-6 grid items-center gap-7 rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm md:grid-cols-[1fr_auto] sm:p-8">
-            <div>
-              <p className="inline-flex rounded-full bg-slate-100 px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-slate-600">Optional</p>
-              <h3 className="mt-4 text-3xl font-black text-slate-950">{pricing.emergencyDisplay.name}</h3>
-              <p className="mt-3 max-w-2xl leading-7 text-slate-600">Auf Wunsch ergänzen wir Ihre DokTV-Lösung um einen digitalen Notdienstanzeiger.</p>
-            </div>
-            <div className="md:text-right">
-              <p className="text-4xl font-black text-slate-950">+{formatEuro(pricing.emergencyDisplay.price)}</p>
-              <p className="mt-1 font-bold text-slate-500">netto / Monat</p>
-              <div className="mt-5 flex flex-col items-start gap-2 md:items-end">
-                <Link href="/apotheken-notdienst-anzeiger" className="inline-flex font-black text-teal-700">Mehr zum Notdienst Anzeiger →</Link>
-                <Link href="/kontakt?display=notdienst#anfrage" className="inline-flex text-sm font-bold text-slate-600">Direkt mit anfragen</Link>
-              </div>
-            </div>
-          </article>
+          <h2 id="display-auswahl-title" className="sr-only">55- und 65-Zoll-Displays vergleichen und auswählen</h2>
+          <DisplaySelection />
         </Container>
       </section>
 
-      <section className="py-20 lg:py-28">
+      <section className={styles.serviceSection} aria-labelledby="service-title">
         <Container>
-          <SectionHeading eyebrow="Preisbeispiel" title="So setzt sich Ihr Preis zusammen." text="Einmal Hardware auswählen, monatlichen Service ergänzen und den Notdienstanzeiger nur bei Bedarf dazunehmen." />
-          <div className="mt-12 grid gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-stretch">
-            <div className="surface-card p-7"><p className="text-sm font-black text-teal-700">SCHRITT 1</p><h3 className="mt-4 text-2xl font-black">Display einmalig</h3><p className="mt-5 text-lg text-slate-600">55 Zoll → <strong>{formatEuro(pricing.displays[55].price)}</strong><br />oder 65 Zoll → <strong>{formatEuro(pricing.displays[65].price)}</strong></p></div>
-            <div className="hidden items-center text-3xl font-light text-slate-300 lg:flex">+</div>
-            <div className="surface-card p-7"><p className="text-sm font-black text-teal-700">SCHRITT 2</p><h3 className="mt-4 text-2xl font-black">DokTV Service</h3><p className="mt-5 text-lg text-slate-600"><strong>{formatEuro(pricing.service.price)}</strong> / Monat</p></div>
-            <div className="hidden items-center text-3xl font-light text-slate-300 lg:flex">+</div>
-            <div className="surface-card p-7"><p className="text-sm font-black text-slate-500">OPTIONAL</p><h3 className="mt-4 text-2xl font-black">Notdienstanzeiger</h3><p className="mt-5 text-lg text-slate-600">+<strong>{formatEuro(pricing.emergencyDisplay.price)}</strong> netto / Monat</p></div>
+          <Eyebrow>Unser Service</Eyebrow>
+          <h2 id="service-title">Sie wählen die Inhalte.<br />Wir kümmern uns um die Ausspielung.</h2>
+          <p className={styles.servicePrice}>{formatEuro(pricing.service.price)} <span>/ Monat</span></p>
+          <p className={styles.serviceIntro}>Sie teilen uns mit, welche Angebote, Aktionen und Informationen Ihre Apotheke zeigen möchte. DokTV gestaltet die Inhalte und betreut deren Ausspielung. Die Auswahl bleibt bei Ihnen.</p>
+          <div className={styles.serviceGrid}>
+            <article><span className={styles.iconCircle}><Palette size={29} aria-hidden="true" /></span><h3>Individuelle Werbeinhalte</h3><p>Passend zu Ihrer Apotheke, Ihren Angeboten und Ihren Zielgruppen.</p></article>
+            <article><span className={styles.iconCircle}><Monitor size={29} aria-hidden="true" /></span><h3>Ausspielung &amp; Aktualisierung</h3><p>Wir planen und betreuen die Ausspielung der abgestimmten Inhalte.</p></article>
+            <article><span className={styles.iconCircle}><Headset size={29} aria-hidden="true" /></span><h3>Persönliche Betreuung</h3><p>Wir bleiben Ihr Ansprechpartner rund um die Inhalte.</p></article>
           </div>
-          <p className="mt-6 text-sm leading-6 text-slate-500">Details zur Installation und zu weiteren Leistungen besprechen wir im persönlichen Angebot.</p>
+          <PrimaryButton href="/apotheken">Mehr über unsere Lösungen erfahren</PrimaryButton>
         </Container>
       </section>
 
-      <section className="bg-[#e9f9f6] py-20 lg:py-28">
+      <section className={styles.contentSection} aria-labelledby="groessen-title">
         <Container>
-          <SectionHeading eyebrow="Häufige Fragen" title="Preise ohne Kleingedrucktes erklärt." />
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {faqs.map((faq) => <article key={faq.q} className="surface-card p-7"><h3 className="text-xl font-black text-slate-950">{faq.q}</h3><p className="mt-4 leading-7 text-slate-600">{faq.a}</p></article>)}
+          <div className={styles.splitHeading}>
+            <div><Eyebrow>Größenvergleich</Eyebrow><h2 id="groessen-title">55 oder 65 Zoll: Welche Displaygröße passt zu Ihrer Apotheke?</h2></div>
+            <p>Die passende Größe hängt von der verfügbaren Fläche, Platzierung, dem Blickwinkel und der Entfernung zum Betrachter ab. Auch die Darstellungsgröße Ihrer Inhalte spielt eine Rolle.</p>
           </div>
+          <div className={styles.tableWrap}>
+            <table>
+              <caption className="sr-only">Vergleich der Displaygrößen und Kosten</caption>
+              <thead><tr><th scope="col">Displaygröße</th><th scope="col">Hardware einmalig</th><th scope="col">DokTV-Service</th><th scope="col">Optionaler Notdienstanzeiger</th></tr></thead>
+              <tbody>{([55, 65] as const).map((size) => <tr key={size}><th scope="row">{size} Zoll</th><td>{formatEuro(pricing.displays[size].price)}</td><td>{formatEuro(pricing.service.price)} / Monat</td><td>+{formatEuro(pricing.emergencyDisplay.price)} netto / Monat</td></tr>)}</tbody>
+            </table>
+          </div>
+          <p className={styles.note}>Der optionale Notdienstanzeiger ist nicht vorausgewählt. Hardwarekosten und monatliche Kosten werden getrennt ausgewiesen.</p>
         </Container>
       </section>
 
-      <CTASection />
+      <section className={styles.referencesSection} aria-labelledby="referenzen-title">
+        <Container>
+          <div className={styles.splitHeading}>
+            <div><Eyebrow>Im Einsatz</Eyebrow><h2 id="referenzen-title">So sehen DokTV-Displays im Apothekenalltag aus.</h2></div>
+            <p>Diese Aufnahmen zeigen echte Installationen. Die gewählte Displaygröße für ein neues Projekt stimmen wir individuell ab.</p>
+          </div>
+          <div className={styles.referenceGrid}>
+            {doktvReferences.map((reference) => <article key={reference.title} className={styles.referenceCard}>
+              <div className={styles.referenceImage}><Image src={reference.images[1]?.src ?? reference.images[0].src} alt={reference.images[1]?.alt ?? reference.images[0].alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" /></div>
+              <div className={styles.referenceBody}><h3>{reference.title}</h3><p>{reference.location}</p></div>
+            </article>)}
+          </div>
+          <Link href="/referenzen" className={styles.textLink}>Alle Referenzen ansehen <ArrowRight size={17} aria-hidden="true" /></Link>
+        </Container>
+      </section>
+
+      <section className={styles.contentSection} aria-labelledby="kosten-title">
+        <Container>
+          <div className={styles.splitHeading}>
+            <div><Eyebrow>Transparent kalkulieren</Eyebrow><h2 id="kosten-title">Welche Kosten entstehen für Digital Signage in einer Apotheke?</h2></div>
+            <p>Einmalige Hardware, laufender Content-Service und eine optionale Notdienstanzeige sind verschiedene Kostenpositionen. So bleibt Ihr Angebot nachvollziehbar.</p>
+          </div>
+          <div className={styles.costGrid}>
+            <article><span>01</span><h3>Hardware einmalig</h3><p>{formatEuro(pricing.displays[55].price)} für 55 Zoll oder {formatEuro(pricing.displays[65].price)} für 65 Zoll.</p></article>
+            <article><span>02</span><h3>Content-Service monatlich</h3><p>{formatEuro(pricing.service.price)} pro Monat, unabhängig von der gewählten Größe.</p></article>
+            <article><span>03</span><h3>Notdienstanzeiger optional</h3><p>Zusätzlich {formatEuro(pricing.emergencyDisplay.price)} netto pro Monat, wenn Sie ihn auswählen.</p></article>
+          </div>
+          <p className={styles.note}>Details zur Installation und zu weiteren Leistungen besprechen wir im persönlichen Angebot.</p>
+          <div className={styles.relatedLinks}><Link href="/apotheken">Digital Signage für Apotheken</Link><Link href="/apotheken-notdienst-anzeiger">Mehr zum Notdienstanzeiger</Link><Link href="/werbung-apotheke-display">Werbung auf Apotheken-Displays</Link></div>
+        </Container>
+      </section>
+
+      <section className={styles.faqSection} aria-labelledby="faq-title">
+        <Container>
+          <Eyebrow>Gut zu wissen</Eyebrow><h2 id="faq-title">Häufige Fragen zu Displaygrößen, Preisen und Service</h2>
+          <div className={styles.faqGrid}>{faqs.map((faq) => <article key={faq.question}><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div>
+        </Container>
+      </section>
+
+      <section className={styles.finalSection} aria-labelledby="final-title">
+        <Container><div className={styles.finalPanel}>
+          <div><Eyebrow>Persönlich beraten</Eyebrow><h2 id="final-title">Das passende Display für Ihre Apotheke.</h2><p>Wir besprechen gemeinsam Größe, Platzierung und Inhalte – persönlich und unverbindlich.</p></div>
+          <PrimaryButton href="/kontakt">Kostenlose Beratung anfragen</PrimaryButton>
+        </div></Container>
+      </section>
     </main>
   );
 }
