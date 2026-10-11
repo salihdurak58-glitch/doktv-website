@@ -47,7 +47,7 @@ const faqs = [
   },
   {
     q: "Welche monatlichen Kosten gibt es?",
-    a: `Der DokTV Content-Service kostet ${formatEuro(pricing.service.price)} pro Monat. Der optionale Notdienstanzeiger kostet zusätzlich ${formatEuro(pricing.emergencyDisplay.price)} pro Monat.`,
+    a: `Der DokTV Content-Service kostet ${formatEuro(pricing.service.price)} pro Monat. Der optionale Notdienstanzeiger kostet zusätzlich ${formatEuro(pricing.emergencyDisplay.price)} netto pro Monat.`,
   },
   {
     q: "Wer entscheidet, welche Werbung läuft?",
@@ -125,7 +125,7 @@ export default function PreisePage() {
             </div>
             <div className="md:text-right">
               <p className="text-4xl font-black text-slate-950">+{formatEuro(pricing.emergencyDisplay.price)}</p>
-              <p className="mt-1 font-bold text-slate-500">/ Monat</p>
+              <p className="mt-1 font-bold text-slate-500">netto / Monat</p>
               <div className="mt-5 flex flex-col items-start gap-2 md:items-end">
                 <Link href="/apotheken-notdienst-anzeiger" className="inline-flex font-black text-teal-700">Mehr zum Notdienst Anzeiger →</Link>
                 <Link href="/kontakt?display=notdienst#anfrage" className="inline-flex text-sm font-bold text-slate-600">Direkt mit anfragen</Link>
@@ -143,7 +143,7 @@ export default function PreisePage() {
             <div className="hidden items-center text-3xl font-light text-slate-300 lg:flex">+</div>
             <div className="surface-card p-7"><p className="text-sm font-black text-teal-700">SCHRITT 2</p><h3 className="mt-4 text-2xl font-black">DokTV Service</h3><p className="mt-5 text-lg text-slate-600"><strong>{formatEuro(pricing.service.price)}</strong> / Monat</p></div>
             <div className="hidden items-center text-3xl font-light text-slate-300 lg:flex">+</div>
-            <div className="surface-card p-7"><p className="text-sm font-black text-slate-500">OPTIONAL</p><h3 className="mt-4 text-2xl font-black">Notdienstanzeiger</h3><p className="mt-5 text-lg text-slate-600">+<strong>{formatEuro(pricing.emergencyDisplay.price)}</strong> / Monat</p></div>
+            <div className="surface-card p-7"><p className="text-sm font-black text-slate-500">OPTIONAL</p><h3 className="mt-4 text-2xl font-black">Notdienstanzeiger</h3><p className="mt-5 text-lg text-slate-600">+<strong>{formatEuro(pricing.emergencyDisplay.price)}</strong> netto / Monat</p></div>
           </div>
           <p className="mt-6 text-sm leading-6 text-slate-500">Details zur Installation und zu weiteren Leistungen besprechen wir im persönlichen Angebot.</p>
         </Container>

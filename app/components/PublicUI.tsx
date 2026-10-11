@@ -163,7 +163,7 @@ export function PricingTeaser() {
           href="/apotheken-notdienst-anzeiger"
           className="relative mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal-700 transition hover:underline"
         >
-          Optional: Notdienst Anzeiger +{formatEuro(pricing.emergencyDisplay.price)} / Monat
+          Optional: Notdienst Anzeiger +{formatEuro(pricing.emergencyDisplay.price)} netto / Monat
           <span aria-hidden="true">→</span>
         </Link>
       </article>

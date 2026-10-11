@@ -506,7 +506,7 @@ export default function ApothekenNotdienstAnzeigerPage() {
                 href="/kontakt?display=notdienst#anfrage"
                 className="relative mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-teal-300 px-6 py-4 font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-teal-200"
               >
-                Für 10 € / Monat anfragen
+                Für 10 € netto / Monat anfragen
                 <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </Link>
               <p className="relative mt-4 text-sm text-slate-400">zzgl. gesetzlicher MwSt.</p>
