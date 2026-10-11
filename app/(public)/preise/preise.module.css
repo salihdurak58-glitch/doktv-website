@@ -1,9 +1,9 @@
 .page { overflow: clip; background: #fff; color: var(--doktv-navy); }
 .page h1, .page h2, .page h3 { color: var(--doktv-navy); }
 .hero { position: relative; isolation: isolate; min-height: 405px; display: flex; align-items: center; background: #effaf8; }
-.heroImage { z-index: -2; object-fit: cover; object-position: center 46%; }
-.hero::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(247,253,252,.96) 0%, rgba(247,253,252,.9) 38%, rgba(247,253,252,.42) 65%, rgba(247,253,252,0) 100%); }
-.heroInner { position: relative; padding-top: 22px; padding-bottom: 22px; }
+.heroImage { z-index: 0; object-fit: cover; object-position: center 46%; }
+.hero::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(247,253,252,.96) 0%, rgba(247,253,252,.9) 38%, rgba(247,253,252,.42) 65%, rgba(247,253,252,0) 100%); pointer-events: none; }
+.heroInner { position: relative; z-index: 2; padding-top: 22px; padding-bottom: 22px; }
 .heroCopy { max-width: 790px; }
 .hero h1 { margin-top: 10px; font-size: clamp(2.8rem, 4.1vw, 3.8rem); font-weight: 900; line-height: .99; letter-spacing: -.055em; text-wrap: balance; }
 .heroLead { margin-top: 9px; font-size: clamp(1.12rem, 1.6vw, 1.5rem); font-weight: 750; }
@@ -13,7 +13,7 @@
 .heroFeatures { display: grid; grid-template-columns: repeat(4, max-content); gap: clamp(12px, 2vw, 25px); margin-top: 16px; list-style: none; padding: 0; }
 .heroFeatures li { display: flex; align-items: center; gap: 6px; max-width: 140px; font-size: .76rem; font-weight: 800; line-height: 1.25; }
 .heroFeatures svg { flex: none; width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: #d6f8f2; color: #00867e; }
-.heroCaption { position: absolute; right: 12px; bottom: 10px; color: #234757; background: rgba(255,255,255,.84); padding: 3px 7px; border-radius: 5px; font-size: .68rem; font-weight: 700; }
+.heroCaption { position: absolute; z-index: 2; right: 12px; bottom: 10px; color: #234757; background: rgba(255,255,255,.84); padding: 3px 7px; border-radius: 5px; font-size: .68rem; font-weight: 700; }
 
 .selectionSection { position: relative; z-index: 1; padding: 0 0 55px; background: linear-gradient(180deg, #f8fcfb 0%, #fff 100%); }
 .selectionIntro { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 24px; }

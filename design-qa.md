@@ -128,6 +128,7 @@ The product-card crop was checked against the source's card region. Both device 
 
 1. Initial 1440 capture: H1 wrapped to three lines, the shared header CTA clipped, and the large hero pushed both prices too low. Reduced hero type/spacing and improved the responsive header gap. Follow-up: `artifacts/preise-desktop.jpg` shows a two-line H1, full header CTA and both hardware prices in the first viewport.
 2. Initial 1024 capture: summary fell beneath the cards and excessive section introduction delayed the comparison. Set the three-column breakpoint at 961 px, moved the cards directly under the compact hero, enlarged the schematics via a cropped generated asset and promoted inquiry links to buttons. Follow-up: `artifacts/preise-vergleich-1024.jpg` and `artifacts/preise-karten-1024.jpg` show the intended composition.
+3. Final release review: the pharmacy image was loaded but hidden behind the hero's stacking background. Moved the image, gradient and content into explicit positive layers. Refreshed the 1440 px desktop, 1024 px comparison and 390 px mobile screenshots; the hero image is visible without obscuring the heading or controls.
 
 ## Findings
 
