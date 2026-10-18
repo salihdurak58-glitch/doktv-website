@@ -38,7 +38,16 @@ function toLocation(row: LocationRow): Location {
   };
 }
 
+const excludedUnverifiedLocationNames = new Set([
+  "apotheke mitte",
+  "arztpraxis charlottenburg",
+  "apotheke neukölln",
+]);
+
 function isPublicTestLocation(location: Location): boolean {
+  const normalizedName = location.name.trim().toLocaleLowerCase("de-DE");
+  if (excludedUnverifiedLocationNames.has(normalizedName)) return true;
+
   const searchableValues = [
     location.name,
     location.district,
