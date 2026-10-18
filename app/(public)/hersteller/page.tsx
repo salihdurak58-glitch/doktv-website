@@ -1,8 +1,6 @@
-import SeoLanding from "../../components/SeoLanding";
-import { publicPageMetadata } from "../../lib/seo/public-metadata";
-
-export const metadata = publicPageMetadata("/hersteller", "Gesundheitswerbung für Hersteller | DokTV", "Digitale Kampagnen für Gesundheitsmarken an passenden Kontaktpunkten in Apotheken und Praxen. Standort und Inhalte werden gemeinsam abgestimmt.", "/referenzen/sky-apotheke-wedding-1.jpg");
-
-export default function HerstellerPage() {
-  return <SeoLanding eyebrow="Für Hersteller" title="Werben Sie dort, wo Gesundheit bereits Thema ist." intro="DokTV plant digitale Herstellerkampagnen für ausgewählte Apotheken und Praxen – mit nachvollziehbarer Standortauswahl und abgestimmten Inhalten." sectionTitle="Geeignet für Gesundheitsmarken" sectionText="Wir prüfen Relevanz, Region und Freigabe gemeinsam mit den teilnehmenden Standorten." items={["OTC-Produkte", "Nahrungsergänzung", "Kosmetik", "Pflegeprodukte", "Gesundheitsservices", "Saisonale Kampagnen"]} itemDescriptions={["Produktinformationen können passend zum jeweiligen Standort geplant werden.", "Inhalte werden vor der Ausspielung mit dem teilnehmenden Standort abgestimmt.", "Bildsprache und Botschaft sollten zur Apotheke oder Praxis passen.", "Pflegeprodukte lassen sich mit klaren, gut lesbaren Motiven präsentieren.", "Services benötigen eine verständliche Beschreibung ohne unbelegte Versprechen.", "Laufzeit und Themen können an saisonale Anlässe angepasst werden."]} image={{ src: "/referenzen/sky-apotheke-wedding-1.jpg", alt: "Sky Apotheke Wedding als DokTV Standort" }} primaryLabel="Kampagne anfragen" secondaryHref="/standorte" secondaryLabel="Standorte ansehen" />;
-}
+import EditorialPage from "@/app/components/EditorialPage";
+import { editorialPages } from "@/app/lib/seo/editorial-pages";
+import { publicPageMetadata } from "@/app/lib/seo/public-metadata";
+const page = editorialPages["/hersteller"];
+export const metadata = publicPageMetadata(page.route, page.metaTitle, page.metaDescription, page.image.src);
+export default function HerstellerPage() { return <EditorialPage page={page} />; }
